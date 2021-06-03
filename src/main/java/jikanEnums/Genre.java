@@ -1,5 +1,7 @@
 package jikanEnums;
 
+import java.util.HashMap;
+
 public enum Genre {
     
     ACTION(1), ADVENTURE(2), CARS(3),
@@ -16,6 +18,12 @@ public enum Genre {
     SLICE_OF_LIFE(36), SUPERNATURAL(37), MILITARY(38),
     POLICE(39), PSYCHOLOGICAL(40), THRILLER(41),
     SEINEN(42), JOSEI(43);
+    
+    private static final HashMap<String, Genre> GENRE_PARSER = new HashMap<>() {{
+        for (Genre genre: Genre.values()) {
+            put(genre.toString(), genre);
+        }
+    }};
     
     public String request;
     public int genreID;
@@ -47,6 +55,10 @@ public enum Genre {
     @Override
     public String toString () {
         return request;
+    }
+    
+    public static Genre parseGenre (String genre) {
+        return GENRE_PARSER.get(genre);
     }
     
 }

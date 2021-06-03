@@ -26,10 +26,10 @@ public class JikanController {
     public JikanController () {
         
         /*
-            TODO Set up the maven project on github
-                Create the JikenController
-                Use Unirest to implement the Jiken API and test that it works
-                Create all the Jiken enums
+            TODO
+                - Set up methods for JikenController to get specific data from the API
+                - Implement AniList
+                - Set up the MainFrame
          */
         
         // Read the key from the text file
@@ -41,7 +41,6 @@ public class JikanController {
             System.err.println(e.getMessage());
             return;
         }
-        
     
     }
     
