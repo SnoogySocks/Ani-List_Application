@@ -2,7 +2,7 @@ package model;
 
 import jikanEnums.Genre;
 
-public class Anime {
+public class Anime implements Comparable<Anime> {
 
     // Important stuff
     private final int malID;
@@ -133,6 +133,11 @@ public class Anime {
     
     public double getAverageScore () {
         return averageScore;
+    }
+    
+    @Override
+    public int compareTo (Anime anime) {
+        return Double.compare(averageScore, anime.averageScore);
     }
     
 }

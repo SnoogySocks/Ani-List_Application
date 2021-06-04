@@ -28,8 +28,6 @@ public class JikanController {
         /*
             TODO
                 - Set up methods for JikenController to get specific data from the API
-                - Implement AniList
-                - Set up the MainFrame
          */
         
         // Read the key from the text file
@@ -39,7 +37,6 @@ public class JikanController {
             input.close();
         } catch (FileNotFoundException e) {
             System.err.println(e.getMessage());
-            return;
         }
     
     }
