@@ -20,9 +20,15 @@ public enum Genre {
     SEINEN(42), JOSEI(43);
     
     private static final HashMap<String, Genre> GENRE_PARSER = new HashMap<>() {{
+        
         for (Genre genre: Genre.values()) {
             put(genre.toString(), genre);
         }
+        remove(SLICE_OF_LIFE.toString());
+        put("Slice of Life", SLICE_OF_LIFE);
+        remove(SCI_FI.toString());
+        put("Sci-Fi", SCI_FI);
+        
     }};
     
     public String request;

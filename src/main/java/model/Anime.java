@@ -1,72 +1,128 @@
 package model;
 
 import jikanEnums.Genre;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class Anime implements Comparable<Anime> {
 
     // Important stuff
-    private final int malID;
-    private final String title;
-    private final String synopsis;
-    private final String imageURL;
-    
-    // Miscellaneous
-    private final String numEpisodes;
-    private final String dateAired;
-    private String[] licensors;
-    private String[] producers;
-    private final Genre[] genres;
-    
-    // Statistics
-    private String watching;
-    private String completed;
-    private String onHold;
-    private String dropped;
-    private String planToWatch;
+    private int malID;
+    private String title;
+    private String synopsis;
+    private String imageURL;
     
     // Scoring
     private int[] scoringVotes;
-    private final double averageScore;
+    private double[] percentage;
+    private double averageScore;
+    
+    // Miscellaneous
+    private int numEpisodes;
+    private String dateAired;
+    private Genre[] genres;
+    private String[] licensors, producers;
+    
+    // Statistics
+    private int watching;
+    private int completed;
+    private int onHold;
+    private int dropped;
+    private int planToWatch;
+    
+    // For up and coming anime only
+    boolean top;
+    
+    public Anime () {
+        this(
+                -1, "N/A", "N/A", null,
+                -1.0,
+                "N/A", -1,
+                null, null, null,
+                false
+        );
+    }
     
     public Anime (
-            String malID, String title, String synopsis,
-            String averageScore,
-            String dateAired, String numEpisodes,
-            String[] genres,
-            String imageURL) {
+            int malID, String title, String synopsis, String imageURL,
+            double averageScore,
+            String dateAired, int numEpisodes,
+            JSONArray genres,
+            JSONArray licensors, JSONArray producers,
+            boolean top) {
+        
+        setAnime(
+                malID, title, synopsis, imageURL,
+                averageScore,
+                dateAired, numEpisodes,
+                genres,
+                licensors, producers,
+                top
+        );
+        
+    }
     
-        this.malID = Integer.parseInt(malID);
+    public void setAnime (
+            int malID, String title, String synopsis, String imageURL,
+            double averageScore,
+            String dateAired, int numEpisodes,
+            JSONArray genres,
+            JSONArray licensors, JSONArray producers,
+            boolean top) {
+    
+        this.malID = malID;
         this.title = title;
         this.synopsis = synopsis;
+        this.imageURL = imageURL;
+    
+        this.averageScore = averageScore;
+    
         this.dateAired = dateAired;
         this.numEpisodes = numEpisodes;
-        
-        this.genres = new Genre[genres.length];
-        for (int i = 0; i<genres.length; ++i) {
-            this.genres[i] = Genre.parseGenre(genres[i]);
+    
+        this.top = top;
+    
+        if (genres==null || licensors==null || producers==null) {
+            return;
         }
     
-        this.imageURL = imageURL;
-        this.averageScore = Double.parseDouble(averageScore);
+        this.genres = new Genre[genres.length()];
+        for (int i = 0; i<genres.length(); ++i) {
+            JSONObject genre = genres.getJSONObject(i);
+            this.genres[i] = Genre.parseGenre(genre.getString("name"));
+        }
+    
+        this.licensors = new String[licensors.length()];
+        for (int i = 0; i<licensors.length(); ++i) {
+            this.licensors[i] = licensors.getString(0);
+        }
+    
+        this.producers = new String[producers.length()];
+        for (int i = 0; i<producers.length(); ++i) {
+            JSONObject producer = producers.getJSONObject(i);
+            this.producers[i] = producer.getString("name");
+        }
     
     }
     
-    public void setToAnimePanel (
-            String[] licensors, String[] producers,
-            String watching, String completed, String onHold, String dropped, String planToWatch,
-            String[] scoringVotes) {
-    
-        this.licensors = licensors;
-        this.producers = producers;
+    public void setStatistics (
+            int watching, int completed, int onHold, int dropped, int planToWatch,
+            JSONObject scores) {
+        
         this.watching = watching;
         this.completed = completed;
         this.onHold = onHold;
         this.dropped = dropped;
         this.planToWatch = planToWatch;
         
-        this.scoringVotes = new int[scoringVotes.length];
-        for (int i = 0; i<scoringVotes.length; ++i) {
-            this.scoringVotes[i] = Integer.parseInt(scoringVotes[i]);
+        this.scoringVotes = new int[scores.length()];
+        this.percentage = new double[scores.length()];
+        for (int i = 0; i<scores.length(); ++i) {
+            
+            JSONObject score = scores.getJSONObject(Integer.toString(i+1));
+            this.scoringVotes[i] = score.getInt("votes");
+            this.percentage[i] = score.getDouble("percentage");
+            
         }
     
     }
@@ -87,7 +143,7 @@ public class Anime implements Comparable<Anime> {
         return imageURL;
     }
     
-    public String getNumEpisodes () {
+    public int getNumEpisodes () {
         return numEpisodes;
     }
     
@@ -107,23 +163,23 @@ public class Anime implements Comparable<Anime> {
         return genres;
     }
     
-    public String getWatching () {
+    public int getWatching () {
         return watching;
     }
     
-    public String getCompleted () {
+    public int getCompleted () {
         return completed;
     }
     
-    public String getOnHold () {
+    public int getOnHold () {
         return onHold;
     }
     
-    public String getDropped () {
+    public int getDropped () {
         return dropped;
     }
     
-    public String getPlanToWatch () {
+    public int getPlanToWatch () {
         return planToWatch;
     }
     
@@ -131,8 +187,16 @@ public class Anime implements Comparable<Anime> {
         return scoringVotes;
     }
     
+    public double[] getPercentage () {
+        return percentage;
+    }
+    
     public double getAverageScore () {
         return averageScore;
+    }
+    
+    public boolean isTop () {
+        return top;
     }
     
     @Override
