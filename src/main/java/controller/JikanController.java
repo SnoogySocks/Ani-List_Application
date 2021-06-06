@@ -3,6 +3,7 @@ package controller;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
+import jikanEnums.Schedule;
 import model.Anime;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -10,7 +11,10 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Scanner;
 
 public class JikanController {
@@ -32,7 +36,7 @@ public class JikanController {
     
     }
     
-    public JSONObject getRequest (String query) {
+    private JSONObject getRequest (String query) {
     
         HttpResponse<JsonNode> response;
         try {
@@ -72,12 +76,20 @@ public class JikanController {
         return getListOfAnime("season/"+year+'/'+season, "anime", false);
     }
     
+    public ArrayList<Anime> getTrending () {
+        return getListOfAnime("top/anime/1/airing", "top", true);
+    }
+    
     public ArrayList<Anime> getUpAndComing () {
         return getListOfAnime("top/anime/1/upcoming", "top", true);
     }
     
-    public ArrayList<Anime> getTrending () {
-        return getListOfAnime("top/anime/1/airing", "top", true);
+    public ArrayList<Anime> getLatestUpdated () {
+    
+        Calendar c = Calendar.getInstance();
+        String dayOfWeek = Schedule.values()[c.get(Calendar.DAY_OF_WEEK)-1].toString();
+        return getListOfAnime("schedule/"+dayOfWeek, dayOfWeek, false);
+        
     }
     
     public void setAnimePanel (Anime anime) {
@@ -125,7 +137,7 @@ public class JikanController {
     
         String dateAired;
         if (!top && !animeProperties.isNull("airing_start")) {
-            dateAired = animeProperties.getString("airing_start").substring(0, 11);
+            dateAired = animeProperties.getString("airing_start").substring(0, 10);
         } else if (!top && !animeProperties.isNull("start_date")) {
             dateAired = animeProperties.getString("start_date").substring(0, 10);
         } else {

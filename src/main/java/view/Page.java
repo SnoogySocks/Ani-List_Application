@@ -22,17 +22,32 @@ public abstract class Page extends JPanel {
     public static final Color TEXT_COLOUR = new Color(67, 67, 67);
     public static final Color DIALOGUE_COLOUR = new Color(255, 255, 255);
     
-    private TitlePanel titlePanel;
+    private final JScrollPane scrollPane;
+    private final TitlePanel titlePanel;
     
     public Page () {
-        
+    
+        setLayout(null);
         setBackground(BACKGROUND_COLOUR);
-        setBounds(0, 0, WIDTH, HEIGHT);
+        
+        scrollPane = new JScrollPane(this);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        scrollPane.setBounds(0, 0, WIDTH-12, HEIGHT-35);
         
         // Does not create a genre if this is a RecommendationPage
         titlePanel = new TitlePanel(!(this instanceof RecommendationPage));
         add(titlePanel);
         
+    }
+    
+    public JScrollPane getScrollPane () {
+        return scrollPane;
+    }
+    
+    public TitlePanel getTitlePanel () {
+        return titlePanel;
     }
     
     public static int getRightX (JComponent comp) {

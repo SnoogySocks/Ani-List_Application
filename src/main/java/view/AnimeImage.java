@@ -19,7 +19,7 @@ public class AnimeImage extends JLabel {
     public static final int IMAGE_HEIGHT_RATIO = 318;
     
     // GUI
-    private double size;
+    private final double size;
     private Image imageOG;
     private final ImageIcon displayedImage;
     
@@ -30,7 +30,7 @@ public class AnimeImage extends JLabel {
         
         displayedImage = new ImageIcon();
         setIcon(displayedImage);
-        
+    
         this.size = size;
         setAnime(anime);
         

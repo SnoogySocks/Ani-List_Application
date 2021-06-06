@@ -47,7 +47,7 @@ public class TitlePanel extends JPanel {
         pageComboBox = new JComboBox<>();
         pageComboBox.setBounds(
                 PADDING*3, Page.getBottomY(titleLabel)+PADDING,
-                PADDING*10, TitlePanel.HEIGHT/4
+                PADDING*14, TitlePanel.HEIGHT/4
         );
         pageComboBox.setFont(HEADER_FONT);
         pageComboBox.setBackground(USER_INPUT_COLOUR);
