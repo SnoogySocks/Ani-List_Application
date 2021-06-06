@@ -76,7 +76,7 @@ public class JikanController {
         return getListOfAnime("top/anime/1/upcoming", "top", true);
     }
     
-    public ArrayList<Anime> getAiring () {
+    public ArrayList<Anime> getTrending () {
         return getListOfAnime("top/anime/1/airing", "top", true);
     }
     

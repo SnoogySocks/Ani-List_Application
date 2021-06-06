@@ -27,7 +27,7 @@ public class FilterBar extends ItemPanel {
         
         // Set up the filter selection options
         filterLabels = new ArrayList<>();
-        String[] labelParameters = new String[] {
+        String[] labelParameters = {
                 "Season", "Year", "Genre"
         };
         

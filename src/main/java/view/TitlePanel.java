@@ -16,12 +16,12 @@ public class TitlePanel extends JPanel {
     public static final Font TITLE_FONT = new Font("Ubuntu", Font.BOLD, 120);
     public static final Font HEADER_FONT = new Font("Ubuntu", Font.BOLD, 45);
     
-    private JLabel titleLabel;
-    private JLabel titleCaptionLabel;
-    private JLabel pageLabel;
+    private final JLabel titleLabel;
+    private final JLabel titleCaptionLabel;
+    private final JLabel pageLabel;
     
-    private JComboBox<Page> pageComboBox;
-    private FilterBar filterBar;
+    private final JComboBox<Page> pageComboBox;
+    private final FilterBar filterBar;
     
     public TitlePanel (boolean shouldAddGenreParameter) {
     
