@@ -10,8 +10,6 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -22,11 +20,6 @@ public class JikanController {
     private String x_rapidapi_key;
     
     public JikanController () {
-        
-        /*
-            TODO
-                - Set up methods for JikenController to get specific data from the API
-         */
         
         // Read the key from the text file
         try {
