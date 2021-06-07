@@ -22,6 +22,9 @@ public abstract class Page extends JPanel {
     public static final Color TEXT_COLOUR = new Color(67, 67, 67);
     public static final Color DIALOGUE_COLOUR = new Color(255, 255, 255);
     
+    // For eventually displaying anime
+    private final AnimePanel animePanel;
+    
     private final JScrollPane scrollPane;
     private final TitlePanel titlePanel;
     
@@ -29,12 +32,16 @@ public abstract class Page extends JPanel {
     
         setLayout(null);
         setBackground(BACKGROUND_COLOUR);
-        
+    
         scrollPane = new JScrollPane(this);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
         scrollPane.setBounds(0, 0, WIDTH-12, HEIGHT-35);
+    
+        animePanel = new AnimePanel();
+//        animePanel.setVisible(false);
+        add(animePanel);
         
         // Does not create a genre if this is a RecommendationPage
         titlePanel = new TitlePanel(!(this instanceof RecommendationPage));

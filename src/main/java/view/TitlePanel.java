@@ -7,9 +7,6 @@ import static view.Page.*;
 
 public class TitlePanel extends JPanel {
     
-    public static final int WIDTH = Page.WIDTH;
-    public static final int HEIGHT = Page.HEIGHT/2-PADDING_Y*2;
-    
     // GUI Constants
     public static final Color BACKGROUND_COLOUR = new Color(77, 127, 161);
     
@@ -26,7 +23,7 @@ public class TitlePanel extends JPanel {
     public TitlePanel (boolean shouldAddGenreParameter) {
     
         setLayout(null);
-        setBounds(0, 0, WIDTH, HEIGHT);
+        setBounds(0, 0, Page.WIDTH, Page.HEIGHT/2-PADDING_Y*2);
         setBackground(BACKGROUND_COLOUR);
         
         titleLabel = new JLabel("Ani-List");
@@ -47,7 +44,7 @@ public class TitlePanel extends JPanel {
         pageComboBox = new JComboBox<>();
         pageComboBox.setBounds(
                 PADDING*3, Page.getBottomY(titleLabel)+PADDING,
-                PADDING*14, TitlePanel.HEIGHT/4
+                PADDING*14, getHeight()/4
         );
         pageComboBox.setFont(HEADER_FONT);
         pageComboBox.setBackground(USER_INPUT_COLOUR);

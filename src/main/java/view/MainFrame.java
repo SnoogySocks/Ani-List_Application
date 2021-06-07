@@ -9,6 +9,8 @@ public class MainFrame extends JFrame {
     public static final int WIDTH = 1366;
     public static final int HEIGHT = 768;
     
+    
+    private int currentPagePtr;
     private final Page[] pages;
     
     public MainFrame (JikanController jikanController) {
@@ -30,8 +32,13 @@ public class MainFrame extends JFrame {
         }
         
         // Set the current page to the home page
-        switchPages(pages[0]);
+        currentPagePtr = 0;
+        switchPages(pages[currentPagePtr]);
         
+    }
+    
+    public Page getCurrentPage () {
+        return pages[currentPagePtr];
     }
     
     public Page getPage (int index) {
@@ -43,7 +50,8 @@ public class MainFrame extends JFrame {
         getContentPane().removeAll();
         getContentPane().repaint();
         page.getTitlePanel().getPageComboBox().setSelectedItem(page);
-        add(page.getScrollPane());
+        getContentPane().add(page.getScrollPane());
+        
     }
     
 }

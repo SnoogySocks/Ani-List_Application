@@ -14,7 +14,7 @@ public class HomePage extends Page {
     public HomePage (JikanController jikanController) {
     
         setPreferredSize(new Dimension(WIDTH, HEIGHT*2));
-        
+    
         categoriesLabels = new ItemPanel[3];
         String[] categoryNames = {
                 "Trending", "Latest Updated", "Up & Coming"
