@@ -9,7 +9,6 @@ public class MainFrame extends JFrame {
     public static final int WIDTH = 1366;
     public static final int HEIGHT = 768;
     
-    
     private int currentPagePtr;
     private final Page[] pages;
     
@@ -22,7 +21,7 @@ public class MainFrame extends JFrame {
         pages = new Page[3];
         pages[0] = new HomePage(jikanController);
         pages[1] = new AniListPage();
-        pages[2] = new RecommendationPage();
+        pages[2] = new RecommendPage();
         
         // Initialize each page's pageComboBox
         for (Page page1 : pages) {
@@ -32,8 +31,7 @@ public class MainFrame extends JFrame {
         }
         
         // Set the current page to the home page
-        currentPagePtr = 0;
-        switchPages(pages[currentPagePtr]);
+        switchPages();
         
     }
     
@@ -41,16 +39,25 @@ public class MainFrame extends JFrame {
         return pages[currentPagePtr];
     }
     
+    public int getPageLength () {
+        return pages.length;
+    }
+    
     public Page getPage (int index) {
         return pages[index];
     }
     
-    public void switchPages (Page page) {
+    public void switchPages () {
         
+        // Get the new selected page
+        currentPagePtr = getCurrentPage().getTitlePanel().getPageComboBox().getSelectedIndex();
+        Page selectedPage = getCurrentPage().getTitlePanel().getPageComboBox().getItemAt(currentPagePtr);
+        selectedPage.getTitlePanel().getPageComboBox().setSelectedItem(selectedPage);
+    
         getContentPane().removeAll();
+        getContentPane().add(selectedPage.getScrollPane());
+        getContentPane().revalidate();
         getContentPane().repaint();
-        page.getTitlePanel().getPageComboBox().setSelectedItem(page);
-        getContentPane().add(page.getScrollPane());
         
     }
     

@@ -24,6 +24,8 @@ public abstract class Page extends JPanel {
     public static final Color TEXT_COLOUR = new Color(67, 67, 67);
     public static final Color DIALOGUE_COLOUR = new Color(255, 255, 255);
     
+    private Dimension actualSize;
+    
     // For eventually displaying anime
     private final AnimePanel animePanel;
     
@@ -42,11 +44,10 @@ public abstract class Page extends JPanel {
         scrollPane.setBounds(0, 0, WIDTH-12, HEIGHT-35);
     
         animePanel = new AnimePanel();
-//        animePanel.setVisible(false);
         add(animePanel);
         
         // Does not create a genre if this is a RecommendationPage
-        titlePanel = new TitlePanel(!(this instanceof RecommendationPage));
+        titlePanel = new TitlePanel(!(this instanceof RecommendPage));
         add(titlePanel);
         
     }
@@ -63,13 +64,27 @@ public abstract class Page extends JPanel {
         return animePanel;
     }
     
+    public Dimension getActualSize () {
+        return actualSize;
+    }
+    
+    public void setActualSize (Dimension preferredSize) {
+        this.actualSize = preferredSize;
+        super.setPreferredSize(preferredSize);
+    }
+    
+    public abstract void setEnabledUserInput (boolean enabled);
+    
     /**
      * Removes the anime panel.
      */
     public void disableAnimePanel () {
+    
+        setEnabledUserInput(true);
         
-        animePanel.disableAnimePanel();
+        setPreferredSize(actualSize);
         titlePanel.setEnabledUserInput(true);
+        animePanel.disableAnimePanel();
         
     }
     
@@ -78,12 +93,14 @@ public abstract class Page extends JPanel {
      * Cancels out all user input
      * @param anime
      */
+    // TODO disable mouse listener if it works over the thing
     public void enableAnimePanel (Anime anime) {
         
         // Disable all input features
+        setEnabledUserInput(false);
         titlePanel.setEnabledUserInput(false);
         
-        // Remove scrolling
+        // Remove scrolling by making the size the same as the frame
         setPreferredSize(getSize());
         animePanel.enableAnimePanel(anime);
         

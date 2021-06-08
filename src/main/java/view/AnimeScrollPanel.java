@@ -14,6 +14,7 @@ public class AnimeScrollPanel extends JPanel {
     private ArrayList<Anime> animeCategory;
     private int rightPtr;
     private final AnimeImage[] displayedAnime;
+    private final JButton[] displayedAnimeButtons;
     
     private final JButton[] scrollButtons;
     
@@ -30,16 +31,24 @@ public class AnimeScrollPanel extends JPanel {
         if (animeImageSize==AnimeImage.LARGE_SIZE) {
             ANIME_IMAGE_PADDING = (getWidth()-PADDING*6-AnimeImage.getScaledWidth(animeImageSize)*5)/4;
             displayedAnime = new AnimeImage[5];
+            displayedAnimeButtons = new JButton[5];
         } else {
             ANIME_IMAGE_PADDING = (getWidth()-PADDING*6-AnimeImage.getScaledWidth(animeImageSize)*7)/6;
             displayedAnime = new AnimeImage[7];
+            displayedAnimeButtons = new JButton[7];
         }
         rightPtr = displayedAnime.length;
     
         for (int i = getLeft(); i!=rightPtr; ++i) {
+            
             displayedAnime[i] = new AnimeImage(animeCategory.get(i), animeImageSize);
-            displayedAnime[i].setLocation(PADDING*3+(displayedAnime[i].getDisplayedImage().getIconWidth()+ANIME_IMAGE_PADDING)*i, 0);
-            add(displayedAnime[i]);
+            displayedAnimeButtons[i] = new JButton();
+            
+            displayedAnimeButtons[i].setIcon(displayedAnime[i].getIcon());
+            displayedAnimeButtons[i].setSize(displayedAnime[i].getSize());
+            displayedAnimeButtons[i].setLocation(PADDING*3+(displayedAnime[i].getDisplayedImage().getIconWidth()+ANIME_IMAGE_PADDING)*i, 0);
+            add(displayedAnimeButtons[i]);
+            
         }
     
         int displayedAnimeHeight = displayedAnime[0].getDisplayedImage().getIconHeight();
@@ -57,7 +66,7 @@ public class AnimeScrollPanel extends JPanel {
             
         }
         scrollButtons[0].setLocation(0, displayedAnimeHeight/3);
-        scrollButtons[1].setLocation(Page.getRightX(displayedAnime[displayedAnime.length-1]), displayedAnimeHeight/3);
+        scrollButtons[1].setLocation(Page.getRightX(displayedAnimeButtons[displayedAnimeButtons.length-1]), displayedAnimeHeight/3);
         
     }
     
@@ -98,20 +107,20 @@ public class AnimeScrollPanel extends JPanel {
         return animeCategory;
     }
     
+    public void setAnimeCategory (ArrayList<Anime> newCategory) {
+        
+        animeCategory = newCategory;
+        rightPtr = displayedAnime.length;
+        updateDisplayedAnime();
+        
+    }
+    
     public AnimeImage getDisplayedAnime (int index) {
         return displayedAnime[index];
     }
     
     public JButton getScrollButtons (int index) {
         return scrollButtons[index];
-    }
-    
-    public void updateAnimeCategory (ArrayList<Anime> newCategory) {
-        
-        animeCategory = newCategory;
-        rightPtr = displayedAnime.length;
-        updateDisplayedAnime();
-        
     }
     
     public void updateDisplayedAnime () {

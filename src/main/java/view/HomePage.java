@@ -8,15 +8,12 @@ import java.awt.*;
 
 public class HomePage extends Page {
     
-    private final Dimension preferredSize;
-    
     private final ItemPanel[] categoriesLabels;
     private final AnimeScrollPanel[] categories;
     
     public HomePage (JikanController jikanController) {
     
-        preferredSize = new Dimension(WIDTH, HEIGHT*2);
-        setPreferredSize(preferredSize);
+        setActualSize(new Dimension(WIDTH, HEIGHT*2));
     
         categoriesLabels = new ItemPanel[3];
         String[] categoryNames = {
@@ -25,7 +22,7 @@ public class HomePage extends Page {
         
         categoriesLabels[0] = new ItemPanel(DIALOGUE_COLOUR);
         categoriesLabels[0].setBounds(
-                PADDING*8, Page.getBottomY(getTitlePanel())+PADDING_Y,
+                PADDING*8-ItemPanel.SHADOW_OFFSET, Page.getBottomY(getTitlePanel())+PADDING_Y,
                 PADDING*13, PADDING*3
         );
     
@@ -53,7 +50,7 @@ public class HomePage extends Page {
     
             categoriesLabels[i] = new ItemPanel(DIALOGUE_COLOUR);
             categoriesLabels[i].setLocation(
-                    PADDING*8,
+                    categoriesLabels[0].getX(),
                     Page.getBottomY(categories[i-1])+PADDING_Y*2
             );
             categoriesLabels[i].setSize(categoriesLabels[0].getDisplayPanel().getSize());
@@ -94,6 +91,7 @@ public class HomePage extends Page {
         return "Home";
     }
     
+    @Override
     public void setEnabledUserInput (boolean enabled) {
     
         // Enabled disable all the user input features
@@ -101,23 +99,6 @@ public class HomePage extends Page {
             category.setEnabledUserInput(enabled);
         }
         
-        
-    }
-    
-    @Override
-    public void disableAnimePanel () {
-        
-        setEnabledUserInput(true);
-        preferredSize.setSize(preferredSize);
-        super.disableAnimePanel();
-        
-    }
-    
-    // TODO disable mouse listener thing if that ever works
-    @Override
-    public void enableAnimePanel (Anime anime) {
-        setEnabledUserInput(false);
-        super.enableAnimePanel(anime);
     }
     
 }

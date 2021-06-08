@@ -7,4 +7,9 @@ public class AniListPage extends Page {
         return "Ani-List";
     }
     
+    @Override
+    public void setEnabledUserInput (boolean enabled) {
+    
+    }
+    
 }

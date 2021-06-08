@@ -27,7 +27,7 @@ public class TitlePanel extends JPanel {
         setBackground(BACKGROUND_COLOUR);
         
         titleLabel = new JLabel("Ani-List");
-        titleLabel.setBounds(PADDING*3, PADDING_Y+PADDING, Page.WIDTH/2-PADDING*11, PADDING_Y*2+PADDING);
+        titleLabel.setBounds(PADDING*2, PADDING_Y+PADDING, Page.WIDTH/2-PADDING*11, PADDING_Y*2+PADDING);
         titleLabel.setFont(TITLE_FONT);
         titleLabel.setForeground(Page.BACKGROUND_COLOUR);
         add(titleLabel);
@@ -43,8 +43,8 @@ public class TitlePanel extends JPanel {
         
         pageComboBox = new JComboBox<>();
         pageComboBox.setBounds(
-                PADDING*3, Page.getBottomY(titleLabel)+PADDING,
-                PADDING*14, getHeight()/4
+                titleLabel.getX(), Page.getBottomY(titleLabel)+PADDING,
+                PADDING*16, getHeight()/4
         );
         pageComboBox.setFont(HEADER_FONT);
         pageComboBox.setBackground(USER_INPUT_COLOUR);
@@ -61,9 +61,9 @@ public class TitlePanel extends JPanel {
         pageLabel.setForeground(Page.BACKGROUND_COLOUR);
         add(pageLabel);
         
-        int x = Page.WIDTH/2-PADDING*6;
+        int x = Page.WIDTH/2-PADDING*4;
         filterBar = new FilterBar(shouldAddGenreParameter);
-        filterBar.setBounds(x, pageComboBox.getY(), Page.WIDTH-x-PADDING*6, pageComboBox.getHeight());
+        filterBar.setBounds(x, pageComboBox.getY(), Page.WIDTH-x-PADDING*4, pageComboBox.getHeight());
         add(filterBar);
     
     }

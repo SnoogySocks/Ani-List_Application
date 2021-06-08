@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
 
-public class AnimeImage extends JButton {
+public class AnimeImage extends JLabel {
     
     // Dimension constants
     public static final double ANIME_PANEL_SIZE = 0.90;

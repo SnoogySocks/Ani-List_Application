@@ -1,5 +1,6 @@
 package application;
 
+import controller.ApplicationController;
 import controller.JikanController;
 import model.Anime;
 import view.*;
@@ -12,9 +13,7 @@ public class Main {
     
     public static void main (String[] args) {
         
-        JikanController jikanController = new JikanController();
-        MainFrame frame = new MainFrame(jikanController);
-        frame.setVisible(true);
+        new ApplicationController();
         
     }
     

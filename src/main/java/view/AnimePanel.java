@@ -260,6 +260,7 @@ public class AnimePanel extends JPanel {
         // Initialize dataset
         dataset = new DefaultCategoryDataset();
         
+        // Prevent the panel from displaying
         disableAnimePanel();
         
     }
