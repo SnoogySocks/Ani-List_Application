@@ -1,17 +1,27 @@
 package view;
 
+import jikanEnums.Genre;
 import model.Anime;
 
 import javax.swing.*;
 import java.awt.*;
 
+import static view.Page.*;
+import static view.Page.DIALOGUE_FONT;
+
 // TODO disable all input if anime panel is put up
 public class AnimePanel extends JPanel {
-
+    
     public static final Color FADED_COLOUR = new Color(0, 0, 0, 132);
     
+    public static final Font MAJOR_FONT = new Font("Ubuntu", Font.BOLD, 33);
+    public static final Font MEDIUM_FONT = new Font("Ubuntu", Font.BOLD, 19);
+    public static final Font DIALOGUE_FONT = new Font("Ubuntu", Font.PLAIN, 15);
+    
+    private JPanel contentPanel;
+    
     // Stuff to put in the title
-    private JLabel titleLabel;
+    private JTextArea titleTextArea;
     private JPanel titlePanel;
     
     private JLabel scoreLabel;
@@ -23,19 +33,207 @@ public class AnimePanel extends JPanel {
     private JTextArea synopsisTextArea;
     private JScrollPane synopsisPanel;
     
+    // Miscellaneous Information about the anime
+    private JTextArea miscTextArea;
     private ItemPanel miscellaneousInformationItem;
     
     // Statistics
+    private JTextArea statisticsTextArea;
     private ItemPanel statisticsItem;
     
+    // Button to go back
+    private JButton backButton;
+    
+    // Anime
     private ItemPanel displayedAnimeItem;
     private AnimeImage displayedAnime;
     
     public AnimePanel () {
         
+        setLayout(null);
         setBackground(FADED_COLOUR);
         setBounds(0, 0, Page.WIDTH, Page.HEIGHT);
+    
+        backButton = new JButton("BACK");
+        backButton.setBounds(Page.WIDTH/2-PADDING*8, PADDING_Y*3, PADDING*3, PADDING_Y*2);
+        backButton.setFont(DIALOGUE_FONT);
+        backButton.setBackground(USER_INPUT_COLOUR);
+        backButton.setForeground(TEXT_COLOUR);
+        backButton.setBorder(null);
+        add(backButton);
+    
+        contentPanel = new JPanel();
+        contentPanel.setLayout(null);
+        contentPanel.setBounds(
+                Page.WIDTH/2-PADDING*6, 0,
+                Page.WIDTH-(Page.WIDTH/2-PADDING*6), Page.HEIGHT
+        );
+        contentPanel.setBackground(BACKGROUND_COLOUR);
+        add(contentPanel);
         
+        // Set up the anime image
+        displayedAnimeItem = new ItemPanel(DIALOGUE_COLOUR);
+        displayedAnimeItem.setBounds(
+                PADDING*3-15, PADDING_Y,
+                AnimeImage.getScaledWidth(AnimeImage.ANIME_PANEL_SIZE),
+                AnimeImage.getScaledHeight(AnimeImage.ANIME_PANEL_SIZE)
+        );
+        contentPanel.add(displayedAnimeItem);
+        
+        // Create the title panel
+        titlePanel = new JPanel();
+        titlePanel.setLayout(null);
+        titlePanel.setBounds(
+                0, 0,
+                Page.WIDTH-(Page.WIDTH/2-PADDING*6), PADDING_Y*4
+        );
+        titlePanel.setBackground(TitlePanel.BACKGROUND_COLOUR);
+        contentPanel.add(titlePanel);
+        
+        titleTextArea = new JTextArea("Placeholder Place Place holder place holder");
+        titleTextArea.setLineWrap(true);
+        titleTextArea.setWrapStyleWord(true);
+        titleTextArea.setEditable(false);
+        titleTextArea.setFont(MAJOR_FONT);
+        titleTextArea.setForeground(BACKGROUND_COLOUR);
+        titleTextArea.setBackground(TitlePanel.BACKGROUND_COLOUR);
+        titleTextArea.setBorder(null);
+        titleTextArea.setBounds(
+                titlePanel.getWidth()/3+PADDING, PADDING*3,
+                PADDING*15, PADDING_Y*2
+        );
+        titlePanel.add(titleTextArea);
+    
+    
+        // Score icon
+        scoreIcon = new JPanel();
+        scoreIcon.setLayout(null);
+        scoreIcon.setBounds(
+                titlePanel.getWidth()-PADDING*8-35, titleTextArea.getY(),
+                PADDING*6, titleTextArea.getHeight()
+        );
+        scoreIcon.setBackground(DIALOGUE_COLOUR);
+        titlePanel.add(scoreIcon);
+        
+        scoreLabel = new JLabel("Score");
+        scoreLabel.setHorizontalAlignment(JLabel.CENTER);
+        scoreLabel.setBounds(0, PADDING/3, scoreIcon.getWidth(), PADDING);
+        scoreLabel.setFont(MEDIUM_FONT);
+        scoreLabel.setForeground(TEXT_COLOUR);
+        scoreIcon.add(scoreLabel);
+        
+        scoreValueLabel = new JLabel("0.00");
+        scoreValueLabel.setHorizontalAlignment(JLabel.CENTER);
+        scoreValueLabel.setBounds(
+                0, Page.getBottomY(scoreLabel),
+                scoreIcon.getWidth(), PADDING*3/2
+        );
+        scoreValueLabel.setFont(MAJOR_FONT);
+        scoreValueLabel.setForeground(TEXT_COLOUR);
+        scoreIcon.add(scoreValueLabel);
+        
+        scoreUsersLabel = new JLabel("0 users");
+        scoreUsersLabel.setHorizontalAlignment(JLabel.CENTER);
+        scoreUsersLabel.setBounds(
+                0, Page.getBottomY(scoreValueLabel),
+                scoreIcon.getWidth(), PADDING
+        );
+        scoreUsersLabel.setFont(new Font("Ubuntu", Font.BOLD, 12));
+        scoreUsersLabel.setForeground(TEXT_COLOUR);
+        scoreIcon.add(scoreUsersLabel);
+        
+        // Synopsis
+        synopsisTextArea = new JTextArea(
+                "Placeholderwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"+
+                "Placeholderwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"+
+                "Placeholderwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"+
+                "Placeholderwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"+
+                "Placeholderwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"+
+                "Placeholderwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
+        );
+        synopsisTextArea.setLineWrap(true);
+        synopsisTextArea.setWrapStyleWord(true);
+        synopsisTextArea.setEditable(false);
+        synopsisTextArea.setFont(DIALOGUE_FONT);
+        synopsisTextArea.setForeground(TEXT_COLOUR);
+        synopsisTextArea.setBackground(BACKGROUND_COLOUR);
+        synopsisTextArea.setBorder(null);
+        
+        synopsisPanel = new JScrollPane(synopsisTextArea);
+        synopsisPanel.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        synopsisPanel.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        synopsisPanel.setBounds(
+                titleTextArea.getX(), Page.getBottomY(titlePanel)+PADDING,
+                Page.getRightX(scoreIcon)-titleTextArea.getX(), PADDING_Y*3
+        );
+        synopsisPanel.setBorder(null);
+        contentPanel.add(synopsisPanel);
+        
+        // Set up miscellaneousInformationItem
+        miscellaneousInformationItem = new ItemPanel(DIALOGUE_COLOUR);
+        miscellaneousInformationItem.setLayout(null);
+        miscellaneousInformationItem.setBounds(
+                displayedAnimeItem.getX(),
+                Page.getBottomY(displayedAnimeItem)+PADDING/2,
+                displayedAnimeItem.getDisplayPanel().getWidth(),
+                contentPanel.getHeight()/4
+        );
+        contentPanel.add(miscellaneousInformationItem);
+        
+        miscTextArea = new JTextArea(
+                "Episodes\n"+
+                "Aired\n"+
+                "Licensors\n"+
+                "Producers\n"+
+                "Genres\n"+
+                "bleh\n"+
+                "bleh\n"+
+                "bleh"
+        );
+        miscTextArea.setLineWrap(true);
+        miscTextArea.setWrapStyleWord(true);
+        miscTextArea.setEditable(false);
+        miscTextArea.setFont(DIALOGUE_FONT);
+        miscTextArea.setForeground(TEXT_COLOUR);
+        miscTextArea.setBackground(DIALOGUE_COLOUR);
+        miscTextArea.setBorder(null);
+        miscTextArea.setBounds(
+                PADDING/2, PADDING/2,
+                miscellaneousInformationItem.getDisplayPanel().getWidth()-PADDING,
+                miscellaneousInformationItem.getDisplayPanel().getHeight()-PADDING
+        );
+        miscellaneousInformationItem.getDisplayPanel().add(miscTextArea);
+        
+        statisticsItem = new ItemPanel(DIALOGUE_COLOUR);
+        statisticsItem.setLayout(null);
+        statisticsItem.setBounds(
+                displayedAnimeItem.getX(),
+                Page.getBottomY(miscellaneousInformationItem)+PADDING/2,
+                displayedAnimeItem.getDisplayPanel().getWidth(),
+                PADDING_Y*3
+        );
+        contentPanel.add(statisticsItem);
+        
+        statisticsTextArea = new JTextArea(
+                "Watching:\n"+
+                "Completed:\n"+
+                "On Hold:\n"+
+                "Dropped:\n"+
+                "Plan to Watch:"
+        );
+        statisticsTextArea.setLineWrap(true);
+        statisticsTextArea.setWrapStyleWord(true);
+        statisticsTextArea.setEditable(false);
+        statisticsTextArea.setFont(DIALOGUE_FONT);
+        statisticsTextArea.setForeground(TEXT_COLOUR);
+        statisticsTextArea.setBackground(DIALOGUE_COLOUR);
+        statisticsTextArea.setBorder(null);
+        statisticsTextArea.setBounds(
+                PADDING/2, PADDING/2,
+                statisticsItem.getDisplayPanel().getWidth()-PADDING,
+                statisticsItem.getDisplayPanel().getHeight()-PADDING
+        );
+        statisticsItem.getDisplayPanel().add(statisticsTextArea);
         
     }
     
@@ -47,7 +245,65 @@ public class AnimePanel extends JPanel {
         
         setVisible(true);
         
+        // Set the image
+        displayedAnime = new AnimeImage(anime, AnimeImage.ANIME_PANEL_SIZE);
+        displayedAnime.setLocation(0, 0);
+        displayedAnimeItem.getDisplayPanel().add(displayedAnime);
         
+        // Update the information
+        titleTextArea.setText(anime.getTitle());
+        if (anime.getTitle().length()>43) {
+            titleTextArea.setFont(MEDIUM_FONT);
+        } else {
+            titleTextArea.setFont(MAJOR_FONT);
+        }
+        
+        scoreValueLabel.setText(String.valueOf(anime.getAverageScore()));
+        scoreUsersLabel.setText("Many users");
+        synopsisTextArea.setText(anime.getSynopsis());
+        
+        // Initialize the misc text area
+        StringBuilder strBuilder = new StringBuilder();
+        strBuilder.append("Episodes: ").append(anime.getNumEpisodes()).append('\n');
+        strBuilder.append("Aired: ").append(anime.getDateAired()).append('\n');
+        
+        strBuilder.append("Licensors: ");
+        for (String licensor : anime.getLicensors()) {
+            strBuilder.append(licensor).append(", ");
+        }
+        if (anime.getLicensors().length==0) {
+            strBuilder.append("N/A");
+        }
+        strBuilder.append('\n');
+        
+        strBuilder.append("Producers: ");
+        for (String producer : anime.getProducers()) {
+            strBuilder.append(producer).append(", ");
+        }
+        if (anime.getProducers().length==0) {
+            strBuilder.append("N/A");
+        }
+        strBuilder.append('\n');
+    
+        strBuilder.append("Genres: ");
+        for (Genre genre : anime.getGenres()) {
+            strBuilder.append(genre).append(", ");
+        }
+        if (anime.getGenres().length==0) {
+            strBuilder.append("N/A");
+        }
+        strBuilder.append('\n');
+        miscTextArea.setText(strBuilder.toString());
+        
+        // Create the statistics text area
+        statisticsTextArea.setText(
+                "Watching: "+anime.getWatching()+'\n'+
+                "Completed: "+anime.getCompleted()+'\n'+
+                "On Hold: "+anime.getOnHold()+'\n'+
+                "Dropped: "+anime.getDropped()+'\n'+
+                "Plan to Watch: "+anime.getPlanToWatch()
+        );
+    
     }
     
 }

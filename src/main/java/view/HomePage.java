@@ -71,6 +71,9 @@ public class HomePage extends Page {
         
         }
         
+        // TODO remove this later
+        getAnimePanel().enableAnimePanel(categories[1].getDisplayedAnime(0).getAnime());
+        
     }
     
     public int getCategoriesLength () {

@@ -57,6 +57,10 @@ public abstract class Page extends JPanel {
         return titlePanel;
     }
     
+    public AnimePanel getAnimePanel () {
+        return animePanel;
+    }
+    
     public static int getRightX (JComponent comp) {
         return comp.getX()+comp.getWidth();
     }
