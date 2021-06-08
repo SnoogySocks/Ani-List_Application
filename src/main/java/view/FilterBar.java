@@ -98,4 +98,10 @@ public class FilterBar extends ItemPanel {
         return filterOptions;
     }
     
+    public void setEnableUserInput (boolean enabled) {
+        for (JComponent comp: filterOptions) {
+            comp.setEnabled(enabled);
+        }
+    }
+    
 }

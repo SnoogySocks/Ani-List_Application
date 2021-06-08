@@ -76,4 +76,9 @@ public class TitlePanel extends JPanel {
         return filterBar;
     }
     
+    public void setEnabledUserInput (boolean enabled) {
+        pageComboBox.setEnabled(enabled);
+        filterBar.setEnableUserInput(enabled);
+    }
+    
 }

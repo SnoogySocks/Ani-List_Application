@@ -125,4 +125,18 @@ public class AnimeScrollPanel extends JPanel {
         
     }
     
+    public void setEnabledUserInput (boolean enabled) {
+        
+        // Enable/disable anime buttons
+        for (AnimeImage anime : displayedAnime) {
+            anime.setEnabled(enabled);
+        }
+        
+        // Enable/disable scrolling
+        for (JButton scrollButton : scrollButtons) {
+            scrollButton.setEnabled(enabled);
+        }
+        
+    }
+    
 }

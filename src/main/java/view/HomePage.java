@@ -8,7 +8,7 @@ import java.awt.*;
 
 public class HomePage extends Page {
     
-    private Dimension preferredSize;
+    private final Dimension preferredSize;
     
     private final ItemPanel[] categoriesLabels;
     private final AnimeScrollPanel[] categories;
@@ -75,9 +75,9 @@ public class HomePage extends Page {
         }
         
         // TODO remove this later
-        Anime anime = categories[1].getDisplayedAnime(0).getAnime();
-        jikanController.setAnimePanel(anime);
-        enableAnimePanel(anime);
+//        Anime anime = categories[1].getDisplayedAnime(0).getAnime();
+//        jikanController.setAnimePanel(anime);
+//        enableAnimePanel(anime);
         
     }
     
@@ -94,14 +94,29 @@ public class HomePage extends Page {
         return "Home";
     }
     
-    @Override
-    public void disableAnimePanel () {
-        preferredSize.setSize(preferredSize);
-        super.disableAnimePanel();
+    public void setEnabledUserInput (boolean enabled) {
+    
+        // Enabled disable all the user input features
+        for (AnimeScrollPanel category: categories) {
+            category.setEnabledUserInput(enabled);
+        }
+        
+        
     }
     
     @Override
+    public void disableAnimePanel () {
+        
+        setEnabledUserInput(true);
+        preferredSize.setSize(preferredSize);
+        super.disableAnimePanel();
+        
+    }
+    
+    // TODO disable mouse listener thing if that ever works
+    @Override
     public void enableAnimePanel (Anime anime) {
+        setEnabledUserInput(false);
         super.enableAnimePanel(anime);
     }
     

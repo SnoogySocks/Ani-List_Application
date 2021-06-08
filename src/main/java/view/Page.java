@@ -67,8 +67,10 @@ public abstract class Page extends JPanel {
      * Removes the anime panel.
      */
     public void disableAnimePanel () {
+        
         animePanel.disableAnimePanel();
-        scrollPane.enable();
+        titlePanel.setEnabledUserInput(true);
+        
     }
     
     /**
@@ -77,8 +79,14 @@ public abstract class Page extends JPanel {
      * @param anime
      */
     public void enableAnimePanel (Anime anime) {
+        
+        // Disable all input features
+        titlePanel.setEnabledUserInput(false);
+        
+        // Remove scrolling
         setPreferredSize(getSize());
         animePanel.enableAnimePanel(anime);
+        
     }
     
     public static int getRightX (JComponent comp) {

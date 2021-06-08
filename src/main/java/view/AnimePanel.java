@@ -260,6 +260,8 @@ public class AnimePanel extends JPanel {
         // Initialize dataset
         dataset = new DefaultCategoryDataset();
         
+        disableAnimePanel();
+        
     }
     
     public JPanel getContentPanel () {
@@ -386,7 +388,7 @@ public class AnimePanel extends JPanel {
     
     }
     
-    public void setDataset (int[] scoringVotes) {
+    private void setDataset (int[] scoringVotes) {
     
         if (dataset.getColumnCount()!=0) {
             dataset.clear();
@@ -399,7 +401,7 @@ public class AnimePanel extends JPanel {
         
     }
     
-    public void createChart (Anime anime) {
+    private void createChart (Anime anime) {
         
         chart = ChartFactory.createBarChart(
                 "Scoring Stats (Out of "+anime.getTotalVotes()+" Votes)",
