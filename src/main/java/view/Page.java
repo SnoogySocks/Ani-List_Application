@@ -1,5 +1,7 @@
 package view;
 
+import model.Anime;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -59,6 +61,24 @@ public abstract class Page extends JPanel {
     
     public AnimePanel getAnimePanel () {
         return animePanel;
+    }
+    
+    /**
+     * Removes the anime panel.
+     */
+    public void disableAnimePanel () {
+        animePanel.disableAnimePanel();
+        scrollPane.enable();
+    }
+    
+    /**
+     * Adds the anime panel when user interacts with something.
+     * Cancels out all user input
+     * @param anime
+     */
+    public void enableAnimePanel (Anime anime) {
+        setPreferredSize(getSize());
+        animePanel.enableAnimePanel(anime);
     }
     
     public static int getRightX (JComponent comp) {

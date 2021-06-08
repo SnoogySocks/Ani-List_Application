@@ -5,6 +5,7 @@ import model.Anime;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 
 import static view.Page.*;
 import static view.Page.DIALOGUE_FONT;
@@ -47,6 +48,9 @@ public class AnimePanel extends JPanel {
     // Anime
     private ItemPanel displayedAnimeItem;
     private AnimeImage displayedAnime;
+    
+    // DropBox
+    private JLabel dropBox;
     
     public AnimePanel () {
         
@@ -234,6 +238,14 @@ public class AnimePanel extends JPanel {
                 statisticsItem.getDisplayPanel().getHeight()-PADDING
         );
         statisticsItem.getDisplayPanel().add(statisticsTextArea);
+        
+        ImageIcon dropBoxImage = new ImageIcon("src/main/resources/DropBox.png");
+        dropBox = new JLabel(dropBoxImage);
+        dropBox.setBounds(
+                PADDING*5, PADDING_Y*3,
+                dropBoxImage.getIconWidth(), dropBoxImage.getIconHeight()
+        );
+        add(dropBox);
         
     }
     

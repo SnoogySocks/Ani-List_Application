@@ -1,19 +1,22 @@
 package view;
 
 import controller.JikanController;
+import model.Anime;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class HomePage extends Page {
+    
+    private Dimension preferredSize;
     
     private final ItemPanel[] categoriesLabels;
     private final AnimeScrollPanel[] categories;
     
     public HomePage (JikanController jikanController) {
     
-        setPreferredSize(new Dimension(WIDTH, HEIGHT*2));
+        preferredSize = new Dimension(WIDTH, HEIGHT*2);
+        setPreferredSize(preferredSize);
     
         categoriesLabels = new ItemPanel[3];
         String[] categoryNames = {
@@ -72,7 +75,7 @@ public class HomePage extends Page {
         }
         
         // TODO remove this later
-        getAnimePanel().enableAnimePanel(categories[1].getDisplayedAnime(0).getAnime());
+        enableAnimePanel(categories[1].getDisplayedAnime(0).getAnime());
         
     }
     
@@ -87,6 +90,17 @@ public class HomePage extends Page {
     @Override
     public String toString () {
         return "Home";
+    }
+    
+    @Override
+    public void disableAnimePanel () {
+        preferredSize.setSize(preferredSize);
+        super.disableAnimePanel();
+    }
+    
+    @Override
+    public void enableAnimePanel (Anime anime) {
+        super.enableAnimePanel(anime);
     }
     
 }
