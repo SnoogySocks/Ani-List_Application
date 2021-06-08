@@ -24,43 +24,43 @@ public class AnimePanel extends JPanel {
     public static final Font MEDIUM_FONT = new Font("Ubuntu", Font.BOLD, 19);
     public static final Font DIALOGUE_FONT = new Font("Ubuntu", Font.PLAIN, 15);
     
-    private JPanel contentPanel;
+    private final JPanel contentPanel;
     
     // Stuff to put in the title
-    private JTextArea titleTextArea;
-    private JPanel titlePanel;
+    private final JTextArea titleTextArea;
+    private final JPanel titlePanel;
     
-    private JLabel scoreLabel;
-    private JLabel scoreValueLabel;
-    private JLabel scoreUsersLabel;
-    private JPanel scoreIcon;
+    private final JLabel scoreLabel;
+    private final JLabel scoreValueLabel;
+    private final JLabel scoreUsersLabel;
+    private final JPanel scoreIcon;
     
     // Synopsis
-    private JTextArea synopsisTextArea;
-    private JScrollPane synopsisPanel;
+    private final JTextArea synopsisTextArea;
+    private final JScrollPane synopsisPanel;
     
     // Miscellaneous Information about the anime
-    private JTextArea miscTextArea;
-    private ItemPanel miscellaneousInformationItem;
+    private final JTextArea miscTextArea;
+    private final ItemPanel miscellaneousInformationItem;
     
     // Statistics
-    private JTextArea statisticsTextArea;
-    private ItemPanel statisticsItem;
+    private final JTextArea statisticsTextArea;
+    private final ItemPanel statisticsItem;
     
     // Button to go back
-    private JButton backButton;
+    private final JButton backButton;
     
     // Chart to display the scores
-    private DefaultCategoryDataset dataset;
+    private final DefaultCategoryDataset dataset;
     private JFreeChart chart;
     private ChartPanel chartPanel;
     
     // Anime
-    private ItemPanel displayedAnimeItem;
+    private final ItemPanel displayedAnimeItem;
     private AnimeImage displayedAnime;
     
     // DropBox
-    private JLabel dropBox;
+    private final JLabel dropBox;
     
     public AnimePanel () {
         
@@ -260,6 +260,58 @@ public class AnimePanel extends JPanel {
         // Initialize dataset
         dataset = new DefaultCategoryDataset();
         
+    }
+    
+    public JPanel getContentPanel () {
+        return contentPanel;
+    }
+    
+    public JTextArea getTitleTextArea () {
+        return titleTextArea;
+    }
+    
+    public JLabel getScoreValueLabel () {
+        return scoreValueLabel;
+    }
+    
+    public JTextArea getSynopsisTextArea () {
+        return synopsisTextArea;
+    }
+    
+    public JTextArea getMiscTextArea () {
+        return miscTextArea;
+    }
+    
+    public JTextArea getStatisticsTextArea () {
+        return statisticsTextArea;
+    }
+    
+    public JButton getBackButton () {
+        return backButton;
+    }
+    
+    public DefaultCategoryDataset getDataset () {
+        return dataset;
+    }
+    
+    public JFreeChart getChart () {
+        return chart;
+    }
+    
+    public ChartPanel getChartPanel () {
+        return chartPanel;
+    }
+    
+    public ItemPanel getDisplayedAnimeItem () {
+        return displayedAnimeItem;
+    }
+    
+    public AnimeImage getDisplayedAnime () {
+        return displayedAnime;
+    }
+    
+    public JLabel getDropBox () {
+        return dropBox;
     }
     
     public void disableAnimePanel () {
