@@ -2,6 +2,11 @@ package view;
 
 import jikanEnums.Genre;
 import model.Anime;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 import javax.swing.*;
 import java.awt.*;
@@ -44,6 +49,11 @@ public class AnimePanel extends JPanel {
     
     // Button to go back
     private JButton backButton;
+    
+    // Chart to display the scores
+    private DefaultCategoryDataset dataset;
+    private JFreeChart chart;
+    private ChartPanel chartPanel;
     
     // Anime
     private ItemPanel displayedAnimeItem;
@@ -247,6 +257,9 @@ public class AnimePanel extends JPanel {
         );
         add(dropBox);
         
+        // Initialize dataset
+        dataset = new DefaultCategoryDataset();
+        
     }
     
     public void disableAnimePanel () {
@@ -315,7 +328,52 @@ public class AnimePanel extends JPanel {
                 "Dropped: "+anime.getDropped()+'\n'+
                 "Plan to Watch: "+anime.getPlanToWatch()
         );
+        
+        setDataset(anime.getScoringVotes());
+        createChart(anime);
     
+    }
+    
+    public void setDataset (int[] scoringVotes) {
+    
+        if (dataset.getColumnCount()!=0) {
+            dataset.clear();
+        }
+    
+        // Iterate in reverse so that score 10 is at the top
+        for (int i = scoringVotes.length-1; i>=0; --i) {
+            dataset.setValue(scoringVotes[i], "Score", String.valueOf(i+1));
+        }
+        
+    }
+    
+    public void createChart (Anime anime) {
+        
+        chart = ChartFactory.createBarChart(
+                "Scoring Stats (Out of "+anime.getTotalVotes()+" Votes)",
+                "# of Votes", "Score",
+                dataset, PlotOrientation.HORIZONTAL,
+                true, true, false
+        );
+        chart.setBackgroundPaint(BACKGROUND_COLOUR);
+        
+        if (chartPanel!=null) {
+            contentPanel.remove(chartPanel);
+        }
+        chartPanel = new ChartPanel(chart);
+        chartPanel.setLayout(null);
+        chartPanel.setRangeZoomable(false);
+        chartPanel.setDomainZoomable(false);
+        chartPanel.setLocation(
+                Page.getRightX(miscellaneousInformationItem)+PADDING*2,
+                Page.getBottomY(synopsisPanel)+PADDING_Y
+        );
+        chartPanel.setSize(
+                Page.getRightX(scoreIcon)-chartPanel.getX(),
+                Page.getBottomY(statisticsItem)-chartPanel.getY()
+        );
+        contentPanel.add(chartPanel);
+        
     }
     
 }

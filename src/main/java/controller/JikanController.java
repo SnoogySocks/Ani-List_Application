@@ -118,9 +118,10 @@ public class JikanController {
                     response.getInt("on_hold"),
                     response.getInt("dropped"),
                     response.getInt("plan_to_watch"),
+                    response.getInt("total"),
                     response.getJSONObject("scores")
             );
-        } catch (JSONException e) {
+        } catch (Exception e) {
             System.err.println(e.getMessage());
         }
     

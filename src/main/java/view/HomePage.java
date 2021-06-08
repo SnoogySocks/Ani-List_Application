@@ -75,7 +75,9 @@ public class HomePage extends Page {
         }
         
         // TODO remove this later
-        enableAnimePanel(categories[1].getDisplayedAnime(0).getAnime());
+        Anime anime = categories[1].getDisplayedAnime(0).getAnime();
+        jikanController.setAnimePanel(anime);
+        enableAnimePanel(anime);
         
     }
     

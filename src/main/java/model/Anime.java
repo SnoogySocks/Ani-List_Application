@@ -13,6 +13,7 @@ public class Anime implements Comparable<Anime> {
     private String imageURL;
     
     // Scoring
+    private int totalVotes;
     private int[] scoringVotes;
     private double[] percentage;
     private double averageScore;
@@ -107,13 +108,14 @@ public class Anime implements Comparable<Anime> {
     
     public void setStatistics (
             int watching, int completed, int onHold, int dropped, int planToWatch,
-            JSONObject scores) {
+            int totalVotes, JSONObject scores) {
         
         this.watching = watching;
         this.completed = completed;
         this.onHold = onHold;
         this.dropped = dropped;
         this.planToWatch = planToWatch;
+        this.totalVotes = totalVotes;
         
         this.scoringVotes = new int[scores.length()];
         this.percentage = new double[scores.length()];
@@ -181,6 +183,10 @@ public class Anime implements Comparable<Anime> {
     
     public int getPlanToWatch () {
         return planToWatch;
+    }
+    
+    public int getTotalVotes () {
+        return totalVotes;
     }
     
     public int[] getScoringVotes () {
