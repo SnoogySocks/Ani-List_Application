@@ -12,7 +12,7 @@ public class AnimeImage extends JLabel {
     // Dimension constants
     public static final double ANIME_PANEL_SIZE = 0.90;
     public static final double LARGE_SIZE = 0.85;
-    public static final double SMALL_SIZE = 0.2;
+    public static final double SMALL_SIZE = 0.35;
     public static final double MEDIUM_SIZE = 0.6;
     
     public static final int IMAGE_WIDTH_RATIO = 225;

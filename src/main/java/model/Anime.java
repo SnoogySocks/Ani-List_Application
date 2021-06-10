@@ -1,6 +1,7 @@
 package model;
 
 import jikanEnums.Genre;
+import jikanEnums.Status;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -30,6 +31,10 @@ public class Anime implements Comparable<Anime> {
     private int onHold;
     private int dropped;
     private int planToWatch;
+    
+    // User's status
+    private Status usersStatus;
+    private int score;
     
     // For up and coming anime only
     boolean top;
@@ -104,6 +109,9 @@ public class Anime implements Comparable<Anime> {
             this.producers[i] = producer.getString("name");
         }
     
+        this.usersStatus = Status.NA;
+        this.score = 0;
+        
     }
     
     public void setStatistics (
@@ -205,9 +213,25 @@ public class Anime implements Comparable<Anime> {
         return top;
     }
     
+    public Status getUsersStatus () {
+        return usersStatus;
+    }
+    
+    public void setUsersStatus (Status usersStatus) {
+        this.usersStatus = usersStatus;
+    }
+    
+    public int getScore () {
+        return score;
+    }
+    
+    public void setScore (int score) {
+        this.score = score;
+    }
+    
     @Override
     public int compareTo (Anime anime) {
-        return Double.compare(averageScore, anime.averageScore);
+        return Integer.compare(score, anime.score);
     }
     
 }

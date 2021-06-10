@@ -2,6 +2,7 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class RecommendPage extends Page {
     
@@ -93,8 +94,24 @@ public class RecommendPage extends Page {
         interestedLabel.setForeground(TEXT_COLOUR);
         interestedPanel.add(interestedLabel);
         
-        switchToRecommending(true);
+        switchToRecommending(false);
         
+    }
+    
+    public JComboBox<Integer> getNumAnimeToGenerateComboBox () {
+        return numAnimeToGenerateComboBox;
+    }
+    
+    public JButton getSwitchModesButton () {
+        return switchModesButton;
+    }
+    
+    public JPanel getInterestedPanel () {
+        return interestedPanel;
+    }
+    
+    public JPanel getUninterestedPanel () {
+        return uninterestedPanel;
     }
     
     public void switchToRecommending (boolean isRecommending) {

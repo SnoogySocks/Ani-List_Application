@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class AniList {
     
@@ -26,6 +27,14 @@ public class AniList {
     
     public ArrayList<Anime> getMyAnimeList () {
         return myAnimeList;
+    }
+    
+    public void sortAscending () {
+        Collections.sort(myAnimeList);
+    }
+    
+    public void sortDescending () {
+        myAnimeList.sort(Collections.reverseOrder());
     }
     
 }

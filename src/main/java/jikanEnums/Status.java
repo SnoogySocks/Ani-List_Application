@@ -2,17 +2,26 @@ package jikanEnums;
 
 public enum Status {
     
-    AIRING, COMPLETE, TO_BE_AIRED, TBA, UPCOMING;
+    ON_HOLD, WATCHING, COMPLETED, DROPPED, NA;
     
-    public String request;
+    public String name;
     
     Status () {
-        request = super.toString().toLowerCase();
+        
+        String og = super.toString();
+        if (og.equals("ON_HOLD")) {
+            name = "On Hold";
+        } else if (og.equals("NA")) {
+            name = "N/A";
+        } else {
+            name = og.charAt(0)+og.substring(1).toLowerCase();
+        }
+        
     }
     
     @Override
     public String toString () {
-        return request;
+        return name;
     }
     
 }

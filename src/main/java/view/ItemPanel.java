@@ -32,6 +32,15 @@ public class ItemPanel extends JPanel {
     }
     
     @Override
+    public void setSize (int width, int height) {
+        
+        super.setSize(width+SHADOW_OFFSET, height+SHADOW_OFFSET);
+        displayPanel.setSize(width, height);
+        shadow.setSize(width, height);
+        
+    }
+    
+    @Override
     public void setBounds (int x, int y, int width, int height) {
         
         super.setBounds(x, y, width+SHADOW_OFFSET, height+SHADOW_OFFSET);
