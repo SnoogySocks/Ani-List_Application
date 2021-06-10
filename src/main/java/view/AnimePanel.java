@@ -1,5 +1,6 @@
 package view;
 
+import controller.JikanController;
 import jikanEnums.Genre;
 import model.Anime;
 import org.jfree.chart.ChartFactory;
@@ -10,10 +11,8 @@ import org.jfree.data.category.DefaultCategoryDataset;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 
 import static view.Page.*;
-import static view.Page.DIALOGUE_FONT;
 
 // TODO disable all input if anime panel is put up
 public class AnimePanel extends JPanel {
