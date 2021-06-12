@@ -9,13 +9,14 @@ public class AniListPageController extends PageController {
     private AniListPage gui;
     
     public AniListPageController (AniListPage gui) {
+        super(gui.getAnimePanel());
         this.gui = gui;
     }
     
     @Override
     public void setUpListeners () {
     
-    
+        super.setUpListeners();
     
     }
     

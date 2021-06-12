@@ -25,7 +25,7 @@ public class JikanController {
     private static final String X_RAPIDAPI_HOST = "jikan1.p.rapidapi.com";
     private static String x_rapidapi_key;
     
-    public JikanController () {
+    public static void init () {
         
         // Read the key from the text file
         try {
@@ -35,7 +35,7 @@ public class JikanController {
         } catch (FileNotFoundException e) {
             System.err.println(e.getMessage());
         }
-    
+        
     }
     
     private static JSONObject getRequest (String query) {

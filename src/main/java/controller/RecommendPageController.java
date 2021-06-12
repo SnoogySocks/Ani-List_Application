@@ -9,13 +9,14 @@ public class RecommendPageController extends PageController {
     private RecommendPage gui;
     
     public RecommendPageController (RecommendPage gui) {
+        super(gui.getAnimePanel());
         this.gui = gui;
     }
     
     @Override
     public void setUpListeners () {
     
-    
+        super.setUpListeners();
     
     }
     

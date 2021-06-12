@@ -62,10 +62,13 @@ public class AnimePanel extends JPanel {
     private final JLabel dropBox;
     
     public AnimePanel () {
-        
+    
         setLayout(null);
         setBackground(FADED_COLOUR);
         setBounds(0, 0, Page.WIDTH, Page.HEIGHT);
+    
+        displayedAnime = new AnimeImage();
+        add(displayedAnime);
     
         backButton = new JButton("BACK");
         backButton.setBounds(Page.WIDTH/2-PADDING*8, PADDING_Y*3, PADDING*3, PADDING_Y*2);
@@ -258,7 +261,7 @@ public class AnimePanel extends JPanel {
         
         // Initialize dataset
         dataset = new DefaultCategoryDataset();
-        
+    
         // Prevent the panel from displaying
         disableAnimePanel();
         
@@ -304,6 +307,13 @@ public class AnimePanel extends JPanel {
         return displayedAnime;
     }
     
+    public void setDisplayedAnimeToOGLocation () {
+        displayedAnime.setLocation(
+                contentPanel.getX()+displayedAnimeItem.getX()+ItemPanel.SHADOW_OFFSET,
+                displayedAnimeItem.getY()
+        );
+    }
+    
     public JLabel getDropBox () {
         return dropBox;
     }
@@ -315,12 +325,8 @@ public class AnimePanel extends JPanel {
     public void enableAnimePanel (Anime anime) {
         
         // Set the image
-        if (displayedAnime!=null) {
-            displayedAnimeItem.getDisplayPanel().remove(displayedAnime);
-        }
-        displayedAnime = new AnimeImage(anime, AnimeImage.ANIME_PANEL_SIZE);
-        displayedAnime.setLocation(0, 0);
-        displayedAnimeItem.getDisplayPanel().add(displayedAnime);
+        displayedAnime.setAnimeImage(anime, AnimeImage.ANIME_PANEL_SIZE);
+        setDisplayedAnimeToOGLocation();
         
         // Update the information
         titleTextArea.setText(anime.getTitle());

@@ -25,7 +25,7 @@ public abstract class Page extends JPanel {
     public static final Color TEXT_COLOUR = new Color(67, 67, 67);
     public static final Color DIALOGUE_COLOUR = new Color(255, 255, 255);
     
-    private static AniList aniList = new AniList();
+    private static final AniList aniList = new AniList();
     
     private Dimension actualSize;
     

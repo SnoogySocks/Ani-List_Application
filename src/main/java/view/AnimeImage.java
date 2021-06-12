@@ -19,14 +19,37 @@ public class AnimeImage extends JLabel {
     public static final int IMAGE_HEIGHT_RATIO = 318;
     
     // GUI
-    private final double size;
+    private double size;
     private Image imageOG;
-    private final ImageIcon displayedImage;
+    private ImageIcon displayedImage;
     
     // The anime that will be displayed
     private Anime anime;
     
+    public AnimeImage () {
+    }
+    
     public AnimeImage (Anime anime, double size) {
+        setAnimeImage(anime, size);
+    }
+    
+    /**
+     * Shallow copy constructor
+     * @param rhs = the og anime image
+     */
+    public void setAnimeImage (AnimeImage rhs) {
+    
+        displayedImage = rhs.displayedImage;
+        setIcon(displayedImage);
+    
+        size = rhs.size;
+        imageOG = rhs.imageOG;
+        anime = rhs.anime;
+        setImageSize();
+        
+    }
+    
+    public void setAnimeImage (Anime anime, double size) {
         
         displayedImage = new ImageIcon();
         setIcon(displayedImage);

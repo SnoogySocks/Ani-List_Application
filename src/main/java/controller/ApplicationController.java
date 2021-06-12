@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 
 public class ApplicationController implements ActionListener {
     
-    private final MainFrame frame;
+    private static final MainFrame frame = new MainFrame();
     
     private int currentPagePtr;
     private final Page[] pages;
@@ -16,7 +16,7 @@ public class ApplicationController implements ActionListener {
     
     public ApplicationController () {
     
-        frame = new MainFrame();
+        JikanController.init();
         
         pages = new Page[3];
         pages[0] = new HomePage();
@@ -30,7 +30,6 @@ public class ApplicationController implements ActionListener {
             }
         }
     
-    
         guiControllers = new PageController[3];
         guiControllers[0] = new HomePageController((HomePage) pages[0]);
         guiControllers[1] = new AniListPageController((AniListPage) pages[1]);
@@ -42,6 +41,10 @@ public class ApplicationController implements ActionListener {
         switchPages();
         frame.setVisible(true);
     
+    }
+    
+    public static MainFrame getFrame () {
+        return frame;
     }
     
     public void setUpListeners () {

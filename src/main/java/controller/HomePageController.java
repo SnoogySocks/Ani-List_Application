@@ -10,6 +10,7 @@ import view.HomePage;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -19,6 +20,8 @@ public class HomePageController extends PageController {
     private final JCheckBox[] genreFilter;      // TODO clear filter if user switches pages
     
     public HomePageController (HomePage gui) {
+    
+        super(gui.getAnimePanel());
         
         this.gui = gui;
         
@@ -33,6 +36,8 @@ public class HomePageController extends PageController {
     @Override
     public void setUpListeners () {
     
+        super.setUpListeners();
+        
         // Set up action listeners for the filter bar
         ArrayList<JComponent> filterOptions = gui.getTitlePanel().getFilterBar().getFilterOptions();
         for (int i = 0; i<filterOptions.size(); ++i) {
@@ -61,8 +66,6 @@ public class HomePageController extends PageController {
     
         }
         
-        gui.getAnimePanel().getBackButton().addActionListener(this);
-        
     }
     
     @Override
@@ -71,7 +74,9 @@ public class HomePageController extends PageController {
         ArrayList<JComponent> filterOptions = gui.getTitlePanel().getFilterBar().getFilterOptions();
         for (int i = 0; i<filterOptions.size(); ++i) {
         
-            if (e.getSource()!=filterOptions.get(i)) continue;
+            if (e.getSource()!=filterOptions.get(i)) {
+                continue;
+            }
     
             if (i==2) {
                 decideGenreFilter();
@@ -245,6 +250,12 @@ public class HomePageController extends PageController {
         
         JOptionPane.showMessageDialog(gui, message, "Genre Filter", JOptionPane.QUESTION_MESSAGE);
     
+    }
+    
+    @Override
+    public void mouseDragged (MouseEvent e) {
+        super.mouseDragged(e);
+        gui.repaint();
     }
     
 }

@@ -136,4 +136,5 @@ public class AniListPage extends Page {
         revalidate();
         
     }
+    
 }

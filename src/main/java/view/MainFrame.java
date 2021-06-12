@@ -17,4 +17,12 @@ public class MainFrame extends JFrame {
         
     }
     
+    public int getXOnFrame (int xOnScreen) {
+        return xOnScreen-getX();
+    }
+    
+    public int getYOnFrame (int yOnScreen) {
+        return yOnScreen-getY();
+    }
+    
 }
