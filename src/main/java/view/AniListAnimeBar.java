@@ -12,16 +12,16 @@ public class AniListAnimeBar extends JPanel {
     public static final int WIDTH = Page.WIDTH-(PADDING*8-ItemPanel.SHADOW_OFFSET)*2;
     public static final int HEIGHT = PADDING_Y*3;
     
-    private Anime anime;
+    private final Anime anime;
     
-    private JLabel rankLabel;
-    private AnimeImage animeImage;
-    private JLabel titleLabel;
-    private JButton editButton;
-    private JLabel statusLabel;
-    private JLabel scoreLabel;
+    private final JLabel rankLabel;
+    private final AnimeImage animeImage;
+    private final JLabel titleLabel;
+    private final JButton editButton;
+    private final JLabel statusLabel;
+    private final JLabel scoreLabel;
     
-    public AniListAnimeBar (Anime anime) {
+    public AniListAnimeBar (Anime anime, int rank) {
     
         setLayout(null);
         setSize(WIDTH, HEIGHT);
@@ -29,7 +29,7 @@ public class AniListAnimeBar extends JPanel {
         
         this.anime = anime;
     
-        rankLabel = new JLabel("N/A");
+        rankLabel = new JLabel(Integer.toString(rank));
         rankLabel.setBounds(PADDING, PADDING_Y, PADDING*6, PADDING_Y);
         rankLabel.setHorizontalAlignment(JLabel.CENTER);
         rankLabel.setFont(DIALOGUE_FONT);
@@ -46,14 +46,14 @@ public class AniListAnimeBar extends JPanel {
         titleLabel.setForeground(TEXT_COLOUR);
         add(titleLabel);
         
-        scoreLabel = new JLabel("N/A");
+        scoreLabel = new JLabel(Integer.toString(anime.getScore()));
         scoreLabel.setBounds(WIDTH-PADDING*6, PADDING_Y, PADDING*5, PADDING_Y);
         scoreLabel.setHorizontalAlignment(JLabel.CENTER);
         scoreLabel.setFont(DIALOGUE_FONT);
         scoreLabel.setForeground(TEXT_COLOUR);
         add(scoreLabel);
         
-        statusLabel = new JLabel(Status.NA.toString());
+        statusLabel = new JLabel(anime.getUserStatus().toString());
         statusLabel.setBounds(scoreLabel.getX()-PADDING*9, PADDING_Y, PADDING*6, PADDING_Y);
         statusLabel.setHorizontalAlignment(JLabel.CENTER);
         statusLabel.setFont(DIALOGUE_FONT);
@@ -73,5 +73,13 @@ public class AniListAnimeBar extends JPanel {
     public void setEnabledUserInput (boolean enabled) {
         editButton.setEnabled(enabled);
     }
-
+    
+    public JButton getEditButton () {
+        return editButton;
+    }
+    
+    public Anime getAnime () {
+        return anime;
+    }
+    
 }

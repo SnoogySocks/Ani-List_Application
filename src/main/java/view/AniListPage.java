@@ -1,7 +1,5 @@
 package view;
 
-import controller.JikanController;
-import model.AniList;
 import model.Anime;
 
 import javax.swing.*;
@@ -10,19 +8,20 @@ import java.util.ArrayList;
 
 public class AniListPage extends Page {
     
-    private JLabel sortByLabel;
-    private JComboBox<String> sortComboBox;
-    private ItemPanel sortPanel;
+    // Sorting box
+    private final JLabel sortByLabel;
+    private final JComboBox<String> sortComboBox;
+    private final ItemPanel sortPanel;
     
-    // Bar for displaying anime
-    private JLabel rankLabel;
-    private JLabel titleLabel;
-    private JLabel statusLabel;
-    private JLabel scoreLabel;
+    // Sub categories for the anime
+    private final JLabel rankLabel;
+    private final JLabel titleLabel;
+    private final JLabel statusLabel;
+    private final JLabel scoreLabel;
     
-    private AniList aniList;
-    private ArrayList<AniListAnimeBar> animeBars;
-    private ItemPanel aniListPanel;
+    private final ArrayList<AniListAnimeBar> animeBars;
+    private final ItemPanel aniListPanel;
+    private final Dimension aniListPanelDimensions;
     
     public AniListPage () {
     
@@ -46,8 +45,8 @@ public class AniListPage extends Page {
         sortPanel.getDisplayPanel().add(sortByLabel);
         
         sortComboBox = new JComboBox<>();
-        sortComboBox.addItem("Ascending");
         sortComboBox.addItem("Descending");
+        sortComboBox.addItem("Ascending");
         sortComboBox.setBounds(
                 Page.getRightX(sortByLabel), sortByLabel.getY(),
                 sortPanel.getDisplayPanel().getWidth()-Page.getRightX(sortByLabel)-PADDING/2,
@@ -59,11 +58,10 @@ public class AniListPage extends Page {
         sortComboBox.setBorder(null);
         sortPanel.getDisplayPanel().add(sortComboBox);
     
+        aniListPanelDimensions = new Dimension(Page.WIDTH-sortPanel.getX()*2, PADDING_Y*2);
         aniListPanel = new ItemPanel(DIALOGUE_COLOUR);
-        aniListPanel.setBounds(
-                sortPanel.getX(), Page.getBottomY(sortPanel)+PADDING_Y*3/2,
-                Page.WIDTH-sortPanel.getX()*2, PADDING_Y*2
-        );
+        aniListPanel.setLocation(sortPanel.getX(), Page.getBottomY(sortPanel)+PADDING_Y*3/2);
+        aniListPanel.setSize(aniListPanelDimensions);
         add(aniListPanel);
         
         rankLabel = new JLabel("Rank");
@@ -94,15 +92,24 @@ public class AniListPage extends Page {
         statusLabel.setForeground(TEXT_COLOUR);
         aniListPanel.getDisplayPanel().add(statusLabel);
     
-        aniList = new AniList();
         animeBars = new ArrayList<>();
-    
-        // TODO testing
-//        JikanController jikan = new JikanController();
-//        ArrayList<Anime> season = jikan.getSeason("2018", "winter");
-//        addAnime(season.get(0));
-//        addAnime(season.get(1));
         
+    }
+    
+    public JComboBox<String> getSortComboBox () {
+        return sortComboBox;
+    }
+    
+    public ItemPanel getAniListPanel () {
+        return aniListPanel;
+    }
+    
+    public Dimension getAniListPanelDimensions () {
+        return aniListPanelDimensions;
+    }
+    
+    public ArrayList<AniListAnimeBar> getAnimeBars () {
+        return animeBars;
     }
     
     @Override
@@ -115,26 +122,6 @@ public class AniListPage extends Page {
         for (AniListAnimeBar animeBar: animeBars) {
             animeBar.setEnabledUserInput(enabled);
         }
-    }
-    
-    public void addAnime (Anime anime) {
-        
-        aniList.getMyAnimeList().add(anime);
-        
-        animeBars.add(new AniListAnimeBar(anime));
-        int back = animeBars.size()-1;
-        JPanel displayedPanel = aniListPanel.getDisplayPanel();
-        animeBars.get(back).setLocation(0, Page.getBottomY(rankLabel)+AniListAnimeBar.HEIGHT*back);
-        displayedPanel.add(animeBars.get(back));
-        
-        aniListPanel.setSize(
-                displayedPanel.getWidth(),
-                displayedPanel.getHeight()+AniListAnimeBar.HEIGHT
-        );
-        
-        getActualSize().setSize(new Dimension(WIDTH, HEIGHT+AniListAnimeBar.HEIGHT));
-        revalidate();
-        
     }
     
 }

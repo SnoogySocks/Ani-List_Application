@@ -1,5 +1,6 @@
 package controller;
 
+import model.AniList;
 import view.*;
 
 import java.awt.*;
@@ -12,7 +13,7 @@ public class ApplicationController implements ActionListener {
     
     private int currentPagePtr;
     private final Page[] pages;
-    private final PageController[] guiControllers;
+    private final PageController[] pageControllers;
     
     public ApplicationController () {
     
@@ -30,10 +31,10 @@ public class ApplicationController implements ActionListener {
             }
         }
     
-        guiControllers = new PageController[3];
-        guiControllers[0] = new HomePageController((HomePage) pages[0]);
-        guiControllers[1] = new AniListPageController((AniListPage) pages[1]);
-        guiControllers[2] = new RecommendPageController((RecommendPage) pages[2]);
+        pageControllers = new PageController[3];
+        pageControllers[0] = new HomePageController((HomePage) pages[0]);
+        pageControllers[1] = new AniListPageController((AniListPage) pages[1]);
+        pageControllers[2] = new RecommendPageController((RecommendPage) pages[2]);
         
         setUpListeners();
         
@@ -52,7 +53,7 @@ public class ApplicationController implements ActionListener {
         for (Page page : pages) {
             page.getTitlePanel().getPageComboBox().addActionListener(this);
         }
-        for (PageController guiController: guiControllers) {
+        for (PageController guiController: pageControllers) {
             guiController.setUpListeners();
         }
         
@@ -68,6 +69,12 @@ public class ApplicationController implements ActionListener {
         currentPagePtr = getCurrentPage().getTitlePanel().getPageComboBox().getSelectedIndex();
         Page selectedPage = getCurrentPage().getTitlePanel().getPageComboBox().getItemAt(currentPagePtr);
         selectedPage.getTitlePanel().getPageComboBox().setSelectedItem(selectedPage);
+        
+        // Generate the Ani-List if the page is the AniListPage
+        if (selectedPage==pages[1]) {
+            AniListPageController aniListPageController = (AniListPageController) pageControllers[1];
+            aniListPageController.generateAniList();
+        }
         
         Container contentPane = frame.getContentPane();
         contentPane.removeAll();

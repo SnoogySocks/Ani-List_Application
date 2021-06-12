@@ -1,5 +1,7 @@
 package controller;
 
+import jikanEnums.Status;
+import model.Anime;
 import view.AnimePanel;
 import view.MainFrame;
 import view.Page;
@@ -49,11 +51,39 @@ public abstract class PageController extends MouseInputAdapter implements Action
     public void mouseReleased (MouseEvent e) {
     
         if (isOnDropBox && isDragging) {
+            inquireAnimeStatus(animePanel.getDisplayedAnime().getAnime());
             Page.getAniList().add(animePanel.getDisplayedAnime().getAnime());
-            System.out.println("it got the good");
         }
         isDragging = false;
         animePanel.setDisplayedAnimeToOGLocation();
+        
+    }
+    
+    // Prompt the user for the anime's updated info
+    public void inquireAnimeStatus (Anime anime) {
+    
+        Status userStatus = (Status) JOptionPane.showInputDialog(
+                ApplicationController.getFrame(),
+                "Choose a status",
+                "Status Selection", JOptionPane.QUESTION_MESSAGE, null,
+                Status.values(),
+                Status.NA
+        );
+    
+        // Get the status of the anime
+        Integer[] scores = new Integer[10];
+        for (int i = 0; i<scores.length; ++i) {
+            scores[i] = i+1;
+        }
+        int userScore = (Integer) JOptionPane.showInputDialog(
+                ApplicationController.getFrame(),
+                "Give the anime a score",
+                "Score Selection", JOptionPane.QUESTION_MESSAGE, null,
+                scores, scores[4]
+        );
+    
+        anime.setUserStatus(userStatus);
+        anime.setScore(userScore);
         
     }
     

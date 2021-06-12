@@ -3,6 +3,7 @@ package controller;
 import view.RecommendPage;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
 
 public class RecommendPageController extends PageController {
     
@@ -23,6 +24,12 @@ public class RecommendPageController extends PageController {
     @Override
     public void actionPerformed (ActionEvent e) {
     
+    }
+    
+    @Override
+    public void mouseDragged (MouseEvent e) {
+        super.mouseDragged(e);
+        gui.repaint();
     }
     
 }

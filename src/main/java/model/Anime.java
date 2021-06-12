@@ -33,7 +33,7 @@ public class Anime implements Comparable<Anime> {
     private int planToWatch;
     
     // User's status
-    private Status usersStatus;
+    private Status userStatus;
     private int score;
     
     // For up and coming anime only
@@ -88,7 +88,7 @@ public class Anime implements Comparable<Anime> {
     
         producers = anime.producers;
     
-        usersStatus = Status.NA;
+        userStatus = Status.NA;
         score = 0;
         
     }
@@ -113,7 +113,7 @@ public class Anime implements Comparable<Anime> {
     
         this.top = top;
     
-        this.usersStatus = Status.NA;
+        this.userStatus = Status.NA;
         this.score = 0;
         
         if (genres!=null) {
@@ -253,12 +253,12 @@ public class Anime implements Comparable<Anime> {
         return top;
     }
     
-    public Status getUsersStatus () {
-        return usersStatus;
+    public Status getUserStatus () {
+        return userStatus;
     }
     
-    public void setUsersStatus (Status usersStatus) {
-        this.usersStatus = usersStatus;
+    public void setUserStatus (Status userStatus) {
+        this.userStatus = userStatus;
     }
     
     public int getScore () {

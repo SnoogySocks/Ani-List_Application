@@ -1,28 +1,28 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
+import jikanEnums.Genre;
+
+import java.util.*;
 
 public class AniList {
     
-    private ArrayList<Double> totalUserGenreScore;      // Tracks the user's preferred genre
-    private ArrayList<Integer> alreadyRecommended;      // Contains the malIDs of already recommended anime
-    private HashSet<Anime> myAnimeList;                 // Stores the user's preferred anime
+    private final HashMap<Genre, Double> totalUserGenreScore;    // Tracks the user's preferred genre
+    private final HashSet<Integer> alreadyRecommended;           // Contains the malIDs of already recommended anime
+    private final HashSet<Anime> myAnimeList;                    // Stores the user's preferred anime
     
     public AniList () {
     
-        totalUserGenreScore = new ArrayList<>();
-        alreadyRecommended = new ArrayList<>();
+        totalUserGenreScore = new HashMap<>();
+        alreadyRecommended = new HashSet<>();
         myAnimeList = new HashSet<>();
     
     }
     
-    public ArrayList<Double> getTotalUserGenreScore () {
+    public HashMap<Genre, Double> getTotalUserGenreScore () {
         return totalUserGenreScore;
     }
     
-    public ArrayList<Integer> getAlreadyRecommended () {
+    public HashSet<Integer> getAlreadyRecommended () {
         return alreadyRecommended;
     }
     
@@ -31,8 +31,24 @@ public class AniList {
     }
     
     public void add (Anime anime) {
-        // TODO
         myAnimeList.add(anime);
+        // modify frequency and stuff
+    }
+    
+    public ArrayList<Anime> generateAscendingList () {
+        
+        ArrayList<Anime> arr = new ArrayList<>(myAnimeList);
+        arr.sort(Comparator.comparingInt(Anime::getScore));
+        return arr;
+        
+    }
+    
+    public ArrayList<Anime> generateDescendingList () {
+    
+        ArrayList<Anime> arr = new ArrayList<>(myAnimeList);
+        arr.sort((Anime a1, Anime a2)->Integer.compare(a2.getScore(), a1.getScore()));
+        return arr;
+        
     }
     
 }
