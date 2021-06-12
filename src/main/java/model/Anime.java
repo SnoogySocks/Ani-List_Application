@@ -68,6 +68,31 @@ public class Anime implements Comparable<Anime> {
         
     }
     
+    public void setAnime (Anime anime) {
+    
+        malID = anime.malID;
+        title = anime.title;
+        synopsis = anime.synopsis;
+        imageURL = anime.imageURL;
+    
+        averageScore = anime.averageScore;
+    
+        dateAired = anime.dateAired;
+        numEpisodes = anime.numEpisodes;
+    
+        top = anime.top;
+    
+        genres = anime.genres;
+    
+        licensors = anime.licensors;
+    
+        producers = anime.producers;
+    
+        usersStatus = Status.NA;
+        score = 0;
+        
+    }
+    
     public void setAnime (
             int malID, String title, String synopsis, String imageURL,
             double averageScore,
@@ -88,43 +113,57 @@ public class Anime implements Comparable<Anime> {
     
         this.top = top;
     
-        if (genres==null || licensors==null || producers==null) {
-            return;
-        }
-    
-        this.genres = new Genre[genres.length()];
-        for (int i = 0; i<genres.length(); ++i) {
-            JSONObject genre = genres.getJSONObject(i);
-            this.genres[i] = Genre.parseGenre(genre.getString("name"));
-        }
-    
-        this.licensors = new String[licensors.length()];
-        for (int i = 0; i<licensors.length(); ++i) {
-            this.licensors[i] = licensors.getString(0);
-        }
-    
-        this.producers = new String[producers.length()];
-        for (int i = 0; i<producers.length(); ++i) {
-            JSONObject producer = producers.getJSONObject(i);
-            this.producers[i] = producer.getString("name");
-        }
-    
         this.usersStatus = Status.NA;
         this.score = 0;
+        
+        if (genres!=null) {
+            
+            this.genres = new Genre[genres.length()];
+            for (int i = 0; i<genres.length(); ++i) {
+                JSONObject genre = genres.getJSONObject(i);
+                this.genres[i] = Genre.parseGenre(genre.getString("name"));
+            }
+            
+        } else {
+            this.genres = new Genre[0];
+        }
+    
+        if (licensors!=null) {
+            
+            this.licensors = new String[licensors.length()];
+            for (int i = 0; i<licensors.length(); ++i) {
+                this.licensors[i] = licensors.getString(0);
+            }
+            
+        } else {
+            this.licensors = new String[0];
+        }
+    
+        if (producers!=null) {
+            
+            this.producers = new String[producers.length()];
+            for (int i = 0; i<producers.length(); ++i) {
+                JSONObject producer = producers.getJSONObject(i);
+                this.producers[i] = producer.getString("name");
+            }
+            
+        } else {
+            this.producers = new String[0];
+        }
         
     }
     
     public void setStatistics (
             int watching, int completed, int onHold, int dropped, int planToWatch,
-            int totalVotes, JSONObject scores) {
+            JSONObject scores) {
         
         this.watching = watching;
         this.completed = completed;
         this.onHold = onHold;
         this.dropped = dropped;
         this.planToWatch = planToWatch;
-        this.totalVotes = totalVotes;
-        
+    
+        this.totalVotes = 0;
         this.scoringVotes = new int[scores.length()];
         this.percentage = new double[scores.length()];
         for (int i = 0; i<scores.length(); ++i) {
@@ -132,6 +171,7 @@ public class Anime implements Comparable<Anime> {
             JSONObject score = scores.getJSONObject(Integer.toString(i+1));
             this.scoringVotes[i] = score.getInt("votes");
             this.percentage[i] = score.getDouble("percentage");
+            totalVotes += scoringVotes[i];
             
         }
     
@@ -231,7 +271,7 @@ public class Anime implements Comparable<Anime> {
     
     @Override
     public int compareTo (Anime anime) {
-        return Integer.compare(score, anime.score);
+        return Double.compare(averageScore, anime.averageScore);
     }
     
 }

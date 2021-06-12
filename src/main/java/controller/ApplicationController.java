@@ -8,20 +8,18 @@ import java.awt.event.ActionListener;
 
 public class ApplicationController implements ActionListener {
     
-    private final JikanController jikan;
     private final MainFrame frame;
     
     private int currentPagePtr;
     private final Page[] pages;
-    private final GUIController[] guiControllers;
+    private final PageController[] guiControllers;
     
     public ApplicationController () {
     
-        jikan = new JikanController();
         frame = new MainFrame();
         
         pages = new Page[3];
-        pages[0] = new HomePage(jikan);
+        pages[0] = new HomePage();
         pages[1] = new AniListPage();
         pages[2] = new RecommendPage();
     
@@ -31,12 +29,12 @@ public class ApplicationController implements ActionListener {
                 page1.getTitlePanel().getPageComboBox().addItem(page2);
             }
         }
-        
-        guiControllers = new GUIController[4];
-        guiControllers[0] = new HomePageController(jikan, (HomePage) pages[0]);
-        guiControllers[1] = new AniListPageController(jikan, (AniListPage) pages[1]);
-        guiControllers[2] = new RecommendPageController(jikan, (RecommendPage) pages[2]);
-        guiControllers[3] = new AnimePanelController(jikan, new AnimePanel());
+    
+    
+        guiControllers = new PageController[3];
+        guiControllers[0] = new HomePageController((HomePage) pages[0]);
+        guiControllers[1] = new AniListPageController((AniListPage) pages[1]);
+        guiControllers[2] = new RecommendPageController((RecommendPage) pages[2]);
         
         setUpListeners();
         
@@ -51,7 +49,7 @@ public class ApplicationController implements ActionListener {
         for (Page page : pages) {
             page.getTitlePanel().getPageComboBox().addActionListener(this);
         }
-        for (GUIController guiController: guiControllers) {
+        for (PageController guiController: guiControllers) {
             guiController.setUpListeners();
         }
         

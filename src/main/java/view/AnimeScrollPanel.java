@@ -8,11 +8,9 @@ import java.util.ArrayList;
 import static view.Page.*;
 
 public class AnimeScrollPanel extends JPanel {
-
-    private final double animeImageSize;
     
     private ArrayList<Anime> animeCategory;
-    private int rightPtr;
+    private int leftPtr;
     private final AnimeImage[] displayedAnime;
     private final JButton[] displayedAnimeButtons;
     
@@ -25,7 +23,6 @@ public class AnimeScrollPanel extends JPanel {
         setLayout(null);
     
         this.animeCategory = animeCategory;
-        this.animeImageSize = animeImageSize;
     
         final int ANIME_IMAGE_PADDING;
         if (animeImageSize==AnimeImage.LARGE_SIZE) {
@@ -37,9 +34,9 @@ public class AnimeScrollPanel extends JPanel {
             displayedAnime = new AnimeImage[7];
             displayedAnimeButtons = new JButton[7];
         }
-        rightPtr = displayedAnime.length;
+        leftPtr = 0;
     
-        for (int i = getLeft(); i!=rightPtr; ++i) {
+        for (int i = leftPtr; i<displayedAnime.length; ++i) {
             
             displayedAnime[i] = new AnimeImage(animeCategory.get(i), animeImageSize);
             displayedAnimeButtons[i] = new JButton();
@@ -70,34 +67,25 @@ public class AnimeScrollPanel extends JPanel {
         
     }
     
-    public int getLeft () {
-        int left = rightPtr-displayedAnime.length;
-        return left>=0? left : animeCategory.size()+left;
-    }
-    
     public void scrollLeft () {
         
-        rightPtr -= displayedAnime.length;
+        leftPtr -= displayedAnime.length;
         
-        // Check bounds
-        if (rightPtr==0) {
-            rightPtr = animeCategory.size();
+        // Cycle to the end
+        if (leftPtr<0) {
+            leftPtr += animeCategory.size();
         }
         updateDisplayedAnime();
         
     }
     
-    public int getRight () {
-        return rightPtr;
-    }
-    
     public void scrollRight () {
         
-        rightPtr += displayedAnime.length;
+        leftPtr += displayedAnime.length;
         
-        // Check Bounds
-        if (rightPtr>animeCategory.size()) {
-            rightPtr = animeCategory.size()-rightPtr;
+        // Cycle to the beginning
+        if (leftPtr>=animeCategory.size()) {
+            leftPtr -= animeCategory.size();
         }
         updateDisplayedAnime();
         
@@ -110,26 +98,31 @@ public class AnimeScrollPanel extends JPanel {
     public void setAnimeCategory (ArrayList<Anime> newCategory) {
         
         animeCategory = newCategory;
-        rightPtr = displayedAnime.length;
+        leftPtr = displayedAnime.length;
         updateDisplayedAnime();
         
     }
     
-    public AnimeImage getDisplayedAnime (int index) {
-        return displayedAnime[index];
+    public AnimeImage[] getDisplayedAnime () {
+        return displayedAnime;
     }
     
-    public JButton getScrollButtons (int index) {
-        return scrollButtons[index];
+    public JButton[] getDisplayedAnimeButtons () {
+        return displayedAnimeButtons;
     }
     
-    public void updateDisplayedAnime () {
+    public JButton[] getScrollButtons () {
+        return scrollButtons;
+    }
+    
+    private void updateDisplayedAnime () {
         
-        for (int i = getLeft(); i!=rightPtr; ++i) {
+        for (int i = leftPtr, j = 0; j<displayedAnime.length; ++i, ++j) {
             if (i>=animeCategory.size()) {
                 i = 0;
             }
-            displayedAnime[i].setAnime(animeCategory.get(i));
+            displayedAnime[j].setAnime(animeCategory.get(i));
+            displayedAnimeButtons[j].setIcon(displayedAnime[j].getIcon());
         }
         
     }
@@ -137,8 +130,8 @@ public class AnimeScrollPanel extends JPanel {
     public void setEnabledUserInput (boolean enabled) {
         
         // Enable/disable anime buttons
-        for (AnimeImage anime : displayedAnime) {
-            anime.setEnabled(enabled);
+        for (JButton animeButton : displayedAnimeButtons) {
+            animeButton.setEnabled(enabled);
         }
         
         // Enable/disable scrolling

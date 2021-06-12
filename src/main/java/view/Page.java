@@ -1,5 +1,6 @@
 package view;
 
+import model.AniList;
 import model.Anime;
 
 import javax.swing.*;
@@ -24,6 +25,8 @@ public abstract class Page extends JPanel {
     public static final Color TEXT_COLOUR = new Color(67, 67, 67);
     public static final Color DIALOGUE_COLOUR = new Color(255, 255, 255);
     
+    private static AniList aniList = new AniList();
+    
     private Dimension actualSize;
     
     // For eventually displaying anime
@@ -33,7 +36,7 @@ public abstract class Page extends JPanel {
     private final TitlePanel titlePanel;
     
     public Page () {
-    
+        
         setLayout(null);
         setBackground(BACKGROUND_COLOUR);
     
@@ -43,9 +46,9 @@ public abstract class Page extends JPanel {
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
         scrollPane.setBounds(0, 0, WIDTH-12, HEIGHT-35);
     
-        animePanel = new AnimePanel();
-        add(animePanel);
-        
+        this.animePanel = new AnimePanel();
+        add(this.animePanel);
+    
         // Does not create a genre if this is a RecommendationPage
         titlePanel = new TitlePanel(!(this instanceof RecommendPage));
         add(titlePanel);
@@ -66,6 +69,10 @@ public abstract class Page extends JPanel {
     
     public Dimension getActualSize () {
         return actualSize;
+    }
+    
+    public static AniList getAniList () {
+        return aniList;
     }
     
     public void setActualSize (Dimension preferredSize) {
@@ -101,7 +108,7 @@ public abstract class Page extends JPanel {
         titlePanel.setEnabledUserInput(false);
         
         // Remove scrolling by making the size the same as the frame
-        setPreferredSize(getSize());
+        setPreferredSize(new Dimension(WIDTH, HEIGHT-38));
         animePanel.enableAnimePanel(anime);
         
     }

@@ -11,6 +11,8 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -21,7 +23,7 @@ public class JikanController {
     
     private static final String HOST = "https://jikan1.p.rapidapi.com/";
     private static final String X_RAPIDAPI_HOST = "jikan1.p.rapidapi.com";
-    private String x_rapidapi_key;
+    private static String x_rapidapi_key;
     
     public JikanController () {
         
@@ -36,7 +38,7 @@ public class JikanController {
     
     }
     
-    private JSONObject getRequest (String query) {
+    private static JSONObject getRequest (String query) {
     
         HttpResponse<JsonNode> response;
         try {
@@ -55,7 +57,7 @@ public class JikanController {
         
     }
     
-    private ArrayList<Anime> getListOfAnime (String query, String listQuery, boolean isTop) {
+    private static ArrayList<Anime> getListOfAnime (String query, String listQuery, boolean isTop) {
     
         JSONObject response = getRequest(query);
         JSONArray animeList = response.getJSONArray(listQuery);
@@ -72,19 +74,19 @@ public class JikanController {
     
     }
     
-    public ArrayList<Anime> getSeason (String year, String season) {
+    public static ArrayList<Anime> getSeason (String year, String season) {
         return getListOfAnime("season/"+year+'/'+season, "anime", false);
     }
     
-    public ArrayList<Anime> getTrending () {
+    public static ArrayList<Anime> getTrending () {
         return getListOfAnime("top/anime/1/airing", "top", true);
     }
     
-    public ArrayList<Anime> getUpAndComing () {
+    public static ArrayList<Anime> getUpAndComing () {
         return getListOfAnime("top/anime/1/upcoming", "top", true);
     }
     
-    public ArrayList<Anime> getLatestUpdated () {
+    public static ArrayList<Anime> getLatestUpdated () {
     
         Calendar c = Calendar.getInstance();
         String dayOfWeek = Schedule.values()[c.get(Calendar.DAY_OF_WEEK)-1].toString();
@@ -92,13 +94,13 @@ public class JikanController {
         
     }
     
-    public void setAnimePanel (Anime anime) {
+    public static void setAnimePanel (Anime anime) {
     
         // If the anime used a top request, get missing information
         if (anime.isTop()) {
             
             // Missing information can be found by searching for the anime by name
-            JSONObject response = getRequest("search/anime?q="+anime.getTitle());
+            JSONObject response = getRequest("search/anime?q= "+anime.getTitle());
             JSONObject animeProperties = response.getJSONArray("results").getJSONObject(0);
             createAnime(anime, animeProperties, false);
             
@@ -107,7 +109,7 @@ public class JikanController {
     
     }
     
-    public void getAnimeStatistics (Anime anime) {
+    public static void getAnimeStatistics (Anime anime) {
         
         JSONObject response = getRequest("anime/"+anime.getMalID()+"/stats");
         
@@ -118,7 +120,6 @@ public class JikanController {
                     response.getInt("on_hold"),
                     response.getInt("dropped"),
                     response.getInt("plan_to_watch"),
-                    response.getInt("total"),
                     response.getJSONObject("scores")
             );
         } catch (Exception e) {
@@ -127,14 +128,14 @@ public class JikanController {
     
     }
     
-    private void createAnime (Anime anime, JSONObject animeProperties, boolean top) {
+    private static void createAnime (Anime anime, JSONObject animeProperties, boolean top) {
     
         // Check whether there is null
         String synopsis = !animeProperties.isNull("synopsis")
                 ? animeProperties.getString("synopsis") : "N/A";
     
         double score = !animeProperties.isNull("score")
-                ? animeProperties.getDouble("score") : -1;
+                ? animeProperties.getDouble("score") : 0;
     
         String dateAired;
         if (!top && !animeProperties.isNull("airing_start")) {
@@ -146,7 +147,7 @@ public class JikanController {
         }
         
         int numEpisodes = !animeProperties.isNull("episodes")
-                ? animeProperties.getInt("episodes") : -1;
+                ? animeProperties.getInt("episodes") : 0;
     
         JSONArray genres = !animeProperties.isNull("genres")
                 ? animeProperties.getJSONArray("genres") : null;

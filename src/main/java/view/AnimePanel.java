@@ -112,8 +112,8 @@ public class AnimePanel extends JPanel {
         titleTextArea.setBackground(TitlePanel.BACKGROUND_COLOUR);
         titleTextArea.setBorder(null);
         titleTextArea.setBounds(
-                titlePanel.getWidth()/3+PADDING, PADDING*3,
-                PADDING*15, PADDING_Y*2
+                titlePanel.getWidth()/3+PADDING, PADDING*5/2,
+                PADDING*15, PADDING_Y*2+PADDING
         );
         titlePanel.add(titleTextArea);
     
@@ -123,7 +123,7 @@ public class AnimePanel extends JPanel {
         scoreIcon.setLayout(null);
         scoreIcon.setBounds(
                 titlePanel.getWidth()-PADDING*8-35, titleTextArea.getY(),
-                PADDING*6, titleTextArea.getHeight()
+                PADDING*6, PADDING_Y*2
         );
         scoreIcon.setBackground(DIALOGUE_COLOUR);
         titlePanel.add(scoreIcon);
@@ -264,14 +264,6 @@ public class AnimePanel extends JPanel {
         
     }
     
-    public JPanel getContentPanel () {
-        return contentPanel;
-    }
-    
-    public JTextArea getTitleTextArea () {
-        return titleTextArea;
-    }
-    
     public JLabel getScoreValueLabel () {
         return scoreValueLabel;
     }
@@ -322,9 +314,10 @@ public class AnimePanel extends JPanel {
     
     public void enableAnimePanel (Anime anime) {
         
-        setVisible(true);
-        
         // Set the image
+        if (displayedAnime!=null) {
+            displayedAnimeItem.getDisplayPanel().remove(displayedAnime);
+        }
         displayedAnime = new AnimeImage(anime, AnimeImage.ANIME_PANEL_SIZE);
         displayedAnime.setLocation(0, 0);
         displayedAnimeItem.getDisplayPanel().add(displayedAnime);
@@ -385,6 +378,8 @@ public class AnimePanel extends JPanel {
         
         setDataset(anime.getScoringVotes());
         createChart(anime);
+        repaint();
+        setVisible(true);
     
     }
     
@@ -395,8 +390,8 @@ public class AnimePanel extends JPanel {
         }
     
         // Iterate in reverse so that score 10 is at the top
-        for (int i = scoringVotes.length-1; i>=0; --i) {
-            dataset.setValue(scoringVotes[i], "Score", String.valueOf(i+1));
+        for (int i = 9; i>=0; --i) {
+            dataset.setValue(scoringVotes==null ? 0:scoringVotes[i], "Score", String.valueOf(i+1));
         }
         
     }

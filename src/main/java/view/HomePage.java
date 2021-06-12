@@ -11,7 +11,7 @@ public class HomePage extends Page {
     private final ItemPanel[] categoriesLabels;
     private final AnimeScrollPanel[] categories;
     
-    public HomePage (JikanController jikanController) {
+    public HomePage () {
     
         setActualSize(new Dimension(WIDTH, HEIGHT*2));
     
@@ -39,9 +39,9 @@ public class HomePage extends Page {
         add(categoriesLabels[0]);
     
         categories = new AnimeScrollPanel[categoriesLabels.length];
-        categories[0] = new AnimeScrollPanel(jikanController.getTrending(), AnimeImage.LARGE_SIZE);
-        categories[1] = new AnimeScrollPanel(jikanController.getLatestUpdated(), AnimeImage.MEDIUM_SIZE);
-        categories[2] = new AnimeScrollPanel(jikanController.getUpAndComing(), AnimeImage.MEDIUM_SIZE);
+        categories[0] = new AnimeScrollPanel(JikanController.getTrending(), AnimeImage.LARGE_SIZE);
+        categories[1] = new AnimeScrollPanel(JikanController.getLatestUpdated(), AnimeImage.MEDIUM_SIZE);
+        categories[2] = new AnimeScrollPanel(JikanController.getUpAndComing(), AnimeImage.MEDIUM_SIZE);
         
         categories[0].setLocation(PADDING*5, Page.getBottomY(categoriesLabels[0])+PADDING_Y);
         add(categories[0]);
@@ -72,18 +72,14 @@ public class HomePage extends Page {
         }
         
         // TODO remove this later
-//        Anime anime = categories[1].getDisplayedAnime(0).getAnime();
+//        Anime anime = categories[1].getDisplayedAnime()[0].getAnime();
 //        jikanController.setAnimePanel(anime);
 //        enableAnimePanel(anime);
         
     }
     
-    public int getCategoriesLength () {
-        return categories.length;
-    }
-    
-    public AnimeScrollPanel getCategories (int index) {
-        return categories[index];
+    public AnimeScrollPanel[] getCategories () {
+        return categories;
     }
     
     @Override
@@ -93,10 +89,15 @@ public class HomePage extends Page {
     
     @Override
     public void setEnabledUserInput (boolean enabled) {
-    
-        // Enabled disable all the user input features
-        for (AnimeScrollPanel category: categories) {
-            category.setEnabledUserInput(enabled);
+        
+        // Enabled/disable trending input features
+        categories[0].setEnabledUserInput(enabled);
+        
+        // Set the last three displayedAnime panels in trending
+        // to be invisible so they do not pop up
+        JButton[] trendingButtons = categories[0].getDisplayedAnimeButtons();
+        for (int i = trendingButtons.length*2/5; i<trendingButtons.length; ++i) {
+            trendingButtons[i].setVisible(enabled);
         }
         
     }

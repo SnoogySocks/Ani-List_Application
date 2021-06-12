@@ -92,6 +92,9 @@ public class FilterBar extends ItemPanel {
             
         }
         
+        // Set the current season to summer
+        ((JComboBox<String>) filterOptions.get(0)).setSelectedIndex(2);
+        
     }
     
     public ArrayList<JComponent> getFilterOptions () {
