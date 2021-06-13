@@ -1,24 +1,29 @@
 package controller;
 
-import model.AniList;
 import view.*;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Initializes the pages and page controllers.
+ * Also switches the screen
+ */
 public class ApplicationController implements ActionListener {
     
     private static final MainFrame frame = new MainFrame();
     
-    private int currentPagePtr;
+    private int currentPagePtr;     // Point to the current page
     private final Page[] pages;
     private final PageController[] pageControllers;
     
     public ApplicationController () {
     
+        // Initialize the jikan controller
         JikanController.init();
         
+        // Initialize the pages
         pages = new Page[3];
         pages[0] = new HomePage();
         pages[1] = new AniListPage();
@@ -31,6 +36,7 @@ public class ApplicationController implements ActionListener {
             }
         }
     
+        // Initialize the page controllers
         pageControllers = new PageController[3];
         pageControllers[0] = new HomePageController((HomePage) pages[0]);
         pageControllers[1] = new AniListPageController((AniListPage) pages[1]);
@@ -63,6 +69,9 @@ public class ApplicationController implements ActionListener {
         return pages[currentPagePtr];
     }
     
+    /**
+     * Switch the page according to the page combo box
+     */
     public void switchPages () {
         
         // Get the new selected page
@@ -76,6 +85,7 @@ public class ApplicationController implements ActionListener {
             aniListPageController.generateAniList();
         }
         
+        // Add the new page to the frame
         Container contentPane = frame.getContentPane();
         contentPane.removeAll();
         contentPane.add(selectedPage.getScrollPane());
@@ -84,7 +94,9 @@ public class ApplicationController implements ActionListener {
         
     }
     
-    // Switch frames
+    /**
+     * Swtich the frames
+     */
     @Override
     public void actionPerformed (ActionEvent e) {
         switchPages();

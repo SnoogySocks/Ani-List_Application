@@ -11,11 +11,15 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 
+/**
+ * All the page controllers extend from this class. The class contains:
+ * - Event performers to display the animePanel
+ */
 public abstract class PageController extends MouseInputAdapter implements ActionListener {
 
-    private final AnimePanel animePanel;
-    private boolean isOnDropBox;
-    private boolean isDragging;
+    private final AnimePanel animePanel;   // The animePanel
+    private boolean isOnDropBox;           // Indicates whether the anime is on the drop box
+    private boolean isDragging;            // Indicates whether the animeImage is being dragged
     
     public PageController (AnimePanel animePanel) {
         this.animePanel = animePanel;
@@ -30,10 +34,6 @@ public abstract class PageController extends MouseInputAdapter implements Action
         
     }
     
-    /**
-     * Set the anime to invisible from its item panel if it's been pressed on
-     * @param e = the event
-     */
     @Override
     public void mousePressed (MouseEvent e) {
         if (e.getSource()==animePanel.getDisplayedAnime()) {
@@ -41,11 +41,6 @@ public abstract class PageController extends MouseInputAdapter implements Action
         }
     }
     
-    /**
-     * Make the anime from its item panel visible again if its been released.
-     * If it's released on the drop box, then add the anime to the user's list
-     * @param e = the event
-     */
     @Override
     public void mouseReleased (MouseEvent e) {
     
@@ -53,16 +48,37 @@ public abstract class PageController extends MouseInputAdapter implements Action
             return;
         }
         
+        // If the animeImage is released on the drop box, then
+        // add the anime to the user's list
         if (isOnDropBox && isDragging) {
-            inquireAnimeStatus(animePanel.getDisplayedAnime().getAnime());
-            Page.getAniList().add(animePanel.getDisplayedAnime().getAnime());
+            
+            Anime anime = animePanel.getDisplayedAnime().getAnime();
+            
+            if (Page.getAniList().getMyAnimeList().contains(anime)) {
+                
+                JOptionPane.showMessageDialog(
+                        ApplicationController.getFrame(),
+                        "You already have the anime in your list!",
+                        "Alert",
+                        JOptionPane.ERROR_MESSAGE
+                );
+                
+            } else {
+                inquireAnimeStatus(anime);
+                Page.getAniList().add(anime);
+            }
+            
         }
+        
+        // Reset the animeImage back to its original location
         isDragging = false;
         animePanel.setDisplayedAnimeToOGLocation();
         
     }
     
-    // Prompt the user for the anime's updated info
+    /**
+     * Prompt the user for the anime's updated info
+     */
     public void inquireAnimeStatus (Anime anime) {
     
         Status userStatus = (Status) JOptionPane.showInputDialog(
@@ -90,19 +106,15 @@ public abstract class PageController extends MouseInputAdapter implements Action
         
     }
     
-    /**
-     * Move the anime image with the mouse if the mouse is dragging the image
-     * @param e = the event
-     */
     @Override
     public void mouseDragged (MouseEvent e) {
         
         if (e.getSource()!=animePanel.getDisplayedAnime()) {
             return;
         }
-        // If the mouse is dragging the image is dragged with it
         Point mouseLocation = ApplicationController.getFrame().getMouseOnFrame(e);
-        
+    
+        // If the mouse is dragging the image is dragged with it
         if (isDragging) {
             animePanel.getDisplayedAnime().setLocation(
                     mouseLocation.x-animePanel.getDisplayedAnime().getWidth()/2,

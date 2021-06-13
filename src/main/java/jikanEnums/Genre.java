@@ -2,6 +2,9 @@ package jikanEnums;
 
 import java.util.HashMap;
 
+/**
+ * Enum class to record all the genres an anime can be
+ */
 public enum Genre {
     
     ACTION(1), ADVENTURE(2), COMEDY(4),
@@ -20,8 +23,11 @@ public enum Genre {
     MECHA(18), MUSIC(19), PARODY(20),
     SAMURAI(21), SPACE(29), VAMPIRE(32),
     YAOI(33), YURI(34), MILITARY(38),
-    POLICE(39), JOSEI(43);
+    POLICE(39), JOSEI(43),
     
+    NOTHING(44);
+    
+    // Helper to parse from a string to a genre
     private static final HashMap<String, Genre> GENRE_PARSER = new HashMap<>() {{
         
         for (Genre genre : Genre.values()) {
@@ -34,7 +40,7 @@ public enum Genre {
         
     }};
     
-    private final String request;
+    private final String name;
     private final int genreID;
     
     Genre (int genreID) {
@@ -43,16 +49,21 @@ public enum Genre {
         char[] temp = super.toString().toCharArray();
         for (int i = 1; i<temp.length; ++i) {
             
+            // Replace any _ with spaces
             if (temp[i]=='_') {
                 temp[i] = ' ';
+                
+            // Capitalize the first letter of a word
             } else if (temp[i-1]==' ') {
                 temp[i] = Character.toUpperCase(temp[i]);
+                
+            // Set everything else to lowercase
             } else {
                 temp[i] = Character.toLowerCase(temp[i]);
             }
             
         }
-        request = String.valueOf(temp);
+        name = String.valueOf(temp);
         this.genreID = genreID;
         
     }
@@ -71,7 +82,7 @@ public enum Genre {
     
     @Override
     public String toString () {
-        return request;
+        return name;
     }
     
     public static Genre parseGenre (String genre) {

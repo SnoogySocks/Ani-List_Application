@@ -1,68 +1,82 @@
 package view;
 
 import controller.JikanController;
-import model.Anime;
 
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Home page to browse anime from
+ * - Trending
+ * - Latest updated
+ * - Up & Coming
+ * @see Page
+ */
 public class HomePage extends Page {
     
-    private final ItemPanel[] categoriesLabels;
-    private final AnimeScrollPanel[] categories;
+    private final ShadowedPanel[] categoriesLabels;
+    private final AnimeScrollPanel[] categories;    // The scroll panels for browsing categories
     
     public HomePage () {
     
+        // Set up the page
         setActualSize(new Dimension(WIDTH, HEIGHT*2));
-    
-        categoriesLabels = new ItemPanel[3];
+        
+        // Initialize categoriesLabels
+        categoriesLabels = new ShadowedPanel[3];
         String[] categoryNames = {
                 "Trending", "Latest Updated", "Up & Coming"
         };
         
-        categoriesLabels[0] = new ItemPanel(DIALOGUE_COLOUR);
+        // Initialize categoriesLabels trending category
+        categoriesLabels[0] = new ShadowedPanel(DIALOGUE_COLOUR);
         categoriesLabels[0].setBounds(
-                PADDING*8-ItemPanel.SHADOW_OFFSET, Page.getBottomY(getTitlePanel())+PADDING_Y,
+                PADDING*8-ShadowedPanel.SHADOW_OFFSET, Page.getBottomY(getTitlePanel())+PADDING_Y,
                 PADDING*13, PADDING*3
         );
     
-        JLabel trendingCategoryLabel = new JLabel(categoryNames[0]);
-        trendingCategoryLabel.setBounds(
+        // Initialize trendingCategoryText
+        JLabel trendingCategoryText = new JLabel(categoryNames[0]);
+        trendingCategoryText.setBounds(
                 PADDING, PADDING/2,
                 categoriesLabels[0].getDisplayPanel().getWidth()-PADDING,
                 categoriesLabels[0].getDisplayPanel().getHeight()-PADDING
         );
-        trendingCategoryLabel.setFont(CATEGORY_FONT);
-        trendingCategoryLabel.setForeground(TEXT_COLOUR);
-        
-        categoriesLabels[0].getDisplayPanel().add(trendingCategoryLabel);
+        trendingCategoryText.setFont(CATEGORY_FONT);
+        trendingCategoryText.setForeground(TEXT_COLOUR);
+        categoriesLabels[0].getDisplayPanel().add(trendingCategoryText);
         add(categoriesLabels[0]);
     
+        // Initialize categories
         categories = new AnimeScrollPanel[categoriesLabels.length];
         categories[0] = new AnimeScrollPanel(JikanController.getTrending(), AnimeImage.LARGE_SIZE);
         categories[1] = new AnimeScrollPanel(JikanController.getLatestUpdated(), AnimeImage.MEDIUM_SIZE);
         categories[2] = new AnimeScrollPanel(JikanController.getUpAndComing(), AnimeImage.MEDIUM_SIZE);
         
+        // Position the trending category
         categories[0].setLocation(PADDING*5, Page.getBottomY(categoriesLabels[0])+PADDING_Y);
         add(categories[0]);
         
+        // Iterate from the latest updated category to the up & coming category
         for (int i = 1; i<categoriesLabels.length; ++i) {
     
-            categoriesLabels[i] = new ItemPanel(DIALOGUE_COLOUR);
+            // Initialize the category label
+            categoriesLabels[i] = new ShadowedPanel(DIALOGUE_COLOUR);
             categoriesLabels[i].setLocation(
                     categoriesLabels[0].getX(),
                     Page.getBottomY(categories[i-1])+PADDING_Y*2
             );
             categoriesLabels[i].setSize(categoriesLabels[0].getDisplayPanel().getSize());
         
-            JLabel minorCategoryLabel = new JLabel(categoryNames[i]);
-            minorCategoryLabel.setBounds(trendingCategoryLabel.getBounds());
-            minorCategoryLabel.setFont(CATEGORY_FONT);
-            minorCategoryLabel.setForeground(TEXT_COLOUR);
-        
-            categoriesLabels[i].getDisplayPanel().add(minorCategoryLabel);
+            // Initialize the category text for the label
+            JLabel categoryText = new JLabel(categoryNames[i]);
+            categoryText.setBounds(trendingCategoryText.getBounds());
+            categoryText.setFont(CATEGORY_FONT);
+            categoryText.setForeground(TEXT_COLOUR);
+            categoriesLabels[i].getDisplayPanel().add(categoryText);
             add(categoriesLabels[i]);
     
+            // Position the category
             categories[i].setLocation(
                     PADDING*5,
                     Page.getBottomY(categoriesLabels[i])+PADDING
@@ -73,6 +87,7 @@ public class HomePage extends Page {
         
     }
     
+    // Getter
     public AnimeScrollPanel[] getCategories () {
         return categories;
     }
@@ -82,6 +97,10 @@ public class HomePage extends Page {
         return "Home";
     }
     
+    /**
+     * @param enabled = indicates whether to disable or enable all input features
+     * @see Page#setEnabledUserInput(boolean)
+     */
     @Override
     public void setEnabledUserInput (boolean enabled) {
         

@@ -6,6 +6,13 @@ import model.Anime;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * All the pages extend from this class. The class contains:
+ * - Constant values for gui positioning, font, and colour
+ * - An Ani-List that is the same for all pages to record for the same user
+ * - Title panels for the name of the application
+ * - An anime panel to display more specific information about an anime
+ */
 public abstract class Page extends JPanel {
     
     // Size constants
@@ -25,11 +32,13 @@ public abstract class Page extends JPanel {
     public static final Color TEXT_COLOUR = new Color(67, 67, 67);
     public static final Color DIALOGUE_COLOUR = new Color(255, 255, 255);
     
+    // User's Ani-List
     private static final AniList aniList = new AniList();
     
+    // The actual size of the panel hidden with the scroll pane
     private Dimension actualSize;
     
-    // For eventually displaying anime
+    // To display specific information about an anime
     private final AnimePanel animePanel;
     
     private final JScrollPane scrollPane;
@@ -37,15 +46,18 @@ public abstract class Page extends JPanel {
     
     public Page () {
         
+        // set up the JPanel
         setLayout(null);
         setBackground(BACKGROUND_COLOUR);
     
+        // Initialize the scrolling feature
         scrollPane = new JScrollPane(this);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
         scrollPane.setBounds(0, 0, WIDTH-12, HEIGHT-35);
     
+        // Initialize the anime panel
         this.animePanel = new AnimePanel();
         add(this.animePanel);
     
@@ -55,6 +67,7 @@ public abstract class Page extends JPanel {
         
     }
     
+    // Getters
     public JScrollPane getScrollPane () {
         return scrollPane;
     }
@@ -75,11 +88,19 @@ public abstract class Page extends JPanel {
         return aniList;
     }
     
+    /**
+     * Set the size of the panel in the scroll pane
+     * @param preferredSize = the size of the panel in the scroll pane
+     */
     public void setActualSize (Dimension preferredSize) {
         this.actualSize = preferredSize;
         super.setPreferredSize(preferredSize);
     }
     
+    /**
+     * Helper to disable all input features for displaying the anime panel
+     * @param enabled = indicates whether to disable or enable all input features
+     */
     public abstract void setEnabledUserInput (boolean enabled);
     
     /**
@@ -98,11 +119,10 @@ public abstract class Page extends JPanel {
     /**
      * Adds the anime panel when user interacts with something.
      * Cancels out all user input
-     * @param anime
+     * @param anime = the anime to display with animePanel
      */
-    // TODO disable mouse listener if it works over the thing
     public void enableAnimePanel (Anime anime) {
-        
+
         // Disable all input features
         setEnabledUserInput(false);
         titlePanel.setEnabledUserInput(false);
@@ -113,10 +133,18 @@ public abstract class Page extends JPanel {
         
     }
     
+    /**
+     * @param comp = the component to examine
+     * @return gets the right x coordinate of a component
+     */
     public static int getRightX (JComponent comp) {
         return comp.getX()+comp.getWidth();
     }
     
+    /**
+     * @param comp = the component to examine
+     * @return gets the bottom y coordinate of a component
+     */
     public static int getBottomY (JComponent comp) {
         return comp.getY()+comp.getHeight();
     }

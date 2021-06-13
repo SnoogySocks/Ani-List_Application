@@ -5,6 +5,9 @@ import jikanEnums.Status;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+/**
+ * Anime object that stores its characteristics
+ */
 public class Anime implements Comparable<Anime> {
 
     // Important stuff
@@ -40,13 +43,15 @@ public class Anime implements Comparable<Anime> {
     boolean top;
     
     public Anime () {
-        this(
+        
+        setAnime(
                 -1, "N/A", "N/A", null,
                 -1.0,
                 "N/A", -1,
                 null, null, null,
                 false
         );
+        
     }
     
     public Anime (
@@ -68,6 +73,10 @@ public class Anime implements Comparable<Anime> {
         
     }
     
+    /**
+     * anime copy method
+     * @param anime = the anime to copy
+     */
     public void setAnime (Anime anime) {
     
         malID = anime.malID;
@@ -93,6 +102,9 @@ public class Anime implements Comparable<Anime> {
         
     }
     
+    /**
+     * Convenience constructor for the anime
+     */
     public void setAnime (
             int malID, String title, String synopsis, String imageURL,
             double averageScore,
@@ -116,6 +128,7 @@ public class Anime implements Comparable<Anime> {
         this.userStatus = Status.NA;
         this.userScore = 0;
         
+        // Extract the genres or default to no genre
         if (genres!=null) {
             
             this.genres = new Genre[genres.length()];
@@ -128,6 +141,7 @@ public class Anime implements Comparable<Anime> {
             this.genres = new Genre[0];
         }
     
+        // Extract the licensors or default to no licensors
         if (licensors!=null) {
             
             this.licensors = new String[licensors.length()];
@@ -139,6 +153,7 @@ public class Anime implements Comparable<Anime> {
             this.licensors = new String[0];
         }
     
+        // Extract the producers or default to no producers
         if (producers!=null) {
             
             this.producers = new String[producers.length()];
@@ -153,6 +168,9 @@ public class Anime implements Comparable<Anime> {
         
     }
     
+    /**
+     * Initialize the parameters if transition to anime panel
+     */
     public void setStatistics (
             int watching, int completed, int onHold, int dropped, int planToWatch,
             JSONObject scores) {
@@ -171,12 +189,15 @@ public class Anime implements Comparable<Anime> {
             JSONObject score = scores.getJSONObject(Integer.toString(i+1));
             this.scoringVotes[i] = score.getInt("votes");
             this.percentage[i] = score.getDouble("percentage");
+            
+            // Calculate the total votes
             totalVotes += scoringVotes[i];
             
         }
     
     }
     
+    // Getters and some setters
     public int getMalID () {
         return malID;
     }

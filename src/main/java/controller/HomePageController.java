@@ -8,16 +8,19 @@ import view.AnimeScrollPanel;
 import view.HomePage;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * Controls the HomePage
+ * @see PageController
+ */
 public class HomePageController extends PageController {
     
     private final HomePage gui;
-    private final JCheckBox[] genreFilter;      // TODO clear filter if user switches pages
+    private final JCheckBox[] genreFilter;  // Tracks the user's filters
     
     public HomePageController (HomePage gui) {
     
@@ -25,6 +28,7 @@ public class HomePageController extends PageController {
         
         this.gui = gui;
         
+        // Initialize genreFilter
         Genre[] filterOptions = Genre.getFilterOptions();
         genreFilter = new JCheckBox[filterOptions.length];
         for (int i = 0; i<filterOptions.length; ++i) {
@@ -33,6 +37,9 @@ public class HomePageController extends PageController {
         
     }
     
+    /**
+     * @see PageController#setUpListeners()
+     */
     @Override
     public void setUpListeners () {
     
@@ -42,9 +49,12 @@ public class HomePageController extends PageController {
         ArrayList<JComponent> filterOptions = gui.getTitlePanel().getFilterBar().getFilterOptions();
         for (int i = 0; i<filterOptions.size(); ++i) {
             
+             // Cast the current filter option to a combo box if it is not the genre filter option
              if (i!=2) {
                  JComboBox<String> comboBox = (JComboBox<String>) filterOptions.get(i);
                  comboBox.addActionListener(this);
+                 
+             // Otherwise cast it as a button
              } else {
                  JButton genreButton = (JButton) filterOptions.get(i);
                  genreButton.addActionListener(this);
@@ -52,9 +62,10 @@ public class HomePageController extends PageController {
              
         }
         
+        // Set up the action listeners for the category scroll panels
         for (AnimeScrollPanel category: gui.getCategories()) {
             
-            // Add action listeners to the anime options
+            // Add action listeners to the displayed anime
             for (JButton displayedAnimeButton: category.getDisplayedAnimeButtons()) {
                 displayedAnimeButton.addActionListener(this);
             }
@@ -72,23 +83,27 @@ public class HomePageController extends PageController {
     public void actionPerformed (ActionEvent e) {
     
         ArrayList<JComponent> filterOptions = gui.getTitlePanel().getFilterBar().getFilterOptions();
+        
+        // Perform action events for the filter options
         for (int i = 0; i<filterOptions.size(); ++i) {
         
-            if (e.getSource()!=filterOptions.get(i)) {
-                continue;
+            if (e.getSource()==filterOptions.get(i)) {
+                
+                // Query the user for their desired genre if the event
+                // comes from the genre filter option. Then update the categories
+                if (i==2) {
+                    decideGenreFilter();
+                }
+                updateCategories();
+                break;
+                
             }
-    
-            if (i==2) {
-                decideGenreFilter();
-            }
-            updateCategories();
-            break;
     
         }
     
         for (AnimeScrollPanel category: gui.getCategories()) {
         
-            // Add action listeners to the anime options
+            // Perform action events for the displayed anime
             for (JButton displayedAnimeButton: category.getDisplayedAnimeButtons()) {
                 
                 if (e.getSource()==displayedAnimeButton) {
@@ -98,7 +113,7 @@ public class HomePageController extends PageController {
                 
             }
         
-            // Add action listeners to the scroll buttons
+            // Perform action events for the scroll buttons
             if (e.getSource()==category.getScrollButtons()[0]) {
                 category.scrollLeft();
                 break;
@@ -108,7 +123,8 @@ public class HomePageController extends PageController {
             }
         
         }
-        
+    
+        // Disable the anime panel when the back button is pressed
         if (e.getSource()==gui.getAnimePanel().getBackButton()) {
             gui.disableAnimePanel();
         }
@@ -117,6 +133,11 @@ public class HomePageController extends PageController {
         
     }
     
+    /**
+     * Enable the anime panel
+     * @param category = the category from where the anime was selected
+     * @param animeButton = the anime button that was clicked
+     */
     public void enableAnimePanel (AnimeScrollPanel category, JButton animeButton) {
         
         // Find the anime that got picked
@@ -165,32 +186,60 @@ public class HomePageController extends PageController {
             gui.getCategories()[1].setEnabledUserInput(false);
             
             // Get the trending anime
-            ArrayList<Anime> categoryTemp1;
-            categoryTemp1 = JikanController.getSeason(year, season);
-            categoryTemp1.sort(Collections.reverseOrder());
+            ArrayList<Anime> categoryTemp;
+            categoryTemp = JikanController.getSeason(year, season);
+            categoryTemp.sort(Collections.reverseOrder());
             
-            // Filter categoryTemp1 if the user chose a filter
+            // Filter categoryTemp if the user chose a filter
             if (validGenres.size()!=0) {
-                categoryTemp1 = filterGenre(categoryTemp1, validGenres);
+                
+                categoryTemp = filterGenre(categoryTemp, validGenres);
+                
+                if (categoryTemp.size()==0) {
+                    displayedEmptyErrorMessage();
+                    return;
+                }
+                
             }
-            
-            gui.getCategories()[0].setAnimeCategory(categoryTemp1);
-            
+    
             // Get the up and coming anime
             Season season2 = Season.parseSeason(season);
-            categoryTemp1 = JikanController.getSeason(
+            categoryTemp = JikanController.getSeason(
                     season2!=Season.FALL ? year:Integer.toString(Integer.parseInt(year)+1),
                     season2.getNextSeason().toString().toLowerCase()
             );
-            categoryTemp1.sort(Collections.reverseOrder());
+            categoryTemp.sort(Collections.reverseOrder());
     
-            // Filter categoryTemp1 if the user chose a filter
+            // Filter categoryTemp if the user chose a filter
             if (validGenres.size()!=0) {
-                categoryTemp1 = filterGenre(categoryTemp1, validGenres);
+                
+                categoryTemp = filterGenre(categoryTemp, validGenres);
+    
+                if (categoryTemp.size()==0) {
+                    displayedEmptyErrorMessage();
+                    return;
+                }
+                
             }
-            gui.getCategories()[2].setAnimeCategory(categoryTemp1);
+            
+            gui.getCategories()[0].setAnimeCategory(categoryTemp);
+            gui.getCategories()[2].setAnimeCategory(categoryTemp);
     
         }
+        
+    }
+    
+    /**
+     * Display an error message when no anime could be found with the filters
+     */
+    public void displayedEmptyErrorMessage () {
+        
+        JOptionPane.showMessageDialog(
+                ApplicationController.getFrame(),
+                "No anime match the filters! Try again.",
+                "Alter",
+                JOptionPane.ERROR_MESSAGE
+        );
         
     }
     
@@ -241,6 +290,9 @@ public class HomePageController extends PageController {
         
     }
     
+    /**
+     * Inquire the user for their genre filter
+     */
     public void decideGenreFilter () {
     
         Object[] message = {
@@ -252,6 +304,9 @@ public class HomePageController extends PageController {
     
     }
     
+    /**
+     * @see PageController#mouseDragged(MouseEvent)
+     */
     @Override
     public void mouseDragged (MouseEvent e) {
         super.mouseDragged(e);

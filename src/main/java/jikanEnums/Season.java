@@ -2,10 +2,14 @@ package jikanEnums;
 
 import java.util.HashMap;
 
+/**
+ * Enum class for the season the anime was released
+ */
 public enum Season {
 
     WINTER, SPRING, SUMMER, FALL;
     
+    // Helper to parse from a string to a season
     private static final HashMap<String, Season> SEASON_PARSER = new HashMap<>() {{
         
         for (Season season: Season.values()) {
@@ -14,7 +18,7 @@ public enum Season {
         
     }};
     
-    String season;
+    private String season;
     
     Season () {
         season = super.toString().charAt(0)+super.toString().toLowerCase().substring(1);
@@ -25,6 +29,9 @@ public enum Season {
         return season;
     }
     
+    /**
+     * @return the next season from the current one
+     */
     public Season getNextSeason () {
         
         switch (this) {

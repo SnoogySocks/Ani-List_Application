@@ -14,16 +14,20 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 
+/**
+ * The controller for the recommend page
+ * @see PageController
+ */
 public class RecommendPageController extends PageController {
     
     private final RecommendPage gui;
-    private final ArrayList<AnimeImage> displayedAnime;
+    private final ArrayList<AnimeImage> displayedAnime;     // Track the displayed anime that got generated
     
-    private final Point draggedAnimeOGLocation;
-    private AnimeImage draggedAnime;
+    private final Point draggedAnimeOGLocation;         // Track the original location of the dragged anime
+    private AnimeImage draggedAnime;                    // The image to the dragged anime
     
-    private final HashSet<Anime> uninterestedAnime;
-    private final HashSet<Anime> interestedAnime;
+    private final HashSet<Anime> uninterestedAnime;     // Anime the user is not interested in
+    private final HashSet<Anime> interestedAnime;       // Anime the user is interested in
     
     public RecommendPageController (RecommendPage gui) {
         
@@ -75,10 +79,28 @@ public class RecommendPageController extends PageController {
         
             }
             
+            // Toggle the mode of the page
             toggleRecommending();
+    
+            // Display a help message to the user when transitioning to recommend mode
+            if (!gui.getTitlePanel().isVisible()) {
+                JOptionPane.showMessageDialog(
+                        ApplicationController.getFrame(),
+                        "Drag anime you are interested in to the\n"+
+                                "green, and uninterested in the red. The \n"+
+                                "program will try to guess your interests\n" +
+                                "by moving the anime towards either\n"+
+                                "the interested or uninterested panels.\n\n"+
+                                "Double click an image to view more about\n"+
+                                "it.",
+                        "Information Message",
+                        JOptionPane.INFORMATION_MESSAGE
+                );
+            }
             
         }
     
+        // Disable the anime panel when the back button is pressed
         if (e.getSource()==gui.getAnimePanel().getBackButton()) {
             gui.disableAnimePanel();
         }
@@ -260,6 +282,12 @@ public class RecommendPageController extends PageController {
         
     }
     
+    /**
+     * Move the anime towards either interested or uninterested
+     * based on the user's interest in the anime the user selected
+     * @param anime = the anime the user selected
+     * @param isInterested = whether the user is interested in the anime
+     */
     public void caterUserPreferences (Anime anime, boolean isInterested) {
     
         // Record the anime
@@ -269,18 +297,14 @@ public class RecommendPageController extends PageController {
             uninterestedAnime.add(anime);
         }
         
-        double[] totalUserGenreScore = Page.getAniList().getTotalUserGenreScore();
-        if (anime.getAverageScore()==0) {
-            System.out.println("not ok");
-        }
-        
         // Iterate through the anime's genres
+        double[] totalUserGenreScore = Page.getAniList().getTotalUserGenreScore();
         for (Genre genre: anime.getGenres()) {
         
             // Evaluate the genre
             totalUserGenreScore[genre.getGenreID()] += isInterested
                     ? 15-anime.getAverageScore()
-                    : -2*(anime.getAverageScore()-5);
+                    : -Math.pow(2.1, anime.getAverageScore()-5);
         
         }
         
@@ -321,6 +345,10 @@ public class RecommendPageController extends PageController {
     
     }
     
+    /**
+     * Display a summary of all the anime the user selected
+     * and their preferences towards genre
+     */
     public void evaluateResults () {
     
         // Obtain the uninterested anime as an array
@@ -345,7 +373,7 @@ public class RecommendPageController extends PageController {
     
         // Summarize the current recommending session to the user
         Object[] message = {
-                "The anime you are not interested in are...",
+                "The anime you are not interested in are...\n",
                 uninterestedAnime
         };
         
@@ -357,7 +385,7 @@ public class RecommendPageController extends PageController {
         );
         
         message = new Object[] {
-                "The anime you are not interested in are...",
+                "The anime you are not interested in are...\n",
                 interestedAnime
         };
         
@@ -372,7 +400,7 @@ public class RecommendPageController extends PageController {
         double[] totalUserGenreScore = Page.getAniList().getTotalUserGenreScore();
         
         Genre mostFavouriteGenre, mostHatedGenre;
-        mostFavouriteGenre = mostHatedGenre = Genre.ACTION;
+        mostFavouriteGenre = mostHatedGenre = Genre.NOTHING;
         for (Genre genre: Genre.values()) {
             
             // Replace the mostFavouriteGenre with genre if
@@ -390,6 +418,13 @@ public class RecommendPageController extends PageController {
             }
             
         }
+        
+        // There is no hated or favourite genre if the genre score is 0
+        if (totalUserGenreScore[mostFavouriteGenre.getGenreID()]==0) {
+            mostFavouriteGenre = Genre.NOTHING;
+        } else if (totalUserGenreScore[mostHatedGenre.getGenreID()]==0) {
+            mostHatedGenre = Genre.NOTHING;
+        }
     
         // Provide the user with the least and most favourite genre
         JOptionPane.showMessageDialog(
@@ -399,6 +434,13 @@ public class RecommendPageController extends PageController {
                         +"\nand your most favourite is "
                         +mostFavouriteGenre
         );
+    
+        JOptionPane.showMessageDialog(
+                ApplicationController.getFrame(),
+                "Adding interested anime to your Ani-List..."
+        );
+    
+    
     
     }
     

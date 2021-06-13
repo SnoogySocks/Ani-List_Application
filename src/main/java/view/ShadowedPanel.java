@@ -3,34 +3,46 @@ package view;
 import javax.swing.*;
 import java.awt.*;
 
-public class ItemPanel extends JPanel {
+/**
+ * A JPanel that has a shadow under it
+ */
+public class ShadowedPanel extends JPanel {
     
+    // GUI constants
     public static final Color SHADOW_COLOUR = new Color(67, 67, 67);
     public static final int SHADOW_OFFSET = 15;
     
+    // GUI
     private final JPanel displayPanel;
     private final JPanel shadow;
     
-    public ItemPanel (Color displayPanelColour) {
+    public ShadowedPanel (Color displayPanelColour) {
         
+        // Set up the panel
         setLayout(null);
         setOpaque(false);
     
+        // Initialize displayPanel
         displayPanel = new JPanel();
         displayPanel.setLayout(null);
         displayPanel.setBackground(displayPanelColour);
         add(displayPanel);
         
+        // Initialize the shadow
         shadow = new JPanel();
         shadow.setBackground(SHADOW_COLOUR);
         add(shadow);
         
     }
     
+    // Getter
     public JPanel getDisplayPanel () {
         return displayPanel;
     }
     
+    /**
+     * Set the size of the panel relative to the displayPanel
+     */
     @Override
     public void setSize (int width, int height) {
         
@@ -40,6 +52,9 @@ public class ItemPanel extends JPanel {
         
     }
     
+    /**
+     * Set the bounds of the anime relative to the display panel
+     */
     @Override
     public void setBounds (int x, int y, int width, int height) {
         

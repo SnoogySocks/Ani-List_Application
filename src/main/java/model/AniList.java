@@ -4,6 +4,12 @@ import jikanEnums.Genre;
 
 import java.util.*;
 
+/**
+ * Records
+ * - User's genre preferences
+ * - Anime recommendation history
+ * - The user's anime
+ */
 public class AniList {
     
     private final double[] totalUserGenreScore;           // Tracks the user's preferred genre
@@ -11,18 +17,14 @@ public class AniList {
     private final HashSet<Anime> myAnimeList;             // Stores the user's preferred anime
     
     public AniList () {
-    
-        Genre[] genres = Genre.values();
-        totalUserGenreScore = new double[genres.length+1];
-        for (Genre genre : genres) {
-            totalUserGenreScore[genre.getGenreID()] = 0d;
-        }
         
+        totalUserGenreScore = new double[Genre.values().length+1];
         alreadyRecommended = new HashSet<>();
         myAnimeList = new HashSet<>();
     
     }
     
+    // Getters
     public double[] getTotalUserGenreScore () {
         return totalUserGenreScore;
     }
@@ -31,17 +33,32 @@ public class AniList {
         return alreadyRecommended;
     }
     
+    public HashSet<Anime> getMyAnimeList () {
+        return myAnimeList;
+    }
+    
+    /**
+     * Add the anime to the user's Ani-List
+     * @param anime = anime to add
+     */
     public void add (Anime anime) {
         
+        // Add it to the list
         myAnimeList.add(anime);
+        
+        // Record the anime to not recommend in the algorithm
         alreadyRecommended.add(anime.getMalID());
         
+        // Score the genre of the anime
         for (Genre genre: anime.getGenres()) {
             totalUserGenreScore[genre.getGenreID()] += 15-anime.getUserScore();
         }
         
     }
     
+    /**
+     * @return a sorted user's Ani-List in ascending order based on the user's score
+     */
     public ArrayList<Anime> generateAscendingList () {
         
         ArrayList<Anime> arr = new ArrayList<>(myAnimeList);
@@ -50,6 +67,9 @@ public class AniList {
         
     }
     
+    /**
+     * @return a sorted user's Ani-List in descending order based on the user's score
+     */
     public ArrayList<Anime> generateDescendingList () {
     
         ArrayList<Anime> arr = new ArrayList<>(myAnimeList);

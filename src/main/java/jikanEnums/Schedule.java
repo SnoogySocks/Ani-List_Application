@@ -1,5 +1,8 @@
 package jikanEnums;
 
+/**
+ * Enum class for the day of the week
+ */
 public enum Schedule {
 
     MONDAY,
@@ -10,15 +13,15 @@ public enum Schedule {
     SATURDAY,
     SUNDAY;
     
-    private String name;
+    private String weekDay;
     
     Schedule () {
-        this.name = super.toString().toLowerCase();
+        this.weekDay = super.toString().toLowerCase();
     }
     
     @Override
     public String toString () {
-        return name;
+        return weekDay;
     }
     
 }

@@ -1,5 +1,8 @@
 package jikanEnums;
 
+/**
+ * Enum to indicate the user's status for an anime
+ */
 public enum Status {
     
     ON_HOLD, WATCHING, COMPLETED, DROPPED, NA;

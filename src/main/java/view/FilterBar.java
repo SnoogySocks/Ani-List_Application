@@ -1,6 +1,5 @@
 package view;
 
-import jikanEnums.Genre;
 import jikanEnums.Season;
 
 import javax.swing.*;
@@ -9,8 +8,12 @@ import java.util.ArrayList;
 
 import static view.Page.*;
 
-public class FilterBar extends ItemPanel {
-
+/**
+ * Lets the user filter anime by season, year, and genre
+ */
+public class FilterBar extends ShadowedPanel {
+    
+    // GUI
     private final JLabel filterLabel;
     private final ArrayList<JLabel> filterLabels;
     private final ArrayList<JComponent> filterOptions;
@@ -19,6 +22,7 @@ public class FilterBar extends ItemPanel {
         
         super(DIALOGUE_COLOUR);
         
+        // Initialize the filter label
         filterLabel = new JLabel("Filters");
         filterLabel.setBounds(PADDING*2, PADDING, PADDING*5, PADDING_Y);
         filterLabel.setFont(CATEGORY_FONT);
@@ -31,6 +35,7 @@ public class FilterBar extends ItemPanel {
                 "Season", "Year", "Genre"
         };
         
+        // Initialize the filter option parameters
         filterOptions = new ArrayList<>();
         ArrayList<String>[] optionsParameters = new ArrayList[shouldAddGenreParameter? 3:2];
         for (int i = 0; i<optionsParameters.length; ++i) {
@@ -65,18 +70,22 @@ public class FilterBar extends ItemPanel {
             // Create filterOptions and add options to it
             JComponent filterOption;
             
+            // If the filter option is not genre then
             if (i!=2) {
                 
+                // Add the options into the filter option
                 filterOption = new JComboBox<String>();
                 JComboBox<String> comboBox = (JComboBox<String>) filterOption;
                 for (String option: optionsParameters[i]) {
                     comboBox.addItem(option);
                 }
                 
+            // Otherwise initialize the genre button
             } else {
                 filterOption = new JButton("Select");
             }
     
+            // Set up the filterOption GUI
             filterOption.setBounds(
                     filterLabels.get(i).getX(),
                     Page.getBottomY(filterLabels.get(i)),
@@ -97,10 +106,16 @@ public class FilterBar extends ItemPanel {
         
     }
     
+    // Getter
     public ArrayList<JComponent> getFilterOptions () {
         return filterOptions;
     }
     
+    /**
+     * Disable the user input
+     * @param enabled = decides whether to enable or disable the input
+     * @see Page#setEnabledUserInput(boolean)
+     */
     public void setEnableUserInput (boolean enabled) {
         for (JComponent comp: filterOptions) {
             comp.setEnabled(enabled);
