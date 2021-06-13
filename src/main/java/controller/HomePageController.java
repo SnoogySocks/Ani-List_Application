@@ -248,7 +248,7 @@ public class HomePageController extends PageController {
                 genreFilter
         };
         
-        JOptionPane.showMessageDialog(gui, message, "Genre Filter", JOptionPane.QUESTION_MESSAGE);
+        JOptionPane.showMessageDialog(ApplicationController.getFrame(), message, "Genre Filter", JOptionPane.QUESTION_MESSAGE);
     
     }
     

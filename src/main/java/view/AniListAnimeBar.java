@@ -1,6 +1,5 @@
 package view;
 
-import jikanEnums.Status;
 import model.Anime;
 
 import javax.swing.*;
@@ -46,7 +45,7 @@ public class AniListAnimeBar extends JPanel {
         titleLabel.setForeground(TEXT_COLOUR);
         add(titleLabel);
         
-        scoreLabel = new JLabel(Integer.toString(anime.getScore()));
+        scoreLabel = new JLabel(Integer.toString(anime.getUserScore()));
         scoreLabel.setBounds(WIDTH-PADDING*6, PADDING_Y, PADDING*5, PADDING_Y);
         scoreLabel.setHorizontalAlignment(JLabel.CENTER);
         scoreLabel.setFont(DIALOGUE_FONT);

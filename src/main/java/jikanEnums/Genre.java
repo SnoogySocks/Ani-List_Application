@@ -31,12 +31,11 @@ public enum Genre {
         put("Slice of Life", SLICE_OF_LIFE);
         remove(SCI_FI.toString());
         put("Sci-Fi", SCI_FI);
-        remove(MARTIAL_ARTS.toString());
         
     }};
     
-    public String request;
-    public int genreID;
+    private final String request;
+    private final int genreID;
     
     Genre (int genreID) {
         

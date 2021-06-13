@@ -3,6 +3,8 @@ package view;
 import controller.JikanController;
 
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseEvent;
 
 public class MainFrame extends JFrame {
     
@@ -17,12 +19,8 @@ public class MainFrame extends JFrame {
         
     }
     
-    public int getXOnFrame (int xOnScreen) {
-        return xOnScreen-getX();
-    }
-    
-    public int getYOnFrame (int yOnScreen) {
-        return yOnScreen-getY();
+    public Point getMouseOnFrame (MouseEvent e) {
+        return new Point(e.getXOnScreen()-getX(), e.getYOnScreen()-getY());
     }
     
 }

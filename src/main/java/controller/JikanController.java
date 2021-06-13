@@ -3,6 +3,7 @@ package controller;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
+import jikanEnums.Genre;
 import jikanEnums.Schedule;
 import model.Anime;
 import org.json.JSONArray;
@@ -65,10 +66,25 @@ public class JikanController {
         
         // Initialize the anime
         for (int i = 0; i<animeList.length(); ++i) {
+            
             JSONObject animeProperties = animeList.getJSONObject(i);
             Anime anime = new Anime();
+            
             createAnime(anime, animeProperties, isTop);
-            arr.add(anime);
+    
+            // If the anime is for 18+ then don't add it to the list
+            boolean doNotAdd = false;
+            for (Genre genre: anime.getGenres()) {
+                if (genre==Genre.HENTAI || genre==Genre.YURI || genre==Genre.YAOI) {
+                    doNotAdd = true;
+                    break;
+                }
+            }
+            
+            if (!doNotAdd) {
+                arr.add(anime);
+            }
+            
         }
         return arr;
     

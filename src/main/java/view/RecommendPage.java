@@ -2,7 +2,6 @@ package view;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class RecommendPage extends Page {
     
@@ -52,8 +51,7 @@ public class RecommendPage extends Page {
         numAnimeToGenerateComboBox = new JComboBox<>();
         
         // Put items into the combo box
-        int change = 12;
-        for (int numAnime = change; numAnime<=100; numAnime += change += 4) {
+        for (int numAnime = 10; numAnime<=50; numAnime += 10) {
             numAnimeToGenerateComboBox.addItem(numAnime);
         }
         
@@ -74,7 +72,7 @@ public class RecommendPage extends Page {
         uninterestedPanel.setBackground(new Color(234, 153, 153));
         add(uninterestedPanel);
         
-        uninterestedLabel = new JLabel("Interested");
+        uninterestedLabel = new JLabel("Uninterested");
         uninterestedLabel.setBounds(0, PADDING_Y, uninterestedPanel.getWidth(), PADDING_Y);
         uninterestedLabel.setHorizontalAlignment(JLabel.CENTER);
         uninterestedLabel.setFont(Page.CATEGORY_FONT);
@@ -94,7 +92,7 @@ public class RecommendPage extends Page {
         interestedLabel.setForeground(TEXT_COLOUR);
         interestedPanel.add(interestedLabel);
         
-        switchToRecommending(false);
+        setToRecommending(false);
         
     }
     
@@ -114,8 +112,8 @@ public class RecommendPage extends Page {
         return uninterestedPanel;
     }
     
-    public void switchToRecommending (boolean isRecommending) {
-
+    public void setToRecommending (boolean isRecommending) {
+        
         getTitlePanel().setVisible(!isRecommending);
         interestedPanel.setVisible(isRecommending);
         uninterestedPanel.setVisible(isRecommending);
@@ -127,7 +125,7 @@ public class RecommendPage extends Page {
             switchModesButton.setText("<html>Press to Stop<br>Recommending</html>");
             switchModesButton.setLocation(switchModesButton.getX(), 0);
         }
-
+        
     }
     
     @Override

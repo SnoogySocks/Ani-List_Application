@@ -24,6 +24,7 @@ public class AniListPageController extends PageController {
     public void setUpListeners () {
     
         super.setUpListeners();
+        gui.getSortComboBox().addActionListener(this);
         for (AniListAnimeBar bar: gui.getAnimeBars()) {
             bar.getEditButton().addActionListener(this);
         }
@@ -33,21 +34,30 @@ public class AniListPageController extends PageController {
     @Override
     public void actionPerformed (ActionEvent e) {
     
+        if (e.getSource()==gui.getSortComboBox()) {
+            generateAniList();
+            return;
+        }
+        
         for (AniListAnimeBar bar: gui.getAnimeBars()) {
             
             // If the source is an edit button then inquire
             // the user about the status of the anime
-            if (e.getSource()!=bar.getEditButton()) {
-                continue;
+            if (e.getSource()==bar.getEditButton()) {
+    
+                // Update the anime with the new status
+                inquireAnimeStatus(bar.getAnime());
+    
+                // Create a new updated list
+                generateAniList();
+                break;
+                
             }
             
-            // Update the anime with the new status
-            inquireAnimeStatus(bar.getAnime());
-            
-            // Create a new updated list
-            generateAniList();
-            break;
-            
+        }
+    
+        if (e.getSource()==gui.getAnimePanel().getBackButton()) {
+            gui.disableAnimePanel();
         }
         
     }
@@ -57,7 +67,9 @@ public class AniListPageController extends PageController {
      */
     public void generateAniList () {
         
-        final ArrayList<Anime> aniList = Page.getAniList().generateDescendingList();
+        final ArrayList<Anime> aniList = gui.isOrderedDescending()
+                ? Page.getAniList().generateDescendingList()
+                : Page.getAniList().generateAscendingList();
         final ArrayList<AniListAnimeBar> animeBars = gui.getAnimeBars();
         
         // Remove all the current ani bars from the display

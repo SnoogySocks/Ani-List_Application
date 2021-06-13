@@ -100,6 +100,10 @@ public class AniListPage extends Page {
         return sortComboBox;
     }
     
+    public boolean isOrderedDescending () {
+        return getSortComboBox().getSelectedItem().equals("Descending");
+    }
+    
     public ItemPanel getAniListPanel () {
         return aniListPanel;
     }

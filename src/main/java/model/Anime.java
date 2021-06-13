@@ -34,7 +34,7 @@ public class Anime implements Comparable<Anime> {
     
     // User's status
     private Status userStatus;
-    private int score;
+    private int userScore;
     
     // For up and coming anime only
     boolean top;
@@ -89,7 +89,7 @@ public class Anime implements Comparable<Anime> {
         producers = anime.producers;
     
         userStatus = Status.NA;
-        score = 0;
+        userScore = 0;
         
     }
     
@@ -114,7 +114,7 @@ public class Anime implements Comparable<Anime> {
         this.top = top;
     
         this.userStatus = Status.NA;
-        this.score = 0;
+        this.userScore = 0;
         
         if (genres!=null) {
             
@@ -261,12 +261,12 @@ public class Anime implements Comparable<Anime> {
         this.userStatus = userStatus;
     }
     
-    public int getScore () {
-        return score;
+    public int getUserScore () {
+        return userScore;
     }
     
-    public void setScore (int score) {
-        this.score = score;
+    public void setUserScore (int userScore) {
+        this.userScore = userScore;
     }
     
     @Override

@@ -71,11 +71,6 @@ public class HomePage extends Page {
         
         }
         
-        // TODO remove this later
-//        Anime anime = categories[1].getDisplayedAnime()[0].getAnime();
-//        jikanController.setAnimePanel(anime);
-//        enableAnimePanel(anime);
-        
     }
     
     public AnimeScrollPanel[] getCategories () {

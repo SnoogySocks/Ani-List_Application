@@ -3,7 +3,6 @@ package controller;
 import jikanEnums.Status;
 import model.Anime;
 import view.AnimePanel;
-import view.MainFrame;
 import view.Page;
 
 import javax.swing.*;
@@ -50,6 +49,10 @@ public abstract class PageController extends MouseInputAdapter implements Action
     @Override
     public void mouseReleased (MouseEvent e) {
     
+        if (e.getSource()!=animePanel.getDisplayedAnime()) {
+            return;
+        }
+        
         if (isOnDropBox && isDragging) {
             inquireAnimeStatus(animePanel.getDisplayedAnime().getAnime());
             Page.getAniList().add(animePanel.getDisplayedAnime().getAnime());
@@ -83,7 +86,7 @@ public abstract class PageController extends MouseInputAdapter implements Action
         );
     
         anime.setUserStatus(userStatus);
-        anime.setScore(userScore);
+        anime.setUserScore(userScore);
         
     }
     
@@ -94,9 +97,11 @@ public abstract class PageController extends MouseInputAdapter implements Action
     @Override
     public void mouseDragged (MouseEvent e) {
         
+        if (e.getSource()!=animePanel.getDisplayedAnime()) {
+            return;
+        }
         // If the mouse is dragging the image is dragged with it
-        final MainFrame frame = ApplicationController.getFrame();
-        Point mouseLocation = new Point(frame.getXOnFrame(e.getXOnScreen()), frame.getYOnFrame(e.getYOnScreen()));
+        Point mouseLocation = ApplicationController.getFrame().getMouseOnFrame(e);
         
         if (isDragging) {
             animePanel.getDisplayedAnime().setLocation(
