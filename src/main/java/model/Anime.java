@@ -270,6 +270,11 @@ public class Anime implements Comparable<Anime> {
     }
     
     @Override
+    public String toString () {
+        return title;
+    }
+    
+    @Override
     public int compareTo (Anime anime) {
         return Double.compare(averageScore, anime.averageScore);
     }

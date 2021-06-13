@@ -67,7 +67,9 @@ public class AniListPageController extends PageController {
      */
     public void generateAniList () {
         
-        final ArrayList<Anime> aniList = gui.isOrderedDescending()
+        boolean isOrderedDescending = gui.isOrderedDescending();
+        
+        final ArrayList<Anime> aniList = isOrderedDescending
                 ? Page.getAniList().generateDescendingList()
                 : Page.getAniList().generateAscendingList();
         final ArrayList<AniListAnimeBar> animeBars = gui.getAnimeBars();
@@ -82,7 +84,9 @@ public class AniListPageController extends PageController {
         for (Anime anime: aniList) {
             
             int back = animeBars.size();
-            animeBars.add(new AniListAnimeBar(anime, back+1));
+            int rank = isOrderedDescending ? back+1 : aniList.size()-back;
+            
+            animeBars.add(new AniListAnimeBar(anime, rank));
             animeBars.get(back).setLocation(0, Page.PADDING+Page.PADDING_Y+AniListAnimeBar.HEIGHT*back);
             animeBars.get(back).getEditButton().addActionListener(this);
             gui.getAniListPanel().getDisplayPanel().add(animeBars.get(back));
@@ -96,6 +100,7 @@ public class AniListPageController extends PageController {
                         +AniListAnimeBar.HEIGHT*aniList.size()
         );
         
+        // Readjust the size of the screen
         gui.getActualSize().setSize(new Dimension(
                 Page.WIDTH,
                 Page.HEIGHT+AniListAnimeBar.HEIGHT*aniList.size()

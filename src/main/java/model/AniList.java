@@ -31,10 +31,6 @@ public class AniList {
         return alreadyRecommended;
     }
     
-    public HashSet<Anime> getMyAnimeList () {
-        return myAnimeList;
-    }
-    
     public void add (Anime anime) {
         
         myAnimeList.add(anime);

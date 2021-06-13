@@ -47,6 +47,12 @@ public class RecommendPageController extends PageController {
     
         if (e.getSource()==gui.getSwitchModesButton()) {
     
+            // If the user made a decision with an anime then
+            // evaluate the session
+            if (uninterestedAnime.size()!=0 || interestedAnime.size()!=0) {
+                evaluateResults();
+            }
+            
             // Only generate the anime if it is switching from
             // non-recommending to recommending mode
             if (gui.getTitlePanel().isVisible()) {
@@ -149,7 +155,6 @@ public class RecommendPageController extends PageController {
         for (Anime anime: animeList) {
             
             AnimeImage animeImage = new AnimeImage(anime, AnimeImage.SMALL_SIZE);
-            Page.getAniList().getAlreadyRecommended().add(animeImage.getAnime().getMalID());
             displayedAnime.add(animeImage);
             
             // Generate a random location within the screen
@@ -215,13 +220,6 @@ public class RecommendPageController extends PageController {
                 
                 draggedAnime = null;
                 
-                // Notify the user
-//                JOptionPane.showMessageDialog(
-//                        ApplicationController.getFrame(),
-//                        "You cannot drag already categorized anime",
-//                        "Alert", JOptionPane.ERROR_MESSAGE
-//                );
-                
             } else {
                 draggedAnimeOGLocation.setLocation(draggedAnime.getLocation());
             }
@@ -260,8 +258,6 @@ public class RecommendPageController extends PageController {
         draggedAnime = null;
         gui.repaint();
         
-        evaluateResults();
-        
     }
     
     public void caterUserPreferences (Anime anime, boolean isInterested) {
@@ -283,20 +279,8 @@ public class RecommendPageController extends PageController {
         
             // Evaluate the genre
             totalUserGenreScore[genre.getGenreID()] += isInterested
-            
-                    // Add 15-animeScore to the current genre’s score (lower scoring
-                    // anime (score of around 5) that the user is interested
-                    // in is more influential than a high scoring anime the
-                    // user is interested in, so lower scoring anime provide
-                    // higher genre scores than higher ones)
                     ? 15-anime.getAverageScore()
-            
-                    // Higher scoring anime that the user is uninterested
-                    // in is more influential than a lower scoring anime
-                    // the user is uninterested in, so higher scoring anime
-                    // provide quadratically lower scores than lower scoring
-                    // ones
-                    : -2.3*(anime.getAverageScore()-5);
+                    : -2*(anime.getAverageScore()-5);
         
         }
         
@@ -339,7 +323,82 @@ public class RecommendPageController extends PageController {
     
     public void evaluateResults () {
     
+        // Obtain the uninterested anime as an array
+        Anime[] uninterestedAnime = new Anime[this.uninterestedAnime.size()];
+        this.uninterestedAnime.toArray(uninterestedAnime);
     
+        // Record already categorized anime
+        for (Anime anime: this.uninterestedAnime) {
+            Page.getAniList().getAlreadyRecommended().add(anime.getMalID());
+            
+            
+        }
+        
+        // Obtain the interested anime as an array
+        Anime[] interestedAnime = new Anime[this.interestedAnime.size()];
+        this.interestedAnime.toArray(interestedAnime);
+    
+        // Add interested anime to the user's Ani-List
+        for (Anime anime: this.interestedAnime) {
+            Page.getAniList().add(anime);
+        }
+    
+        // Summarize the current recommending session to the user
+        Object[] message = {
+                "The anime you are not interested in are...",
+                uninterestedAnime
+        };
+        
+        JOptionPane.showMessageDialog(
+                ApplicationController.getFrame(),
+                message,
+                "Uninterested Anime",
+                JOptionPane.INFORMATION_MESSAGE
+        );
+        
+        message = new Object[] {
+                "The anime you are not interested in are...",
+                interestedAnime
+        };
+        
+        JOptionPane.showMessageDialog(
+                ApplicationController.getFrame(),
+                message,
+                "Interested Anime",
+                JOptionPane.INFORMATION_MESSAGE
+        );
+        
+        // Find the user's most and least favourite genre
+        double[] totalUserGenreScore = Page.getAniList().getTotalUserGenreScore();
+        
+        Genre mostFavouriteGenre, mostHatedGenre;
+        mostFavouriteGenre = mostHatedGenre = Genre.ACTION;
+        for (Genre genre: Genre.values()) {
+            
+            // Replace the mostFavouriteGenre with genre if
+            // the score is less than it
+            if (totalUserGenreScore[mostFavouriteGenre.getGenreID()]
+                    <totalUserGenreScore[genre.getGenreID()]) {
+                mostFavouriteGenre = genre;
+            }
+    
+            // Replace the mostHatedGenre with genre if
+            // the score is greater than it
+            if (totalUserGenreScore[mostHatedGenre.getGenreID()]
+                    >totalUserGenreScore[genre.getGenreID()]) {
+                mostHatedGenre = genre;
+            }
+            
+        }
+    
+        // Provide the user with the least and most favourite genre
+        JOptionPane.showMessageDialog(
+                ApplicationController.getFrame(),
+                "Your most hated genre is "
+                        +mostHatedGenre
+                        +"\nand your most favourite is "
+                        +mostFavouriteGenre
+        );
     
     }
     

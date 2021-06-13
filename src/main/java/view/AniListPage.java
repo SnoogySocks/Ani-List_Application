@@ -27,6 +27,9 @@ public class AniListPage extends Page {
     
         setActualSize(new Dimension(WIDTH, HEIGHT-38));
         
+        // No need for the filter bar
+        getTitlePanel().getFilterBar().setVisible(false);
+        
         sortPanel = new ItemPanel(DIALOGUE_COLOUR);
         sortPanel.setBounds(
             PADDING*8-ItemPanel.SHADOW_OFFSET, Page.getBottomY(getTitlePanel())+PADDING_Y,

@@ -122,7 +122,7 @@ public class RecommendPage extends Page {
             switchModesButton.setText("<html>Press to Start<br>Recommending</html>");
             switchModesButton.setLocation(switchModesButton.getX(), getTitlePanel().getHeight());
         } else {
-            switchModesButton.setText("<html>Press to Stop<br>Recommending</html>");
+            switchModesButton.setText("<html>Press to Finish<br>Recommending</html>");
             switchModesButton.setLocation(switchModesButton.getX(), 0);
         }
         
