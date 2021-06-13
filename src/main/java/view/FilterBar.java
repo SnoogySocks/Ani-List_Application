@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import static view.Page.*;
 
 /**
+ * The filter bar in the title panel.
  * Lets the user filter anime by season, year, and genre
  */
 public class FilterBar extends ShadowedPanel {
