@@ -34,7 +34,8 @@ import controller.ApplicationController;
  *  5. Java swing
  *  6. Object oriented programming
  *  7. Polymorphism
- *  8. File reading
+ *  8. File reading and writing
+ *  9. Serializable to save and load ani-lists
  *
  * Areas of Concern:
  *  - Due to time constraints, some features were omitted:
@@ -76,9 +77,7 @@ import controller.ApplicationController;
 public class Main {
     
     public static void main (String[] args) {
-        
         new ApplicationController();
-        
     }
     
 }

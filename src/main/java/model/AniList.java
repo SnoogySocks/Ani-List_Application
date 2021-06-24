@@ -2,6 +2,7 @@ package model;
 
 import jikanEnums.Genre;
 
+import java.io.Serializable;
 import java.util.*;
 
 /**
@@ -10,7 +11,9 @@ import java.util.*;
  * - Anime recommendation history
  * - The user's anime
  */
-public class AniList {
+public class AniList implements Serializable {
+    
+    private static final long serialVersionUID = -1271192980665485395L;
     
     private final double[] totalUserGenreScore;           // Tracks the user's preferred genre
     private final HashSet<Integer> alreadyRecommended;    // Contains the malIDs of already recommended anime
@@ -22,6 +25,19 @@ public class AniList {
         alreadyRecommended = new HashSet<>();
         myAnimeList = new HashSet<>();
     
+    }
+    
+    public void setAniList (AniList rhs) {
+        
+        if (rhs==null) {
+            return;
+        }
+        
+        System.arraycopy(rhs.totalUserGenreScore, 0,
+                totalUserGenreScore, 0, totalUserGenreScore.length);
+        alreadyRecommended.addAll(rhs.alreadyRecommended);
+        myAnimeList.addAll(rhs.myAnimeList);
+        
     }
     
     // Getters

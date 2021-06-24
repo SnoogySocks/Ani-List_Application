@@ -5,11 +5,15 @@ import jikanEnums.Status;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.Serializable;
+
 /**
  * Anime object that stores its characteristics
  */
-public class Anime implements Comparable<Anime> {
-
+public class Anime implements Comparable<Anime>, Serializable {
+    
+    private static final long serialVersionUID = 3719877704176087546L;
+    
     // Important stuff
     private int malID;
     private String title;

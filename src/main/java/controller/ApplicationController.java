@@ -2,15 +2,20 @@ package controller;
 
 import view.*;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
+import static controller.SerializationController.ANI_LIST_FILE;
 
 /**
  * Initializes the pages and page controllers.
  * Also switches the screen
  */
-public class ApplicationController implements ActionListener {
+public class ApplicationController extends WindowAdapter implements ActionListener {
     
     private static final MainFrame frame = new MainFrame();
     
@@ -55,7 +60,9 @@ public class ApplicationController implements ActionListener {
     }
     
     public void setUpListeners () {
-        
+    
+        frame.addWindowListener(this);
+    
         for (Page page : pages) {
             page.getTitlePanel().getPageComboBox().addActionListener(this);
         }
@@ -100,6 +107,39 @@ public class ApplicationController implements ActionListener {
     @Override
     public void actionPerformed (ActionEvent e) {
         switchPages();
+    }
+    
+    /**
+     * Save the user's ani-list when the window closes
+     */
+    @Override
+    public void windowClosing (WindowEvent e) {
+    
+        if (JOptionPane.showConfirmDialog(
+                frame,
+                "Are you sure you want to exit the program?", "Exit",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE)==JOptionPane.YES_OPTION) {
+    
+            JOptionPane.showMessageDialog(
+                    frame,
+                    "Saving Ani-List...", "Info",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+            
+            SerializationController.serialize(ANI_LIST_FILE, Page.getAniList());
+            System.exit(0);
+            
+        }
+    
+    }
+    
+    /**
+     * Load the user's ani-list when the window opens
+     */
+    @Override
+    public void windowOpened (WindowEvent e) {
+        Page.getAniList().setAniList(SerializationController.deserialize(ANI_LIST_FILE));
     }
     
 }
