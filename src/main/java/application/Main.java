@@ -70,6 +70,8 @@ import controller.ApplicationController;
  *    - unirest-java:1.4.9
  *      (see https://rapidapi.com/blog/how-to-use-an-api-with-java/
  *      and scroll down a bit if not already added)
+ *    - gson-2.8.5
+ *      (see https://github.com/google/gson)
  */
 public class Main {
     
