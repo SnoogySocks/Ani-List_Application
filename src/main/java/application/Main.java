@@ -25,6 +25,7 @@ import controller.ApplicationController;
  *  7. Remembers the user's genre interests until the application is
  *     exited
  *  8. Does not recommend already recommended anime
+ *  9. Saving and loading ani-list
  *
  * Major Skills:
  *  1. RapidApi to set up the API
@@ -35,7 +36,7 @@ import controller.ApplicationController;
  *  6. Object oriented programming
  *  7. Polymorphism
  *  8. File reading and writing
- *  9. Serializable to save and load ani-lists
+ *  9. Serializable to save and load ani-list
  *
  * Areas of Concern:
  *  - Due to time constraints, some features were omitted:
