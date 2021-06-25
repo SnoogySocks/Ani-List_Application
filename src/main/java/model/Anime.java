@@ -96,9 +96,8 @@ public class Anime implements Comparable<Anime>, Serializable {
         top = anime.top;
     
         genres = anime.genres;
-    
+        
         licensors = anime.licensors;
-    
         producers = anime.producers;
     
         userStatus = Status.NA;

@@ -32,15 +32,12 @@ public abstract class Page extends JPanel {
     public static final Color TEXT_COLOUR = new Color(67, 67, 67);
     public static final Color DIALOGUE_COLOUR = new Color(255, 255, 255);
     
-    // User's Ani-List
-    private static final AniList aniList = new AniList();
+    private static final AniList aniList = new AniList();     // User's Ani-List
+    private final JPanel loadingPanel;                        // Loading icon
     
-    // The actual size of the panel hidden with the scroll pane
-    private Dimension actualSize;
+    private Dimension actualSize;            // The actual size of the panel hidden with the scroll pane
     
-    // To display specific information about an anime
-    private final AnimePanel animePanel;
-    
+    private final AnimePanel animePanel;     // To display specific information about an anime
     private final JScrollPane scrollPane;
     private final TitlePanel titlePanel;
     
@@ -56,6 +53,23 @@ public abstract class Page extends JPanel {
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
         scrollPane.setBounds(0, 0, WIDTH-12, HEIGHT-35);
+    
+        loadingPanel = new JPanel();
+        loadingPanel.setLayout(null);
+        loadingPanel.setBackground(ShadowedPanel.SHADOW_COLOUR);
+        loadingPanel.setSize(PADDING*8, PADDING*8);
+    
+        // Center the loadingIcon on the loading panel
+        ImageIcon gif = new ImageIcon("src/main/resources/loadingScreen.gif");
+        JLabel loadingIcon = new JLabel(gif);
+        loadingIcon.setBounds(
+                loadingPanel.getWidth()/2-gif.getIconWidth()/2,
+                loadingPanel.getHeight()/2-gif.getIconHeight()/2,
+                gif.getIconWidth(), gif.getIconHeight()
+        );
+        loadingPanel.add(loadingIcon);
+        loadingPanel.setVisible(false);
+        add(loadingPanel);
     
         // Initialize the anime panel
         this.animePanel = new AnimePanel();
@@ -74,6 +88,10 @@ public abstract class Page extends JPanel {
     
     public TitlePanel getTitlePanel () {
         return titlePanel;
+    }
+    
+    public JPanel getLoadingPanel () {
+        return loadingPanel;
     }
     
     public AnimePanel getAnimePanel () {

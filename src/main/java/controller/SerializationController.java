@@ -7,7 +7,7 @@ import java.io.*;
  */
 public class SerializationController {
     
-    public static final String ANI_LIST_FILE = "src/main/java/savedAniLists/savedAniList.ser";
+    public static final String ANI_LIST_FILE = "./src/main/java/savedAniLists/savedAniList.ser";
     
     /**
      * Writes an object to the specified file path

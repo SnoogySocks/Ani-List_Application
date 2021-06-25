@@ -27,12 +27,9 @@ public class JikanController {
     private static final String X_RAPIDAPI_HOST = "jikan1.p.rapidapi.com";
     private static String x_rapidapi_key;
     
-    /**
-     * Reads the x_rapidapi_key
-     */
-    public static void init () {
+    static {
         
-        // Read the key from the text file for safety
+        // Read the x_rapid_key from the text file for safety
         // (the file would usually be in a separate folder from the project)
         try {
             Scanner input = new Scanner(new File("src/main/resources/APIKey"));
