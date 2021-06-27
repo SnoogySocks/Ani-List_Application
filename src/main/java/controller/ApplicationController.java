@@ -126,16 +126,16 @@ public class ApplicationController extends WindowAdapter implements ActionListen
     }
     
     /**
-     * @param loadingPanel = the loading icon to display
-     * @param task         = the task to perform
-     * @return Creates a swing worker that displays a loading icon while running task
+     * Creates a swing worker that displays a loading icon while running task
+     * @param task = the task to perform
      */
-    public static SwingWorker<Void, Void> runLongTask (JPanel loadingPanel, MyFunction task) {
+    public static void runLongTask (MyFunction task) {
         
-        return new SwingWorker<>() {
+        JPanel loadingPanel = getCurrentPage().getLoadingPanel();
+        new SwingWorker<>() {
             
             @Override
-            protected Void doInBackground () throws Exception {
+            protected Void doInBackground () {
                 
                 loadingPanel.setLocation(
                         WIDTH/2-PADDING*4, HEIGHT/2-PADDING*4
@@ -152,7 +152,7 @@ public class ApplicationController extends WindowAdapter implements ActionListen
                 loadingPanel.setVisible(false);
             }
             
-        };
+        }.execute();
         
     }
     
@@ -162,7 +162,7 @@ public class ApplicationController extends WindowAdapter implements ActionListen
     @Override
     public void actionPerformed (ActionEvent e) {
         if (e.getSource()==getCurrentPage().getTitlePanel().getPageComboBox()) {
-            runLongTask(getCurrentPage().getLoadingPanel(), this::switchPages).execute();
+            runLongTask(this::switchPages);
         }
     }
     

@@ -49,6 +49,11 @@ public class RecommendPageController extends PageController {
     @Override
     public void actionPerformed (ActionEvent e) {
     
+        // Do not do anything if an action is in the progress of being performed
+        if (ApplicationController.getCurrentPage().getLoadingPanel().isVisible()) {
+            return;
+        }
+        
         if (e.getSource()==gui.getSwitchModesButton()) {
     
             // If the user made a decision with an anime then
@@ -57,33 +62,39 @@ public class RecommendPageController extends PageController {
                 evaluateResults();
             }
             
-            // Only generate the anime if it is switching from
-            // non-recommending to recommending mode
-            if (gui.getTitlePanel().isVisible()) {
+            ApplicationController.runLongTask(()->{
+    
+                // Only generate the anime if it is switching from
+                // non-recommending to recommending mode
+                if (gui.getTitlePanel().isVisible()) {
         
-                // Do not toggle the screen if there are not enough anime.
-                if (!generateAnime()) {
-                    return;
+                    // Do not toggle the screen if there are not enough anime.
+                    if (!generateAnime()) {
+                        return;
+                    }
+        
+                    // Clear the interested and uninterested anime
+                    uninterestedAnime.clear();
+                    interestedAnime.clear();
+        
+                    // Otherwise, Remove all the anime images from the screen
+                } else {
+        
+                    for (AnimeImage animeImage: displayedAnime) {
+                        gui.remove(animeImage);
+                    }
+                    displayedAnime.clear();
+        
                 }
-                // Clear the interested and uninterested anime
-                uninterestedAnime.clear();
-                interestedAnime.clear();
-        
-                // Otherwise, Remove all the anime images from the screen
-            } else {
-        
-                for (AnimeImage animeImage: displayedAnime) {
-                    gui.remove(animeImage);
-                }
-                displayedAnime.clear();
-        
-            }
-            
-            // Toggle the mode of the page
-            toggleRecommending();
+    
+                // Toggle the mode of the page
+                toggleRecommending();
+                
+            });
     
             // Display a help message to the user when transitioning to recommend mode
             if (!gui.getTitlePanel().isVisible()) {
+                
                 JOptionPane.showMessageDialog(
                         ApplicationController.getFrame(),
                         "Drag anime you are interested in to the\n"+
@@ -96,6 +107,7 @@ public class RecommendPageController extends PageController {
                         "Information Message",
                         JOptionPane.INFORMATION_MESSAGE
                 );
+                
             }
             
         }
@@ -159,7 +171,6 @@ public class RecommendPageController extends PageController {
             return false;
             
         }
-        
         generateAnime(haveNotRecommended);
         return true;
         
@@ -214,11 +225,16 @@ public class RecommendPageController extends PageController {
     @Override
     public void mouseClicked (MouseEvent e) {
         
-        if (e.getClickCount()==2 && e.getSource() instanceof AnimeImage) {
+        if (!ApplicationController.getCurrentPage().getLoadingPanel().isVisible()
+                && e.getClickCount()==2 && e.getSource() instanceof AnimeImage) {
             
-            Anime pickedAnime = ((AnimeImage) e.getSource()).getAnime();
-            JikanController.setAnimePanel(pickedAnime);
-            gui.enableAnimePanel(pickedAnime);
+            ApplicationController.runLongTask(()->{
+                
+                Anime pickedAnime = ((AnimeImage) e.getSource()).getAnime();
+                JikanController.setAnimePanel(pickedAnime);
+                gui.enableAnimePanel(pickedAnime);
+                
+            });
             
         }
         
@@ -232,7 +248,8 @@ public class RecommendPageController extends PageController {
     public void mousePressed (MouseEvent e) {
         
         super.mousePressed(e);
-        if (!gui.getAnimePanel().isVisible() && e.getSource() instanceof AnimeImage) {
+        if (!ApplicationController.getCurrentPage().getLoadingPanel().isVisible()
+                && !gui.getAnimePanel().isVisible() && e.getSource() instanceof AnimeImage) {
             
             draggedAnime = (AnimeImage) e.getSource();
             
@@ -258,7 +275,8 @@ public class RecommendPageController extends PageController {
     public void mouseReleased (MouseEvent e) {
         
         super.mouseReleased(e);
-        if (e.getSource()!=draggedAnime) {
+        if (ApplicationController.getCurrentPage().getLoadingPanel().isVisible()
+                || e.getSource()!=draggedAnime) {
             return;
         }
     
@@ -303,30 +321,42 @@ public class RecommendPageController extends PageController {
         
             // Evaluate the genre
             totalUserGenreScore[genre.getGenreID()] += isInterested
-                    ? 15-anime.getAverageScore()
-                    : -Math.pow(2.1, anime.getAverageScore()-5);
+                    ? 13-anime.getAverageScore()
+                    : -3*Math.pow(1.8, anime.getAverageScore()-6.5);
         
         }
         
         // Move the displayed anime
         for (AnimeImage animeImage: displayedAnime) {
             
+            Anime anotherAnime = animeImage.getAnime();
+            
             // Do not do anything to already categorized anime
-            if (uninterestedAnime.contains(animeImage.getAnime())
-                    || interestedAnime.contains(animeImage.getAnime())) {
+            if (uninterestedAnime.contains(anotherAnime)
+                    || interestedAnime.contains(anotherAnime)) {
                 continue;
             }
             
             double totalGenreScore = 0d;
             
             // Iterate through each anime's genre
-            for (Genre genre : animeImage.getAnime().getGenres()) {
+            for (Genre genre : anotherAnime.getGenres()) {
                 totalGenreScore += totalUserGenreScore[genre.getGenreID()];
             }
             
+            if (anotherAnime.getTitle().equals("Ex-Arm")) {
+                System.out.println();
+            }
+            
             // Calculate the recommendation score as a score out of 100
-            double recommendationScore = totalGenreScore*anime.getAverageScore()
-                    /(animeImage.getAnime().getGenres().length*150);
+            double recommendationScore = (totalGenreScore/(anotherAnime.getGenres().length*150)
+                    +Math.log(anotherAnime.getAverageScore()/7))*Math.abs(anotherAnime.getAverageScore()-6.5)*2;
+            
+            if (anotherAnime.getTitle().equals("Horimiya")
+                    || anotherAnime.getTitle().equals("Mushoku Tensei: Isekai Ittara Honki Dasu")
+                    || anotherAnime.getTitle().equals("5-toubun no Hanayome ∬")) {
+                System.out.println();
+            }
             
             // Set the anime's displacement based on its recommendation score and the
             // distance between it and category it is directed towards
@@ -450,12 +480,13 @@ public class RecommendPageController extends PageController {
      */
     @Override
     public void mouseDragged (MouseEvent e) {
-        
-        super.mouseDragged(e);
     
-        if (e.getSource()!=draggedAnime) {
+        if (ApplicationController.getCurrentPage().getLoadingPanel().isVisible()
+                || e.getSource()!=draggedAnime) {
             return;
         }
+        
+        super.mouseDragged(e);
         
         // If the mouse is dragging the image is dragged with it
         Point mouseLocation = ApplicationController.getFrame().getMouseOnFrame(e);

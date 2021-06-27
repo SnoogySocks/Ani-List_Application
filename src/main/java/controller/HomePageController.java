@@ -82,6 +82,10 @@ public class HomePageController extends PageController {
     @Override
     public void actionPerformed (ActionEvent e) {
     
+        if (ApplicationController.getCurrentPage().getLoadingPanel().isVisible()) {
+            return;
+        }
+        
         ArrayList<JComponent> filterOptions = gui.getTitlePanel().getFilterBar().getFilterOptions();
         
         // Perform action events for the filter options
@@ -107,7 +111,7 @@ public class HomePageController extends PageController {
             for (JButton displayedAnimeButton: category.getDisplayedAnimeButtons()) {
                 
                 if (e.getSource()==displayedAnimeButton) {
-                    enableAnimePanel(category, displayedAnimeButton);
+                    ApplicationController.runLongTask(()->enableAnimePanel(category, displayedAnimeButton));
                     break;
                 }
                 

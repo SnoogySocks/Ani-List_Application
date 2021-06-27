@@ -8,6 +8,7 @@ import view.Page;
 import javax.swing.*;
 import javax.swing.event.MouseInputAdapter;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 
@@ -36,7 +37,8 @@ public abstract class PageController extends MouseInputAdapter implements Action
     
     @Override
     public void mousePressed (MouseEvent e) {
-        if (e.getSource()==animePanel.getDisplayedAnime()) {
+        if (!ApplicationController.getCurrentPage().getLoadingPanel().isVisible()
+                && e.getSource()==animePanel.getDisplayedAnime()) {
             isDragging = true;
         }
     }
@@ -44,7 +46,8 @@ public abstract class PageController extends MouseInputAdapter implements Action
     @Override
     public void mouseReleased (MouseEvent e) {
     
-        if (e.getSource()!=animePanel.getDisplayedAnime()) {
+        if (ApplicationController.getCurrentPage().getLoadingPanel().isVisible()
+                || e.getSource()!=animePanel.getDisplayedAnime()) {
             return;
         }
         
@@ -106,12 +109,17 @@ public abstract class PageController extends MouseInputAdapter implements Action
         
     }
     
+    /**
+     * Drag the anime from the anime panel
+     */
     @Override
     public void mouseDragged (MouseEvent e) {
         
-        if (e.getSource()!=animePanel.getDisplayedAnime()) {
+        if (ApplicationController.getCurrentPage().getLoadingPanel().isVisible()
+                || e.getSource()!=animePanel.getDisplayedAnime()) {
             return;
         }
+        
         Point mouseLocation = ApplicationController.getFrame().getMouseOnFrame(e);
     
         // If the mouse is dragging the image is dragged with it

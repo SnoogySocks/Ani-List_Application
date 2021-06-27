@@ -14,6 +14,7 @@ import java.util.ArrayList;
 /**
  * Controller for the AniListPage
  * @see PageController
+ * TODO reset button
  */
 public class AniListPageController extends PageController {
     
@@ -38,6 +39,11 @@ public class AniListPageController extends PageController {
     @Override
     public void actionPerformed (ActionEvent e) {
     
+        // Do not do anything if an action is in the progress of being performed
+        if (ApplicationController.getCurrentPage().getLoadingPanel().isVisible()) {
+            return;
+        }
+        
         // Generate the list when a new sort is chosen
         if (e.getSource()==gui.getSortComboBox()) {
             generateAniList();
@@ -119,11 +125,16 @@ public class AniListPageController extends PageController {
     @Override
     public void mouseClicked (MouseEvent e) {
         
-        if (e.getClickCount()==2 && e.getSource() instanceof AnimeImage) {
-            
-            Anime pickedAnime = ((AnimeImage) e.getSource()).getAnime();
-            JikanController.setAnimePanel(pickedAnime);
-            gui.enableAnimePanel(pickedAnime);
+        if (!ApplicationController.getCurrentPage().getLoadingPanel().isVisible()
+                && e.getClickCount()==2 && e.getSource() instanceof AnimeImage) {
+    
+            ApplicationController.runLongTask(()->{
+                
+                Anime pickedAnime = ((AnimeImage) e.getSource()).getAnime();
+                JikanController.setAnimePanel(pickedAnime);
+                gui.enableAnimePanel(pickedAnime);
+                
+            });
             
         }
         
@@ -134,8 +145,12 @@ public class AniListPageController extends PageController {
      */
     @Override
     public void mouseDragged (MouseEvent e) {
-        super.mouseDragged(e);
-        gui.repaint();
+    
+        if (ApplicationController.getCurrentPage().getLoadingPanel().isVisible()) {
+            super.mouseDragged(e);
+            gui.repaint();
+        }
+        
     }
     
 }
