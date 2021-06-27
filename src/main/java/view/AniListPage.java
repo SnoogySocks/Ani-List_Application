@@ -15,6 +15,13 @@ public class AniListPage extends Page {
     private final JComboBox<String> sortComboBox;
     private final ShadowedPanel sortPanel;
     
+    // Reset buttons
+    private final JLabel resetOptionsLabel;
+    private final ShadowedPanel resetOptionsPanel;
+    
+    private final JButton resetUserGenrePreferencesButton;
+    private final JButton resetMyAnimeListButton;
+    
     // Sub categories for the anime
     private final JLabel rankLabel;
     private final JLabel titleLabel;
@@ -22,13 +29,13 @@ public class AniListPage extends Page {
     private final JLabel scoreLabel;
     
     private final ArrayList<AniListAnimeBar> animeBars;
+    private final Dimension aniListCategoryDimensions;
     private final ShadowedPanel aniListPanel;
-    private final Dimension aniListPanelDimensions;
     
     public AniListPage () {
     
         // Set the initial size of the panel in the scroll pane
-        setActualSize(new Dimension(WIDTH, HEIGHT-38));
+        setActualSize(new Dimension(WIDTH, HEIGHT+PADDING_Y));
         
         // No need for the filter bar
         getTitlePanel().getFilterBar().setVisible(false);
@@ -68,15 +75,15 @@ public class AniListPage extends Page {
         sortPanel.getDisplayPanel().add(sortComboBox);
     
         // Initialize the panel that will contain all the displayed anime
-        aniListPanelDimensions = new Dimension(Page.WIDTH-sortPanel.getX()*2, PADDING_Y*2);
+        aniListCategoryDimensions = new Dimension(Page.WIDTH-sortPanel.getX()*2, PADDING_Y*2);
         aniListPanel = new ShadowedPanel(DIALOGUE_COLOUR);
         aniListPanel.setLocation(sortPanel.getX(), Page.getBottomY(sortPanel)+PADDING_Y*3/2);
-        aniListPanel.setSize(aniListPanelDimensions);
+        aniListPanel.setSize(aniListCategoryDimensions);
         add(aniListPanel);
         
         // Initialize the rank category label
         rankLabel = new JLabel("Rank");
-        rankLabel.setBounds(PADDING, PADDING, PADDING*6, PADDING_Y);
+        rankLabel.setBounds(PADDING, PADDING, PADDING*4, PADDING_Y);
         rankLabel.setHorizontalAlignment(JLabel.CENTER);
         rankLabel.setFont(CATEGORY_FONT);
         rankLabel.setForeground(TEXT_COLOUR);
@@ -109,6 +116,43 @@ public class AniListPage extends Page {
         // Initialize the array list that holds the displayed anime as anime bars
         animeBars = new ArrayList<>();
         
+        // Create the reset options
+        resetOptionsPanel = new ShadowedPanel(DIALOGUE_COLOUR);
+        resetOptionsPanel.setSize(
+                aniListPanel.getDisplayPanel().getWidth(),
+                sortPanel.getDisplayPanel().getHeight()
+        );
+        add(resetOptionsPanel);
+    
+        resetOptionsLabel = new JLabel("Reset Options");
+        resetOptionsLabel.setLocation(sortByLabel.getLocation());
+        resetOptionsLabel.setSize(PADDING*10, sortByLabel.getHeight());
+        resetOptionsLabel.setFont(CATEGORY_FONT);
+        resetOptionsLabel.setForeground(TEXT_COLOUR);
+        resetOptionsPanel.getDisplayPanel().add(resetOptionsLabel);
+        
+        resetUserGenrePreferencesButton = new JButton("Reset User Genre Preferences");
+        resetUserGenrePreferencesButton.setBounds(
+                Page.getRightX(resetOptionsLabel)+PADDING*4, resetOptionsLabel.getY(),
+                PADDING*24, resetOptionsLabel.getHeight()
+        );
+        resetUserGenrePreferencesButton.setFont(CATEGORY_FONT);
+        resetUserGenrePreferencesButton.setBackground(USER_INPUT_COLOUR);
+        resetUserGenrePreferencesButton.setForeground(TEXT_COLOUR);
+        resetUserGenrePreferencesButton.setBorder(null);
+        resetOptionsPanel.getDisplayPanel().add(resetUserGenrePreferencesButton);
+        
+        resetMyAnimeListButton = new JButton("Reset Ani-List");
+        resetMyAnimeListButton.setBounds(
+                Page.getRightX(resetUserGenrePreferencesButton)+PADDING*3, resetOptionsLabel.getY(),
+                PADDING*11, resetOptionsLabel.getHeight()
+        );
+        resetMyAnimeListButton.setFont(CATEGORY_FONT);
+        resetMyAnimeListButton.setBackground(USER_INPUT_COLOUR);
+        resetMyAnimeListButton.setForeground(TEXT_COLOUR);
+        resetMyAnimeListButton.setBorder(null);
+        resetOptionsPanel.getDisplayPanel().add(resetMyAnimeListButton);
+        
     }
     
     // Getters
@@ -124,12 +168,20 @@ public class AniListPage extends Page {
         return aniListPanel;
     }
     
-    public Dimension getAniListPanelDimensions () {
-        return aniListPanelDimensions;
+    public Dimension getAniListCategoryDimensions () {
+        return aniListCategoryDimensions;
     }
     
     public ArrayList<AniListAnimeBar> getAnimeBars () {
         return animeBars;
+    }
+    
+    public JButton getResetUserGenrePreferencesButton () {
+        return resetUserGenrePreferencesButton;
+    }
+    
+    public JButton getResetMyAnimeListButton () {
+        return resetMyAnimeListButton;
     }
     
     @Override
@@ -144,11 +196,20 @@ public class AniListPage extends Page {
     @Override
     public void setEnabledUserInput (boolean enabled) {
         
-        sortComboBox.enable(enabled);
+        sortComboBox.setEnabled(enabled);
         for (AniListAnimeBar animeBar: animeBars) {
             animeBar.setEnabledUserInput(enabled);
         }
         
+    }
+    
+    /**
+     * Adjusts the position of the reset options to be at the bottom of the page
+     */
+    public void updateResetOptionsLocation () {
+        resetOptionsPanel.setLocation(
+                aniListPanel.getX(), Page.getBottomY(aniListPanel)+PADDING_Y*3/2
+        );
     }
     
 }

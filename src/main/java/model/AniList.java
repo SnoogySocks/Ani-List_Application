@@ -15,13 +15,13 @@ public class AniList implements Serializable {
     
     private static final long serialVersionUID = -1271192980665485395L;
     
-    private final double[] totalUserGenreScore;           // Tracks the user's preferred genre
+    private final double[] userGenrePreferences;          // Tracks the user's preferred genre
     private final HashSet<Integer> alreadyRecommended;    // Contains the malIDs of already recommended anime
     private final HashSet<Anime> myAnimeList;             // Stores the user's preferred anime
     
     public AniList () {
         
-        totalUserGenreScore = new double[Genre.values().length+1];
+        userGenrePreferences = new double[Genre.values().length+1];
         alreadyRecommended = new HashSet<>();
         myAnimeList = new HashSet<>();
     
@@ -33,16 +33,16 @@ public class AniList implements Serializable {
             return;
         }
         
-        System.arraycopy(rhs.totalUserGenreScore, 0,
-                totalUserGenreScore, 0, totalUserGenreScore.length);
+        System.arraycopy(rhs.userGenrePreferences, 0,
+                userGenrePreferences, 0, userGenrePreferences.length);
         alreadyRecommended.addAll(rhs.alreadyRecommended);
         myAnimeList.addAll(rhs.myAnimeList);
         
     }
     
     // Getters
-    public double[] getTotalUserGenreScore () {
-        return totalUserGenreScore;
+    public double[] getUserGenrePreferences () {
+        return userGenrePreferences;
     }
     
     public HashSet<Integer> getAlreadyRecommended () {
@@ -67,7 +67,7 @@ public class AniList implements Serializable {
         
         // Score the genre of the anime
         for (Genre genre: anime.getGenres()) {
-            totalUserGenreScore[genre.getGenreID()] += 15-anime.getUserScore();
+            userGenrePreferences[genre.getGenreID()] += 15-anime.getUserScore();
         }
         
     }

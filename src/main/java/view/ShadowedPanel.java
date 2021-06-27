@@ -46,14 +46,19 @@ public class ShadowedPanel extends JPanel {
     @Override
     public void setSize (int width, int height) {
         
-        super.setSize(width+SHADOW_OFFSET, height+SHADOW_OFFSET);
+        super.setSize(width, height);
         displayPanel.setSize(width, height);
         shadow.setSize(width, height);
         
     }
     
+    @Override
+    public void setLocation (int x, int y) {
+        setBounds(x, y, displayPanel.getWidth(), displayPanel.getHeight());
+    }
+    
     /**
-     * Set the bounds of the anime relative to the display panel
+     * Set the bounds of the panel relative to the displayPanel
      */
     @Override
     public void setBounds (int x, int y, int width, int height) {

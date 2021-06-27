@@ -55,12 +55,6 @@ public class RecommendPageController extends PageController {
         }
         
         if (e.getSource()==gui.getSwitchModesButton()) {
-    
-            // If the user made a decision with an anime then
-            // evaluate the session
-            if (uninterestedAnime.size()!=0 || interestedAnime.size()!=0) {
-                evaluateResults();
-            }
             
             ApplicationController.runLongTask(()->{
     
@@ -79,36 +73,42 @@ public class RecommendPageController extends PageController {
         
                     // Otherwise, Remove all the anime images from the screen
                 } else {
-        
+    
+                    // If the user made a decision with an anime then
+                    // evaluate the session
+                    if (uninterestedAnime.size()!=0 || interestedAnime.size()!=0) {
+                        evaluateResults();
+                    }
+                    
                     for (AnimeImage animeImage: displayedAnime) {
                         gui.remove(animeImage);
                     }
                     displayedAnime.clear();
-        
+            
                 }
     
                 // Toggle the mode of the page
                 toggleRecommending();
+    
+                // Display a help message to the user when transitioning to recommend mode
+                if (!gui.getTitlePanel().isVisible()) {
+        
+                    JOptionPane.showMessageDialog(
+                            ApplicationController.getFrame(),
+                            "Drag anime you are interested in to the\n"+
+                                    "green, and uninterested in the red. The \n"+
+                                    "program will try to guess your interests\n" +
+                                    "by moving the anime towards either\n"+
+                                    "the interested or uninterested panels.\n\n"+
+                                    "Double click an image to view more about\n"+
+                                    "it.",
+                            "Information Message",
+                            JOptionPane.INFORMATION_MESSAGE
+                    );
+        
+                }
                 
             });
-    
-            // Display a help message to the user when transitioning to recommend mode
-            if (!gui.getTitlePanel().isVisible()) {
-                
-                JOptionPane.showMessageDialog(
-                        ApplicationController.getFrame(),
-                        "Drag anime you are interested in to the\n"+
-                                "green, and uninterested in the red. The \n"+
-                                "program will try to guess your interests\n" +
-                                "by moving the anime towards either\n"+
-                                "the interested or uninterested panels.\n\n"+
-                                "Double click an image to view more about\n"+
-                                "it.",
-                        "Information Message",
-                        JOptionPane.INFORMATION_MESSAGE
-                );
-                
-            }
             
         }
     
@@ -316,7 +316,7 @@ public class RecommendPageController extends PageController {
         }
         
         // Iterate through the anime's genres
-        double[] totalUserGenreScore = Page.getAniList().getTotalUserGenreScore();
+        double[] totalUserGenreScore = Page.getAniList().getUserGenrePreferences();
         for (Genre genre: anime.getGenres()) {
         
             // Evaluate the genre
@@ -427,7 +427,7 @@ public class RecommendPageController extends PageController {
         );
         
         // Find the user's most and least favourite genre
-        double[] totalUserGenreScore = Page.getAniList().getTotalUserGenreScore();
+        double[] totalUserGenreScore = Page.getAniList().getUserGenrePreferences();
         
         Genre mostFavouriteGenre, mostHatedGenre;
         mostFavouriteGenre = mostHatedGenre = Genre.NOTHING;

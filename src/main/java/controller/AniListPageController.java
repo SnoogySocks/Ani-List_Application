@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Controller for the AniListPage
@@ -33,6 +34,8 @@ public class AniListPageController extends PageController {
         for (AniListAnimeBar bar: gui.getAnimeBars()) {
             bar.getEditButton().addActionListener(this);
         }
+        gui.getResetUserGenrePreferencesButton().addActionListener(this);
+        gui.getResetMyAnimeListButton().addActionListener(this);
     
     }
     
@@ -61,9 +64,19 @@ public class AniListPageController extends PageController {
             }
             
         }
+        
+        // Reset options for the Ani-List
+        if (e.getSource()==gui.getResetUserGenrePreferencesButton()) {
+            Arrays.fill(Page.getAniList().getUserGenrePreferences(), 0d);
+        
+        } else if (e.getSource()==gui.getResetMyAnimeListButton()) {
+            
+            Page.getAniList().getMyAnimeList().clear();
+            Page.getAniList().getAlreadyRecommended().clear();
+            generateAniList();
     
         // Disable the anime panel when the back button is pressed
-        if (e.getSource()==gui.getAnimePanel().getBackButton()) {
+        } else if (e.getSource()==gui.getAnimePanel().getBackButton()) {
             gui.disableAnimePanel();
         }
         
@@ -104,17 +117,20 @@ public class AniListPageController extends PageController {
         
         // Adjust the size of the list
         gui.getAniListPanel().setSize(
-                gui.getAniListPanelDimensions().width,
-                gui.getAniListPanelDimensions().height
+                gui.getAniListCategoryDimensions().width,
+                gui.getAniListCategoryDimensions().height
                         +AniListAnimeBar.HEIGHT*aniList.size()
         );
         
         // Readjust the size of the screen
-        gui.getActualSize().setSize(new Dimension(
-                Page.WIDTH,
-                Page.HEIGHT+AniListAnimeBar.HEIGHT*aniList.size()
+        gui.setPreferredSize(new Dimension(
+                gui.getActualSize().width, gui.getActualSize().height
+                        +AniListAnimeBar.HEIGHT*aniList.size()
         ));
+    
+        gui.updateResetOptionsLocation();
         gui.revalidate();
+        gui.repaint();
         
     }
     
