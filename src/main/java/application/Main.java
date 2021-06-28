@@ -15,28 +15,30 @@ import controller.ApplicationController;
  * its recommendations to the user's preferred genre.
  *
  * Features:
- *  1. Access to the MyAnimeList dataa base with the Jikan API
- *  2. Home page anime filter by year, season, and genre
- *  3. Dragging and dropping anime images
- *  4. Adding and editing anime in the Ani-List
- *  5. Generating anime to recommend for the Recommend Page
- *  6. Interactive recommendation algorithm that moves anime based on
- *     the user's interests for the genre
- *  7. Remembers the user's genre interests until the application is
- *     exited
- *  8. Does not recommend already recommended anime
- *  9. Saving and loading ani-list
+ *   1. Access to the MyAnimeList dataa base with the Jikan API
+ *   2. Home page anime filter by year, season, and genre
+ *   3. Dragging and dropping anime images
+ *   4. Adding and editing anime in the Ani-List
+ *   5. Generating anime to recommend for the Recommend Page
+ *   6. Interactive recommendation algorithm that moves anime based on
+ *      the user's interests for the genre
+ *   7. Remembers the user's genre interests until the application is
+ *      exited
+ *   8. Does not recommend already recommended anime
+ *   9. Saving and loading ani-list
+ *  10. A loading screen
  *
  * Major Skills:
- *  1. RapidApi to set up the API
- *  2. Unirest to interact with an API
- *  3. JFreeChart to display statistics
- *  4. Project management tool Maven
- *  5. Java swing
- *  6. Object oriented programming
- *  7. Polymorphism
- *  8. File reading and writing
- *  9. Serializable to save and load ani-list
+ *   1. RapidApi to set up the API
+ *   2. Unirest to interact with an API
+ *   3. JFreeChart to display statistics
+ *   4. Project management tool Maven
+ *   5. Java swing
+ *   6. Object oriented programming
+ *   7. Polymorphism
+ *   8. File reading and writing
+ *   9. Serializable to save and load ani-list
+ *  10. Swing-worker for multi-threading loading
  *
  * Areas of Concern:
  *  - Due to time constraints, some features were omitted:
@@ -68,7 +70,8 @@ import controller.ApplicationController;
  *
  * NOTE:
  *  - The project must have the libraries
- *    - jfreechart-1.5.3 (found in resources)
+ *    - jfreechart-1.5.3
+ *      (found in resources)
  *    - unirest-java:1.4.9
  *      (see https://rapidapi.com/blog/how-to-use-an-api-with-java/
  *      and scroll down a bit if not already added)

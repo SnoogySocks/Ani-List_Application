@@ -23,11 +23,11 @@ public class RecommendPageController extends PageController {
     private final RecommendPage gui;
     private final ArrayList<AnimeImage> displayedAnime;     // Track the displayed anime that got generated
     
-    private final Point draggedAnimeOGLocation;         // Track the original location of the dragged anime
-    private AnimeImage draggedAnime;                    // The image to the dragged anime
+    private final Point draggedAnimeOGLocation;             // Track the original location of the dragged anime
+    private AnimeImage draggedAnime;                        // The image to the dragged anime
     
-    private final HashSet<Anime> uninterestedAnime;     // Anime the user is not interested in
-    private final HashSet<Anime> interestedAnime;       // Anime the user is interested in
+    private final HashSet<Anime> uninterestedAnime;         // Anime the user is not interested in
+    private final HashSet<Anime> interestedAnime;           // Anime the user is interested in
     
     public RecommendPageController (RecommendPage gui) {
         

@@ -1,6 +1,6 @@
 package controller;
 
-import util.MyFunction;
+import util.Task;
 import view.*;
 
 import javax.swing.*;
@@ -129,7 +129,7 @@ public class ApplicationController extends WindowAdapter implements ActionListen
      * Creates a swing worker that displays a loading icon while running task
      * @param task = the task to perform
      */
-    public static void runLongTask (MyFunction task) {
+    public static void runLongTask (Task task) {
         
         JPanel loadingPanel = getCurrentPage().getLoadingPanel();
         new SwingWorker<>() {
