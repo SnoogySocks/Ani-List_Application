@@ -32,7 +32,7 @@ public class JikanController {
         // Read the x_rapid_key from the text file for safety
         // (the file would usually be in a separate folder from the project)
         try {
-            Scanner input = new Scanner(new File("src/main/resources/APIKey"));
+            Scanner input = new Scanner(new File("C:/Users/felix/OneDrive/Documents/confidential/APIKey"));
             x_rapidapi_key = input.next();
             input.close();
         } catch (FileNotFoundException e) {
