@@ -15,7 +15,7 @@ import controller.ApplicationController;
  * its recommendations to the user's preferred genre.
  *
  * Features:
- *   1. Access to the MyAnimeList dataa base with the Jikan API
+ *   1. Access to the MyAnimeList data base with the Jikan API
  *   2. Home page anime filter by year, season, and genre
  *   3. Dragging and dropping anime images
  *   4. Adding and editing anime in the Ani-List

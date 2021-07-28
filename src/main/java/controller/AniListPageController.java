@@ -15,7 +15,6 @@ import java.util.Arrays;
 /**
  * Controller for the AniListPage
  * @see PageController
- * TODO reset button
  */
 public class AniListPageController extends PageController {
     
