@@ -62,9 +62,6 @@ It is an application that allows users to filter, browse and get recommended a l
 # Preview
 <h2>Home Page</h2>
 <img src="https://user-images.githubusercontent.com/71908175/148611589-45453c4d-0668-4259-a53d-853b68aa284d.png" />
-<img src="https://user-images.githubusercontent.com/71908175/148611727-885892b8-f031-4bc5-9735-a484d12a9696.png" />
-
-##### Drag images to add to your Ani-List
 
 <h2>Recommend Page</h2>
 <img src="https://user-images.githubusercontent.com/71908175/148611219-09f07ea1-9202-47f2-823b-f72867cd5ecb.png" />
@@ -75,4 +72,6 @@ It is an application that allows users to filter, browse and get recommended a l
 
 <h2>Anime Panel</h2>
 <img src="https://user-images.githubusercontent.com/71908175/148609960-41e80e52-1bfd-4a19-a59d-b43fc5371c12.png" />
-  
+<img src="https://user-images.githubusercontent.com/71908175/148611727-885892b8-f031-4bc5-9735-a484d12a9696.png" />
+
+##### Drag images to add to your Ani-List
