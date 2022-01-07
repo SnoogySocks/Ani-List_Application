@@ -38,7 +38,7 @@ It is an application that allows users to filter, browse and get recommended a l
   <li>AnimePanel scoring stat bar highlighting and captioning</li>
   <li>Accounts</li>
 </ol>
-  <li>Jikan API can be defective sometimes (see <a href="https://github.com/jikan-me/jikan-rest/issues/177">here</a>).
+  <li><a href="https://github.com/jikan-me/jikan-rest/issues/177">Jikan API can be defective sometimes</a>.
 </ul>
   
 <ul>
@@ -53,9 +53,9 @@ It is an application that allows users to filter, browse and get recommended a l
 <ul>
   <li>The project must have the following libraries:</li>
   <ul>
-    <li>jfreechart-1.5.1</li>
-    <li>unirest-java:1.4.9 (see <a href="https://rapidapi.com/blog/how-to-use-an-api-with-java/">here</a> and scroll down a bit if not already added.)</li>
-    <li>gson-2.8.5 (see <a href="https://github.com/google/gson">here</a>)</li>
+    <li><a href="https://www.jfree.org/jfreechart/">jfreechart-1.5.1</a></li>
+    <li><a href="https://rapidapi.com/blog/how-to-use-an-api-with-java/">unirest-java:1.4.9</a> (scroll down a bit if not already added.)</li>
+    <li><a href="https://github.com/google/gson">gson-2.8.5</a></li>
   </ul>
 </ul>
 
