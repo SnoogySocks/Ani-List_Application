@@ -13,7 +13,7 @@ public enum Schedule {
     SATURDAY,
     SUNDAY;
     
-    private String weekDay;
+    private final String weekDay;
     
     Schedule () {
         this.weekDay = super.toString().toLowerCase();

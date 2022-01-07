@@ -15,7 +15,7 @@ import controller.ApplicationController;
  * its recommendations to the user's preferred genre.
  *
  * Features:
- *   1. Access to the MyAnimeList data base with the Jikan API
+ *   1. Access to the MyAnimeList database with the Jikan API
  *   2. Home page anime filter by year, season, and genre
  *   3. Dragging and dropping anime images
  *   4. Adding and editing anime in the Ani-List
@@ -34,7 +34,7 @@ import controller.ApplicationController;
  *   3. JFreeChart to display statistics
  *   4. Project management tool Maven
  *   5. Java swing
- *   6. Object oriented programming
+ *   6. Object-oriented programming
  *   7. Polymorphism
  *   8. File reading and writing
  *   9. Serializable to save and load ani-list
