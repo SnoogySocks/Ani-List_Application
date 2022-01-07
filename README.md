@@ -34,10 +34,11 @@ It is an application that allows users to filter, browse and get recommended a l
 <ul>
   <li>Due to time constraints, some features were omitted:</li>
 <ol>
-  <li>Saving and loading a user's ani-list and genre preferences after exiting the application</li>
   <li>A filter bar in the Ani-List page</li>
-  <li>AnimePanel scoring statis bar highlighting and captioning</li>
+  <li>AnimePanel scoring stat bar highlighting and captioning</li>
+  <li>Accounts</li>
 </ol>
+  <li>Jikan API can be defective sometimes (see <a href="https://github.com/jikan-me/jikan-rest/issues/177">here</a>).
 </ul>
   
 <ul>
