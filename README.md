@@ -57,3 +57,21 @@ It is an application that allows users to filter, browse and get recommended a l
     <li>gson-2.8.5 (see <a href="https://github.com/google/gson">here</a>)</li>
   </ul>
 </ul>
+
+---
+# Preview
+<h2>Home Page</h2>
+<img src="https://user-images.githubusercontent.com/71908175/148611589-45453c4d-0668-4259-a53d-853b68aa284d.png" />
+
+<h2>Recommend Page</h2>
+<img src="https://user-images.githubusercontent.com/71908175/148611219-09f07ea1-9202-47f2-823b-f72867cd5ecb.png" />
+<img src="https://user-images.githubusercontent.com/71908175/148610945-e0428b7d-b6d5-49a2-ab14-47483c4de182.png" />
+
+<h2>Ani-List Page</h2>
+<img src="https://user-images.githubusercontent.com/71908175/148611430-713cea38-6e6b-4bdf-becd-ff41032c7891.png" />
+
+<h2>Anime Panel</h2>
+<img src="https://user-images.githubusercontent.com/71908175/148609960-41e80e52-1bfd-4a19-a59d-b43fc5371c12.png" />
+<img src="https://user-images.githubusercontent.com/71908175/148611727-885892b8-f031-4bc5-9735-a484d12a9696.png" />
+
+##### Drag images to add to your Ani-List
