@@ -20,7 +20,7 @@ It is an application that allows users to filter, browse and get recommended a l
 <ol>
   <li><a href="https://rapidapi.com/">RapidApi</a> to set up the API</li>
   <li><a href="http://kong.github.io/unirest-java/">Unirest</a> to interact with the API</li>
-  <li><a href="https://www.jfree.org/jfreechart/">JFreeChart</a></li> to display statistics</li>
+  <li><a href="https://www.jfree.org/jfreechart/">JFreeChart</a> to display statistics</li>
   <li>Project management tool Maven</li>
   <li>Java swing</li>
   <li>Object oriented programming</li>
