@@ -38,7 +38,7 @@ It is an application that allows users to filter, browse and get recommended a l
   <li>AnimePanel scoring stat bar highlighting and captioning</li>
   <li>Accounts</li>
 </ol>
-  <li><a href="https://github.com/jikan-me/jikan-rest/issues/177">Jikan API can be defective sometimes</a>.
+  <li><a href="https://github.com/jikan-me/jikan-rest/issues/177">Jikan API can be defective sometimes</a>.</li>
 </ul>
   
 <ul>
