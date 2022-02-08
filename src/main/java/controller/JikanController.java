@@ -127,7 +127,7 @@ public class JikanController {
     }
     
     /**
-     * @return the anime that are are coming
+     * @return the anime that are coming
      */
     public static ArrayList<Anime> getUpAndComing () {
         return getListOfAnime("top/anime/1/upcoming", "top", true);
