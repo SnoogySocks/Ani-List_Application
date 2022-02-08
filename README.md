@@ -1,4 +1,16 @@
-# Ani-List_Felix_Fong
+<h1 align="center">
+  Ani-List
+</h1>
+<h4 align="center">The Analyst for Ani-Lists</h4>
+<p align="center">
+  Felix Fong
+  <br>
+  June 13 2021
+  <br>
+  ICS-4U1
+  <br>
+  Nicholas Fernandes
+</p>
 <h2>Description</h2>
 It is an application that allows users to filter, browse and get recommended a list of many anime using the Jikan API. While browsing, the user customizes their list while the program caters its recommendations to the user's preferred genre.
 
